@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: examination
+  mvc:
+    view:
+      prefix: /WEB-INF/pages
+      suffix: .jsp
+
+server:
+  port: 8301
+  servlet:
+    context-path: /ex
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml

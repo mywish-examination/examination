@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    druid:
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://127.0.0.1:3306/mywish?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+      loginUsername: sfc
+      loginPassword: sfc
+      initialSize: 5
+      maxActive: 20
+      minIdle: 5
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 1 from dual
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      #filters: stat,wall,slf4j
+      filters: stat
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      useGlobalDataSourceStat: false
+      filter:
+        slf4j:
+          statement-executable-sql-log-enable: true
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+  redis:
+    host: 127.0.0.1
+    password:
+    # 数据库索引 默认0
+    database: 0
+    port: 6379
+    timeout: 3000
