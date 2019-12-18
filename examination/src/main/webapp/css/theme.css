@@ -1,0 +1,318 @@
+.profile-element .m-t-xs{
+	color: #FFFFFF;
+}
+
+
+
+/*
+ *
+ *   SKIN 1 - H+ - 后台主题UI框架
+ *   NAME - Blue light
+ *
+*/
+
+.skin-1 .minimalize-styl-2 {
+    margin: 14px 5px 5px 30px;
+}
+
+.skin-1 .navbar-top-links li:last-child {
+    margin-right: 30px;
+}
+
+.skin-1.fixed-nav .minimalize-styl-2 {
+    margin: 14px 5px 5px 15px;
+}
+
+.skin-1 .spin-icon {
+    background: #0e9aef !important;
+}
+
+.skin-1 .nav-header {
+    background: #0a4f79;
+    background: url('patterns/header-profile-skin-1.png');
+}
+.skin-1 .navbar-static-side{
+	background: #0a4f79;
+}
+.skin-1.mini-navbar .nav-second-level {
+    background: #127cbc;
+}
+
+.skin-1 .breadcrumb {
+    background: transparent;
+}
+
+.skin-1 .page-heading {
+    border: none;
+}
+
+.skin-1 .nav > li.active {
+    background: #127cbc;
+}
+
+.skin-1 .nav > li > a {
+    color: #9db7c7;
+}
+
+.skin-1 .nav > li.active > a {
+    color: #fff;
+}
+
+.skin-1 .navbar-minimalize {
+    background: #0e9aef;
+    border-color: #0e9aef;
+}
+.skin-1 .navbar-minimalize:hover{
+	
+}
+body.skin-1 {
+    background: #0a4f79;
+}
+
+.skin-1 .navbar-static-top {
+    background: #ffffff;
+}
+
+.skin-1 .dashboard-header {
+    background: transparent;
+    border-bottom: none !important;
+    border-top: none;
+    padding: 20px 30px 10px 30px;
+}
+
+.fixed-nav.skin-1 .navbar-fixed-top {
+    background: #fff;
+}
+
+.skin-1 .wrapper-content {
+    padding: 30px 15px;
+}
+
+.skin-1 #page-wrapper {
+    background: #f4f6fa;
+}
+
+.skin-1 .ibox-title,
+.skin-1 .ibox-content {
+    border-width: 1px;
+}
+
+.skin-1 .ibox-content:last-child {
+    border-style: solid solid solid solid;
+}
+
+.skin-1 .nav > li.active {
+    border: none;
+}
+
+.skin-1 .nav-header {
+    padding: 35px 25px 25px 25px;
+}
+
+.skin-1 .nav-header a.dropdown-toggle {
+    color: #fff;
+    margin-top: 10px;
+}
+
+.skin-1 .nav-header a.dropdown-toggle .text-muted {
+    color: #fff;
+    opacity: 0.8;
+}
+
+.skin-1 .profile-element .m-t-xs {
+    color: #FFFFFF;
+}
+.skin-1 .profile-element .text-muted {
+    color: #9db7c7;
+}
+
+.skin-1 .navbar-default .nav > li > a:hover,
+.skin-1 .navbar-default .nav > li > a:focus {
+    background: #39aef5;
+    color: #fff;
+}
+
+.skin-1 .nav.nav-tabs > li.active > a {
+    color: #555;
+}
+
+.skin-1 .content-tabs {
+    border-bottom: solid 2px #39aef5;
+}
+
+.skin-1 .nav.nav-tabs > li.active {
+    background: transparent;
+}
+
+.skin-1 .page-tabs a.active {
+    background: #39aef5;
+    color: #fff;
+}
+
+.skin-1 .page-tabs a.active:hover,
+.skin-1 .page-tabs a.active i:hover {
+    background: #0e9aef;
+    color: #fff;
+}
+
+
+/*
+ *
+ *   SKIN 3 - H+ - 后台主题UI框架
+ *   NAME - Yellow/purple
+ *
+*/
+
+.skin-3 .minimalize-styl-2 {
+    margin: 14px 5px 5px 30px;
+}
+
+.skin-3 .navbar-top-links li:last-child {
+    margin-right: 30px;
+}
+
+.skin-3.fixed-nav .minimalize-styl-2 {
+    margin: 14px 5px 5px 15px;
+}
+
+.skin-3 .spin-icon {
+    background: #ecba52 !important;
+}
+
+body.boxed-layout.skin-3 #wrapper {
+    background: #3e2c42;
+}
+
+.skin-3 .nav-header {
+    background: #a56c3c;
+    background: url('patterns/header-profile-skin-3.png');
+}
+.skin-3 .navbar-static-side{
+	background: #a56c3c;
+}
+.skin-3.mini-navbar .nav-second-level {
+    background: #c18a38;
+}
+
+.skin-3 .breadcrumb {
+    background: transparent;
+}
+
+.skin-3 .page-heading {
+    border: none;
+}
+
+.skin-3 .nav > li.active {
+    background: #c18a38;
+}
+
+.fixed-nav.skin-3 .navbar-fixed-top {
+    background: #fff;
+}
+
+.skin-3 .nav > li > a {
+    color: #fbdbc0;
+}
+
+.skin-3 .nav > li.active > a {
+    color: #fff;
+}
+
+.skin-3 .navbar-minimalize {
+    background: #c18a38;
+    border-color: #c18a38;
+}
+
+body.skin-3 {
+    background: #3e2c42;
+}
+
+.skin-3 .navbar-static-top {
+    background: #ffffff;
+}
+
+.skin-3 .dashboard-header {
+    background: transparent;
+    border-bottom: none !important;
+    border-top: none;
+    padding: 20px 30px 10px 30px;
+}
+
+.skin-3 .wrapper-content {
+    padding: 30px 15px;
+}
+
+.skin-3 #page-wrapper {
+    background: #f4f6fa;
+}
+
+.skin-3 .ibox-title,
+.skin-3 .ibox-content {
+    border-width: 1px;
+}
+
+.skin-3 .ibox-content:last-child {
+    border-style: solid solid solid solid;
+}
+
+.skin-3 .nav > li.active {
+    border: none;
+}
+
+.skin-3 .nav-header {
+    padding: 35px 25px 25px 25px;
+}
+
+.skin-3 .nav-header a.dropdown-toggle {
+    color: #fff;
+    margin-top: 10px;
+}
+
+.skin-3 .nav-header a.dropdown-toggle .text-muted {
+    color: #fff;
+    opacity: 0.8;
+}
+
+.skin-3 .profile-element .m-t-xs {
+    color: #FFFFFF;
+}
+.skin-3 .profile-element .text-muted {
+    color: #fbdbc0;
+}
+
+.skin-3 .img-circle {
+    border-radius: 5px;
+}
+
+.skin-3 .navbar-default .nav > li > a:hover,
+.skin-3 .navbar-default .nav > li > a:focus {
+    background: #feb64c;
+    color: #fff;
+}
+
+.skin-3 .nav.nav-tabs > li.active > a {
+    color: #555;
+}
+
+.skin-3 .nav.nav-tabs > li.active {
+    background: transparent;
+}
+
+.skin-3 .content-tabs {
+    border-bottom: solid 2px #a56c3c;
+}
+
+.skin-3 .nav.nav-tabs > li.active {
+    background: transparent;
+}
+
+.skin-3 .page-tabs a.active {
+    background: #eaac51;
+    color: #fff;
+}
+
+.skin-3 .page-tabs a.active:hover,
+.skin-3 .page-tabs a.active i:hover {
+    background: #ecba52;
+    color: #fff;
+}

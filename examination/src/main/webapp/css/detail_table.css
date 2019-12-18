@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+.responsive-table{
+	
+}
+.responsive-table .row{
+	margin:0;
+	display:table;
+}
+.responsive-table .row:before,.responsive-table .row:after{
+	display: none;
+}
+.responsive-table .row[class*='col-sm']{
+	padding:0
+}
+.responsive-table .row div[class*='col-sm']{
+	padding:8px;
+	display: table-cell;
+	float: none;
+	text-align: left;
+	font-size: 14px;
+}
+.responsive-table .row div[class*='col-sm'].title {
+	text-align: right;
+	color: #424242;
+	vertical-align: middle;
+}
+.responsive-table .row div div[class*='col-sm']{
+	padding:0;
+	border-right:0;
+	float: left;
+}
+.detail-table{
+	
+}
+.detail-table .row{
+	width: 100%;
+	margin:0;
+	display:table;
+}
+.detail-table .row:before,.detail-table .row:after{
+	display: none;
+}
+.detail-table .row div[class*='col-sm']{
+	padding:8px;
+	display: table-cell;
+	float: none;
+	text-align: left;
+	font-size: 14px;
+}
+.detail-table .row div[class*='col-sm'].title {
+	text-align: right;
+	color: #424242;
+	vertical-align: middle;
+}
+.detail-table .row div div[class*='col-sm']{
+	padding:0;
+	float: left;
+}

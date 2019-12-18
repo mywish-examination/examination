@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - zTree页面</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+	<link href="css/plugins/ztree/ztree.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+
+    <div class="middle-box white-bg text-center animated fadeInDown">
+        <h3>zTree测试</h3>
+        <div>
+        	 <ul id="treeDemo" class="ztree"></ul>
+        	 <input type="button" class="btn btn-primary" name="btnok"  value="确认" id="btnok" />
+        	 <input type="hidden" name="auth" id="auth"/>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/plugins/ztree/jquery.ztree.core-3.0.min.js"></script>
+	<script src="js/plugins/ztree/jquery.ztree.excheck-3.0.min.js"></script>
+	<script src="js/plugins/ztree/jquery.ztree.exedit-3.0.min.js"></script>
+
+	<script type="text/javascript">
+		jQuery.browser={};
+		(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
+		  var treeObj=null;
+		  $(document).ready(function(){
+		  	initTree();
+		  	function initTree(){
+		  		var setting = {
+				    //check属性放在data属性之后，复选框不起作用
+				    check: {
+				        enable: true,
+				        nocheckInherit: false
+				    }
+				};
+				var zNodes = [
+				    {
+				    	name:"父节点",
+				    	id:0,
+				    	children: [
+				    	{
+				    		name: "父节点1",
+				        	id:1,
+				    		children: [
+				        		{name: "子节点1",id:11,checked:true},
+				        		{name: "子节点2",id:12}
+				    		]
+				    	}
+				    	]
+				    }
+				];
+	            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	            treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+	            //父节点不能选择
+	            var nodes = treeObj.transformToArray(treeObj.getNodes());
+	            for (var i=0, l=nodes.length; i < l; i++) {
+	              if (nodes[i].isParent){
+	              	if(nodes[i].id==0){
+	              		treeObj.expandNode(nodes[i])
+	              	}
+	              	 nodes[i].nocheck = true;
+	              	 treeObj.updateNode(nodes[i]);
+	              }
+	            }
+		  	}
+        });
+        $("#btnok").click(function(){
+		var auth = "";
+		var sval = treeObj.getCheckedNodes();
+		if (!sval || sval.length <= 0){
+		}else{
+			for(var i=0; i<sval.length; i++){
+				if (i ==0){
+					auth = sval[i].id;
+				}
+				else{
+					auth += "," + sval[i].id;
+				}
+			}
+		}
+		$("#auth").val(auth);
+		console.log(auth)
+	});
+	</script>
+
+</body>
+
+</html>

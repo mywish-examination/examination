@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @TableName("my_collection")
 public class MyCollectionDO extends BaseEntity {
+
     /**
      * 学校名称
      */
@@ -21,4 +22,5 @@ public class MyCollectionDO extends BaseEntity {
      * 用户Id
      */
     private Long userId;
+
 }

@@ -1,0 +1,161 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - 基础表格</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/detail_table.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>自定义响应式表格</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="table_basic.html#">选项1</a>
+                                </li>
+                                <li><a href="table_basic.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                    	<div class="table-responsive detail-table">
+                        	<div class="row">
+                        		<div class="col-sm-2 title">当前需求状态</div>
+                        		<div class="col-sm-10"><span id="cor_reqNo">000010661902266444</span></div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">企业名称</div>
+                        		<div class="col-sm-4"><a class="tac-link" id="cor_name">苏州艾斯达克智能科技有限公司</a></div>
+                        		<div class="col-sm-2 title">三证合一证</div>
+                        		<div class="col-sm-4"><span id="org_code">32120883-0</span></div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">所属区域</div>
+                        		<div class="col-sm-4"><a class="tac-link" id="cor_name">高新区</a></div>
+                        		<div class="col-sm-2 title">发布时间</div>
+                        		<div class="col-sm-4">2019-02-26</div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">处理动作</div>
+                        		<div class="col-sm-10"><input type="radio" name="action" value="1" checked="checked">
+											<label>撮合成功</label>
+											<input type="radio" name="action" value="2">
+											<label>撮合失败</label>
+											<input type="radio" name="action" value="3">
+											<label>撮合中</label></div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">处理动作</div>
+                        		<div class="col-sm-12">
+                        			<div class="col-sm-6">
+                        				<input id="matchBranch" type="text" class="input-sm form-control">
+                        			</div>
+                        		</div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">撮合情况说明</div>
+                        		<div class="col-sm-12"><textarea name="textarea" id="matchRemark" rows="3" class="input-sm form-control col-sm-6"></textarea></div>
+                        	</div>
+                            
+                        </div>
+                        <div class="responsive-table">
+                        	<div class="row col-sm-6">
+                        		<div class="col-sm-4 title">企业名称</div>
+                        		<div class="col-sm-8"><a class="tac-link" id="cor_name">苏州艾斯达克智能科技有限公司</a></div>
+                        	</div>
+                        	<div class="row col-sm-6">
+                        		<div class="col-sm-4 title">当前需求状态</div>
+                        		<div class="col-sm-8"><span id="cor_reqNo">000010661902266444</span></div>
+                        	</div>
+                        	<div class="row col-sm-12">
+                        		<div class="col-sm-2 title">处理动作</div>
+                        		<div class="col-sm-10"><input type="radio" name="action" value="1" checked="checked">
+											<label>撮合成功</label>
+											<input type="radio" name="action" value="2">
+											<label>撮合失败</label>
+											<input type="radio" name="action" value="3">
+											<label>撮合中</label></div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">处理动作</div>
+                        		<div class="col-sm-10">
+                        			<div class="col-sm-6">
+                        			<input id="matchBranch" type="text" class="input-sm form-control">
+                        			</div>
+                        		</div>
+                        	</div>
+                        	<div class="row">
+                        		<div class="col-sm-2 title">撮合情况说明</div>
+                        		<div class="col-sm-10"><textarea name="textarea" id="matchRemark" rows="3" class="input-sm form-control col-sm-6"></textarea></div>
+                        	</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <!--统计代码，可删除-->
+
+</body>
+
+</html>

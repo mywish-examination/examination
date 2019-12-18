@@ -16,5 +16,5 @@ public class FeedbackDO extends BaseEntity {
     /**
      * 用户Id
      */
-    private String userId;
+    private Long userId;
 }

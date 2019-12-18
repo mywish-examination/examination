@@ -1,13 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>${title}</title>
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="shortcut icon" href="${basePath}favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${basePath}css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
     <!-- jqgrid-->
@@ -19,12 +17,12 @@
 </head>
 
 <body class="gray-bg">
-<div class="wrapper wrapper-content  animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>学院管理 - 列表</h5>
+                    <h5>学院管理 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 

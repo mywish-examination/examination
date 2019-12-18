@@ -14,5 +14,5 @@ public interface SchoolMapper extends BaseMapper<SchoolDO> {
      * 获取学校列表
      * @return
      */
-    List<SchoolDO> listPagerSchool(@Param("entity") SchoolDO requestParam);
+    List<SchoolDO> listPager(@Param("entity") SchoolDO requestParam);
 }
