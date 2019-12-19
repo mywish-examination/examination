@@ -46,7 +46,7 @@ public class SchoolDO extends BaseEntity {
     /**
      * 院校属性
      */
-    private String educational_institutionsAttribute;
+    private String educationalInstitutionsAttribute;
     /**
      * 基本信息
      */

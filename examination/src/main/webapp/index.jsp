@@ -119,7 +119,7 @@
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id=""></a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -143,8 +143,8 @@
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0"
                     data-id="index_v1.html" style="display: none;" seamless></iframe>
-            <iframe class="J_iframe" name="iframe1" width="100%" height="100%" src="layouts.html" frameborder="0"
-                    data-id="layouts.html" seamless></iframe>
+<%--            <iframe class="J_iframe" name="iframe1" width="100%" height="100%" src="layouts.html" frameborder="0"--%>
+<%--                    data-id="layouts.html" seamless></iframe>--%>
         </div>
         <div class="footer">
             <div class="pull-right">&copy; 2019-2020 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>

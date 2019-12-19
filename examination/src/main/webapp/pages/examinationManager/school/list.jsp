@@ -53,41 +53,43 @@
     $(document).ready(function () {
 
         $.jgrid.defaults.styleUI = 'Bootstrap';
-        // Examle data for jqGrid
-        var mydata = [
-            {
-                id: "1",
-                invdate: "2010-05-24",
-                name: "test",
-                note: "note",
-                tax: "10.00",
-                total: "2111.00"
-            }
-        ];
 
         // Configuration for jqGrid Example 1
         $("#schoolList").jqGrid({
-            data: mydata,
-            datatype: "local",
-            height: 250,
+            url: "${basePath}web/school/listPage",
+            ExpandColumn: 'name',
+            ExpandColClick: true,
+            height: 520,
             autowidth: true,
             shrinkToFit: true,
-            rowNum: 14,
-            rowList: [10, 20, 30],
-            colNames: ['', '学校名称', '学校主类型', '学校子类型', '学历层次', '创建时间', '操作'],
+            datatype: 'json',
+            rowNum: 10,
+            prmNames: {
+                page: "pager.current",
+                rows: "pager.size",
+            },
+            mtype: "POST",
+            colNames: ['序号', '学校名称', '学校主类型', '学校子类型', '学历层次', '创建时间', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: true},
+                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
                 {name: 'invdate', index: 'invdate', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%'},
-                {name: 'name', index: 'name', width: '10%'},
-                {name: 'name', index: 'name', width: '10%'},
-                {name: 'name', index: 'name', width: '10%'},
+                {name: 'name', index: 'name', width: '10%', sortable: false},
+                {name: 'name', index: 'name', width: '10%', sortable: false},
+                {name: 'name', index: 'name', width: '10%', sortable: false},
+                {name: 'name', index: 'name', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
+            jsonReader : {
+                root: "pager.records",
+                page: "pager.current",
+                total: "pager.pages",
+                records: "pager.size",
+                repeatitems: false
+            },
             pager: "#pager",
-            viewrecords: true,
+            // viewrecords: true,
+            // multiselect: true,
             caption: "学院列表",
-            hidegrid: false,
             toolbar: [true,"top"],
             gridComplete: function() {
                 var ids = jQuery("#schoolList").jqGrid('getDataIDs');
@@ -109,34 +111,30 @@
                 //删除
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
-                    var rowdata = jQuery("#schoolList").jqGrid('getRowData',rowid);
-                    var prompt = "删除失败";
-                    var url = "${basePath}delete.json?id=" + rowid;
+                    var prompt = "确定要删除所选择的记录吗？";
+                    var url = "${basePath}web/school/delete?id=" + rowid;
                     index = top.layer.confirm(prompt, {
-                        btn: ["<msg:message code='button.confirm'/>", "<msg:message code='button.cancel'/>"] //按钮
+                        btn: ["确认", "取消"] //按钮
                     }, function(){
                         $.ajax({
                             url:url,
-                            type:'post',
+                            type:'POST',
                             timeout:'60000',
                             dataType:'json',
-                            success:function(jsonData,textStatus){
-                                if(textStatus == "success"){
-                                    if(jsonData.status == "success"){
-                                        top.layer.close(index);
-                                        $("#schoolList").trigger("reloadGrid");
-                                    }
+                            success:function(jsonData){
+                                if(jsonData.status == 'success') {
+                                    top.layer.close(index);
+                                    $("#schoolList").trigger("reloadGrid");
                                 }
                             }
                         });
                     }, function(){
-
                     });
                 });
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}pages/examinationManager/school/modify.jsp?id=" + rowid;
+                    window.location.href = "${basePath}web/school/detail?id=" + rowid;
                 });
             }
         });

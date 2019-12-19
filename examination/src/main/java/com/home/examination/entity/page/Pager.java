@@ -10,14 +10,15 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-public class Pager<T>{
+public class Pager<T> {
 
     /**
      * 分页信息
      */
-    private Page<T> page;
+    private Page<T> pager;
     /**
      * 查询参数
      */
     private T requestParam;
+
 }

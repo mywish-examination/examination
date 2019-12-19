@@ -10,9 +10,4 @@ import java.util.List;
 @Mapper
 public interface SchoolMapper extends BaseMapper<SchoolDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<SchoolDO> listPager(@Param("entity") SchoolDO requestParam);
 }

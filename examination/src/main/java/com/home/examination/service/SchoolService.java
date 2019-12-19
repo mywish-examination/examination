@@ -1,9 +1,9 @@
 package com.home.examination.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.page.Pager;
 
-public interface SchoolService {
+public interface SchoolService extends IService<SchoolDO> {
 
-    Pager<SchoolDO> listPage(Pager<SchoolDO> pager);
 }

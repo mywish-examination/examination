@@ -17,8 +17,7 @@ public class SchoolAppController {
     @PostMapping("/listPage")
     @ResponseBody
     public Pager<SchoolDO> listPage(@RequestBody Pager<SchoolDO> pager) {
-        Pager<SchoolDO> schoolPager = schoolService.listPage(pager);
 
-        return schoolPager;
+        return null;
     }
 }

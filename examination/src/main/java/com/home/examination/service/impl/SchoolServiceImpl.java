@@ -16,12 +16,4 @@ public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, SchoolDO> imple
     @Resource
     private SchoolMapper schoolMapper;
 
-    @Override
-    public Pager<SchoolDO> listPage(Pager<SchoolDO> pager) {
-        List<SchoolDO> records = lambdaQuery().page(pager.getPage()).getRecords();
-
-        pager.getPage().setTotal(records.size());
-        return pager;
-    }
-
 }
