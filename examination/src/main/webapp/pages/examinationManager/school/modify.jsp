@@ -26,7 +26,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>资讯 / 创建</h5>
+                    <h5>学院 / 更新</h5>
                 </div>
                 <div class="ibox-content">
                     <form:form method="post" action="saveOrUpdate" modelAttribute="school" class="form-horizontal">

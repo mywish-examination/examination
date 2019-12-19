@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface BusinessCooperationMapper extends BaseMapper<BusinessCooperationDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<BusinessCooperationDO> listPager(@Param("entity") BusinessCooperationDO requestParam);
 }

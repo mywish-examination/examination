@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface FeedbackMapper extends BaseMapper<FeedbackDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<FeedbackDO> listPager(@Param("entity") FeedbackDO requestParam);
 }

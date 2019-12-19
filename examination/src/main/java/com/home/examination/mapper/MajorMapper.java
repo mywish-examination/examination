@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface MajorMapper extends BaseMapper<MajorDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<MajorDO> listPager(@Param("entity") MajorDO requestParam);
 }

@@ -48,8 +48,8 @@ public class MajorDO extends BaseEntity {
      */
     String toSunGuidance;
     /**
-     * 学校Id
+     * 学科名称
      */
-    Long schoolId;
+    String subjectName;
 
 }

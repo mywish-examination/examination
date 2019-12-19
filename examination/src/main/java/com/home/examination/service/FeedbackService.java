@@ -1,10 +1,8 @@
 package com.home.examination.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.examination.entity.domain.FeedbackDO;
-import com.home.examination.entity.domain.SchoolDO;
-import com.home.examination.entity.page.Pager;
 
-public interface FeedbackService {
+public interface FeedbackService extends IService<FeedbackDO> {
 
-    Pager<FeedbackDO> listPage(Pager<FeedbackDO> pager);
 }

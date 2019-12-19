@@ -1,10 +1,8 @@
 package com.home.examination.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.examination.entity.domain.MyCollectionDO;
-import com.home.examination.entity.domain.SchoolDO;
-import com.home.examination.entity.page.Pager;
 
-public interface MyCollectionService {
+public interface MyCollectionService extends IService<MyCollectionDO> {
 
-    Pager<MyCollectionDO> listPage(Pager<MyCollectionDO> pager);
 }

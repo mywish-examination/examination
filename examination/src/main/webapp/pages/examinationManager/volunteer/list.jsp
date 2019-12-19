@@ -3,9 +3,6 @@
 <html>
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>${title}</title>
 
     <link rel="shortcut icon" href="${basePath}favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
@@ -20,18 +17,17 @@
 </head>
 
 <body class="gray-bg">
-<div class="wrapper wrapper-content  animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>志愿管理 / 列表</h5>
+                    <h5>报考志愿管理 / 列表</h5>
                 </div>
                 <div class="ibox-content">
-                    <h4>基本示例</h4>
 
                     <div class="jqGrid_wrapper">
-                        <table id="schoolList"></table>
+                        <table id="volunteerList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -52,49 +48,51 @@
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
 
-<!-- 自定义js -->
-<script src="${basePath}js/content.js?v=1.0.0"></script>
-
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
 
         $.jgrid.defaults.styleUI = 'Bootstrap';
-        // Examle data for jqGrid
-        var mydata = [
-            {
-                id: "1",
-                invdate: "2010-05-24",
-                name: "test",
-                note: "note",
-                tax: "10.00",
-                total: "2111.00"
-            }
-        ];
 
         // Configuration for jqGrid Example 1
-        $("#schoolList").jqGrid({
-            data: mydata,
-            datatype: "local",
-            height: 250,
+        $("#volunteerList").jqGrid({
+            url: "${basePath}web/volunteer/listPage",
+            ExpandColumn: 'name',
+            ExpandColClick: true,
+            height: 520,
             autowidth: true,
             shrinkToFit: true,
-            rowNum: 14,
-            rowList: [10, 20, 30],
-            colNames: ['序号', '学校名称', '客户', '操作'],
+            datatype: 'json',
+            rowNum: 10,
+            prmNames: {
+                page: "pager.current",
+                rows: "pager.size",
+            },
+            mtype: "POST",
+            colNames: ['序号', '志愿名称', '用户名称', '学校名称', '分数', '状态', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false},
-                {name: 'invdate', index: 'invdate', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%'},
+                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
+                {name: 'majorId', index: 'majorId', width: '10%', sortable: false},
+                {name: 'userId', index: 'userId', width: '10%', sortable: false},
+                {name: 'schoolId', index: 'schoolId', width: '10%', sortable: false},
+                {name: 'score', index: 'score', width: '10%', sortable: false},
+                {name: 'status', index: 'status', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
+            jsonReader : {
+                root: "pager.records",
+                page: "pager.current",
+                total: "pager.pages",
+                records: "pager.size",
+                repeatitems: false
+            },
             pager: "#pager",
-            viewrecords: true,
+            // viewrecords: true,
+            // multiselect: true,
             caption: "学院列表",
-            hidegrid: false,
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#schoolList").jqGrid('getDataIDs');
+                var ids = jQuery("#volunteerList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
@@ -106,41 +104,37 @@
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#schoolList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#volunteerList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
             },
             loadComplete: function(){
                 //删除
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
-                    var rowdata = jQuery("#schoolList").jqGrid('getRowData',rowid);
-                    var prompt = "删除失败";
-                    var url = "${basePath}delete.json?id=" + rowid;
+                    var prompt = "确定要删除所选择的记录吗？";
+                    var url = "${basePath}web/volunteer/delete?id=" + rowid;
                     index = top.layer.confirm(prompt, {
-                        btn: ["<msg:message code='button.confirm'/>", "<msg:message code='button.cancel'/>"] //按钮
+                        btn: ["确认", "取消"] //按钮
                     }, function(){
                         $.ajax({
                             url:url,
-                            type:'post',
+                            type:'POST',
                             timeout:'60000',
                             dataType:'json',
-                            success:function(jsonData,textStatus){
-                                if(textStatus == "success"){
-                                    if(jsonData.status == "success"){
-                                        top.layer.close(index);
-                                        $("#schoolList").trigger("reloadGrid");
-                                    }
+                            success:function(jsonData){
+                                if(jsonData.status == 'success') {
+                                    top.layer.close(index);
+                                    $("#volunteerList").trigger("reloadGrid");
                                 }
                             }
                         });
                     }, function(){
-
                     });
                 });
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}pages/examinationManager/school/modify.jsp?id=" + rowid;
+                    window.location.href = "${basePath}web/volunteer/detail?id=" + rowid;
                 });
             }
         });
@@ -148,23 +142,20 @@
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#schoolList').setGridWidth(width);
+            $('#volunteerList').setGridWidth(width);
         });
 
         var $content = $("<a></a>").attr("href","javascript:void(0)")
             .attr("id","create")
             .attr("class","btn btn-sm btn-primary")
             .append("创建");
-        $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_schoolList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/school/modify.jsp";
+        $("#t_volunteerList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#create","#t_volunteerList").click(function(){
+            window.location.href = "${basePath}pages/examinationManager/volunteer/modify.jsp";
         });
 
     });
 </script>
-
-<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
-<!--统计代码，可删除-->
 
 </body>
 </html>

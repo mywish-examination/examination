@@ -10,23 +10,23 @@ import java.math.BigDecimal;
 public class VolunteerDO extends BaseEntity {
 
     /**
-     * 状态
-     */
-    String status;
-    /**
      * 志愿Id
      */
-    Long major_id;
+    Long majorId;
     /**
      * 用户Id
      */
-    Long user_id;
+    Long userId;
     /**
      * 学校Id
      */
-    Long school_id;
+    Long schoolId;
     /**
      * 分数
      */
     BigDecimal score;
+    /**
+     * 状态
+     */
+    String status;
 }

@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface VolunteerMapper extends BaseMapper<VolunteerDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<VolunteerDO> listPager(@Param("entity") VolunteerDO requestParam);
 }

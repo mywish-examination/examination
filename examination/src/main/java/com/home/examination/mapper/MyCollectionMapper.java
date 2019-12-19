@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface MyCollectionMapper extends BaseMapper<MyCollectionDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<MyCollectionDO> listPager(@Param("entity") MyCollectionDO requestParam);
 }

@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface DataDictionaryMapper extends BaseMapper<DataDictionaryDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<DataDictionaryDO> listPager(@Param("entity") DataDictionaryDO requestParam);
 }

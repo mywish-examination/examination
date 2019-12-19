@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface NewsInformationMapper extends BaseMapper<NewsInformationDO> {
 
-    /**
-     * 获取学校列表
-     * @return
-     */
-    List<NewsInformationDO> listPager(@Param("entity") NewsInformationDO requestParam);
 }

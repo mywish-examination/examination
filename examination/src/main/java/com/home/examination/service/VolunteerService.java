@@ -1,10 +1,8 @@
 package com.home.examination.service;
 
-import com.home.examination.entity.domain.SchoolDO;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.examination.entity.domain.VolunteerDO;
-import com.home.examination.entity.page.Pager;
 
-public interface VolunteerService {
+public interface VolunteerService extends IService<VolunteerDO> {
 
-    Pager<VolunteerDO> listPage(Pager<VolunteerDO> pager);
 }
