@@ -123,16 +123,9 @@ $(function () {
                     $('.J_mainContent .J_iframe').each(function () {
                         if ($(this).data('id') == dataUrl) {
                             $(this).show().siblings('.J_iframe').hide();
-                            $(this).attr('src',dataUrl)
                             return false;
                         }
                     });
-                }else{
-                	 $('.J_mainContent .J_iframe').each(function () {
-                	 	if ($(this).data('id') == dataUrl) {
-                	 		$(this).attr('src',dataUrl)
-                	 	}
-                	 })
                 }
                 flag = false;
                 return false;
@@ -145,7 +138,7 @@ $(function () {
             $('.J_menuTab').removeClass('active');
 
             // 添加选项卡对应的iframe
-            var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
+            var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" id="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
             $('.J_mainContent').find('iframe.J_iframe').hide().parents('.J_mainContent').append(str1);
 
             //显示loading提示

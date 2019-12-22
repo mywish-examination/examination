@@ -38,3 +38,8 @@ spring:
     database: 0
     port: 6379
     timeout: 3000
+
+examination:
+  upload:
+    school-url: upload\school\
+    newsInformation-url: upload\newsInformation\

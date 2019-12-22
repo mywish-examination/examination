@@ -26,136 +26,17 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>资讯 / 创建</h5>
+                    <h5>业务合作管理 / 更新</h5>
                 </div>
                 <div class="ibox-content">
-                    <form:form method="post" action="saveOrUpdate" modelAttribute="school" class="form-horizontal">
+                    <form:form method="post" action="saveOrUpdate" modelAttribute="businessCooperation" class="form-horizontal">
                         <form:hidden path="id"/>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学校名称:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="name" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学校主类型:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="mainType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学校子类型:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="childrenType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">曾用名:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="onceName" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">备注:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="remark" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">主管部门:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="mainManagerDepartment" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校隶属:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsSubjection" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学历层次:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationLevel" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校官网链接:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsWebsite" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校属性:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsAttribute" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">基本信息:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="baseInfo" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校招办链接:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsRecruitUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">招生章程链接:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="recruitConstitutionUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">双一流学科:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="doubleFirstClassSubject" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校图标:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsIconUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">办学层次:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="schoolRunningLevel" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">省份:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="province" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
                                 <input type="submit" class="btn btn-primary" value="保存" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/examinationManager/school/list.jsp'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/contentInformation/businessCooperation/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>

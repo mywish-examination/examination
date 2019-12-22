@@ -8,6 +8,10 @@ import lombok.Data;
 public class MajorDO extends BaseEntity {
 
     /**
+     *  专业名称
+     */
+    String name;
+    /**
      * 门类
      */
     String categoryType;
@@ -15,6 +19,10 @@ public class MajorDO extends BaseEntity {
      * 专业类
      */
     String majorType;
+    /**
+     * 学科名称
+     */
+    String subjectName;
     /**
      * 学历
      */
@@ -47,9 +55,5 @@ public class MajorDO extends BaseEntity {
      * 向阳指导
      */
     String toSunGuidance;
-    /**
-     * 学科名称
-     */
-    String subjectName;
 
 }

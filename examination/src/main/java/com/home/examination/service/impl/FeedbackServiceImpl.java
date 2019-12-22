@@ -12,12 +12,5 @@ import java.util.List;
 @Service
 public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, FeedbackDO> implements FeedbackService {
 
-    @Override
-    public Pager<FeedbackDO> listPage(Pager<FeedbackDO> pager) {
-        List<FeedbackDO> records = lambdaQuery().page(pager.getPager()).getRecords();
-
-        pager.getPager().setTotal(records.size());
-        return pager;
-    }
 
 }

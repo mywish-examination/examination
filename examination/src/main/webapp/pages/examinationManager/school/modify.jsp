@@ -18,6 +18,14 @@
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
 
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
+    <style>
+        .uploadify ,.ke-container{
+            float:left;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
@@ -130,11 +138,22 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">院校图标:</label>
-
+                            <label class="col-sm-2 control-label">院校图片：</label>
                             <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsIconUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <button class="btn btn-white" type="button" onclick="showUploadDialog('fileDelD','educationalInstitutionsIconUrl')" data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">上传</span>
+                                </button>
+                                <div id="fileDelD" class="uploader-list">
+                                    <c:if test="${ !empty school.educationalInstitutionsIconUrl }">
+                                        <div id='titleImagePath'>
+                                            <img height='100' width='100' style='margin-top: 10px;' src='${basePath}${school.educationalInstitutionsIconUrl}' />
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href='#' class='uploadAct' onclick="del('fileDelD', 'educationalInstitutionsIconUrl')">删除</a>
+                                        </div>
+                                    </c:if>
+                                </div>
                             </div>
+                            <input type="hidden" name="educationalInstitutionsIconUrl" id="educationalInstitutionsIconUrl" value="${school.educationalInstitutionsIconUrl}" style="width: 0;height: 0">
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">办学层次:</label>
@@ -169,14 +188,51 @@
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
 
-<!-- SUMMERNOTE -->
-<script src="${basePath}js/plugins/summernote/summernote.min.js"></script>
-<script src="${basePath}js/plugins/summernote/summernote-zh-CN.js"></script>
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
+
 <!-- iCheck -->
 <script src="${basePath}js/plugins/iCheck/icheck.min.js"></script>
+
+<script src="${basePath}js/content.js?v=1.0.0"></script>
+<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
 <script>
     $(document).ready(function () {
+
     });
+
+    function showUploadDialog(fileDel,eid){
+        picUpload({
+            server: '${basePath}web/school/uploadFile;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'gif,jpg,jpeg,bmp,png',//允许的文件后缀
+                mimeTypes: "image/*" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                var showpath = "<div id='titleImagePath'><img height='100' width='100' style='margin-top: 10px;' src='${basePath}"+obj._raw + "'>";
+                showpath += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                showpath += "<a href='#' class='uploadAct' onclick=\"del('"+fileDel+"','"+eid+"')\">删除</a></div>";
+                $("#"+fileDel).html(showpath);
+                $("#"+eid).val(obj._raw);
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
+
+    //删除上传文件
+    function del(fileDel,eid){
+        $('#' + fileDel).html("");
+        $("#" + eid).val('');
+    }
+
 </script>
 
 </body>

@@ -22,12 +22,12 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>学院管理 / 列表</h5>
+                    <h5>新闻资讯管理 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
                     <div class="jqGrid_wrapper">
-                        <table id="schoolList"></table>
+                        <table id="newsInformationList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -55,8 +55,8 @@
         $.jgrid.defaults.styleUI = 'Bootstrap';
 
         // Configuration for jqGrid Example 1
-        $("#schoolList").jqGrid({
-            url: "${basePath}web/school/listPage",
+        $("#newsInformationList").jqGrid({
+            url: "${basePath}web/newsInformation/listPage",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -69,14 +69,15 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['序号', '学校名称', '学校主类型', '学校子类型', '学历层次', '创建时间', '操作'],
+            colNames: ['', '标题', '图片url', '内容', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
-                {name: 'invdate', index: 'invdate', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
+                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: true},
+                {name: 'title', index: 'title', width: '10%', sortable: false},
+                {name: 'imageUrl', index: 'imageUrl', width: '10%', sortable: false,
+                    formatter: function (cellvalue, options, rowdata) {
+                        return "<img height='100' width='100' style='margin-top: 10px;' src='${basePath}" + cellvalue + "'>";;
+                    }},
+                {name: 'content', index: 'content', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
             jsonReader : {
@@ -89,10 +90,10 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学院列表",
+            caption: "新闻资讯列表",
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#schoolList").jqGrid('getDataIDs');
+                var ids = jQuery("#newsInformationList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
@@ -104,7 +105,7 @@
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#schoolList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#newsInformationList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
             },
             loadComplete: function(){
@@ -112,7 +113,7 @@
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
                     var prompt = "确定要删除所选择的记录吗？";
-                    var url = "${basePath}web/school/delete?id=" + rowid;
+                    var url = "${basePath}web/newsInformation/delete?id=" + rowid;
                     index = top.layer.confirm(prompt, {
                         btn: ["确认", "取消"] //按钮
                     }, function(){
@@ -124,7 +125,7 @@
                             success:function(jsonData){
                                 if(jsonData.status == 'success') {
                                     top.layer.close(index);
-                                    $("#schoolList").trigger("reloadGrid");
+                                    $("#newsInformationList").trigger("reloadGrid");
                                 }
                             }
                         });
@@ -134,7 +135,7 @@
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/school/detail?id=" + rowid;
+                    window.location.href = "${basePath}web/newsInformation/detail?id=" + rowid;
                 });
             }
         });
@@ -142,16 +143,16 @@
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#schoolList').setGridWidth(width);
+            $('#newsInformationList').setGridWidth(width);
         });
 
         var $content = $("<a></a>").attr("href","javascript:void(0)")
             .attr("id","create")
             .attr("class","btn btn-sm btn-primary")
             .append("创建");
-        $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_schoolList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/school/modify.jsp";
+        $("#t_newsInformationList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#create","#t_newsInformationList").click(function(){
+            window.location.href = "${basePath}web/newsInformation/detail";
         });
 
     });

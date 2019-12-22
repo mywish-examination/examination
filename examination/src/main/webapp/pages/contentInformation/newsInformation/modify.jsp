@@ -18,6 +18,15 @@
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
 
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
+    <style>
+        .uploadify ,.ke-container{
+            float:left;
+        }
+    </style>
+
 </head>
 
 <body class="gray-bg">
@@ -26,128 +35,40 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>资讯 / 创建</h5>
+                    <h5>新闻资讯管理 / 更新</h5>
                 </div>
                 <div class="ibox-content">
-                    <form:form method="post" action="saveOrUpdate" modelAttribute="school" class="form-horizontal">
+                    <form:form method="post" action="saveOrUpdate" modelAttribute="newsInformation" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">学校名称:</label>
+                            <label class="col-sm-2 control-label">标题:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="name" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:input path="title" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">学校主类型:</label>
-
+                            <label class="col-sm-2 control-label">图片：</label>
                             <div class="col-sm-10">
-                                <form:input path="mainType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <button class="btn btn-white" type="button" onclick="showUploadDialog('fileDelD','imageUrl')" data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">上传</span>
+                                </button>
+                                <div id="fileDelD" class="uploader-list">
+                                    <c:if test="${ !empty newsInformation.imageUrl }">
+                                        <div id='titleImagePath'>
+                                            <img height='100' width='100' style='margin-top: 10px;' src='${basePath}${newsInformation.imageUrl}' />
+                                            <a href='#' class='uploadAct' onclick="del('fileDelD', 'imageUrl')">删除</a>
+                                        </div>
+                                    </c:if>
+                                </div>
                             </div>
+                            <input type="hidden" name="imageUrl" id="imageUrl" value="${newsInformation.imageUrl}" style="width: 0;height: 0">
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">学校子类型:</label>
+                            <label class="col-sm-2 control-label">内容:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="childrenType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">曾用名:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="onceName" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">备注:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="remark" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">主管部门:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="mainManagerDepartment" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校隶属:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsSubjection" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学历层次:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationLevel" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校官网链接:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsWebsite" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校属性:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsAttribute" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">基本信息:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="baseInfo" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校招办链接:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsRecruitUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">招生章程链接:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="recruitConstitutionUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">双一流学科:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="doubleFirstClassSubject" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">院校图标:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsIconUrl" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">办学层次:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="schoolRunningLevel" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">省份:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="province" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:input path="content" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
 
@@ -155,7 +76,7 @@
                             <div class="col-sm-4 col-sm-offset-3">
                                 <input type="submit" class="btn btn-primary" value="保存" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/examinationManager/school/list.jsp'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/contentInformation/newsInformation/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>
@@ -169,14 +90,44 @@
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
 
-<!-- SUMMERNOTE -->
-<script src="${basePath}js/plugins/summernote/summernote.min.js"></script>
-<script src="${basePath}js/plugins/summernote/summernote-zh-CN.js"></script>
-<!-- iCheck -->
-<script src="${basePath}js/plugins/iCheck/icheck.min.js"></script>
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
+
 <script>
     $(document).ready(function () {
     });
+
+    function showUploadDialog(fileDel,eid){
+        picUpload({
+            server: '${basePath}web/school/uploadFile;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'gif,jpg,jpeg,bmp,png',//允许的文件后缀
+                mimeTypes: "image/*" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                var showpath = "<div id='titleImagePath'><img height='100' width='100' style='margin-top: 10px;' src='${basePath}"+obj._raw + "'>";
+                showpath += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                showpath += "<a href='#' class='uploadAct' onclick=\"del('"+fileDel+"','"+eid+"')\">删除</a></div>";
+                $("#"+fileDel).html(showpath);
+                $("#"+eid).val(obj._raw);
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
+
+    //删除上传文件
+    function del(fileDel,eid){
+        $('#' + fileDel).html("");
+        $("#" + eid).val('');
+    }
 </script>
 
 </body>

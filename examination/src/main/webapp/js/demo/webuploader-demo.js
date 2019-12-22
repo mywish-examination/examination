@@ -1,8 +1,40 @@
-jQuery(function() {
-    var $ = jQuery,    // just in case. Make sure it's not an other libaray.
-
-        $wrap = $('#uploader'),
-
+function picUpload(options,callback) {
+		var hintMsg = options.hintMsg;
+		if(hintMsg == undefined){
+			hintMsg='';
+		}
+    	var $ = jQuery,    // just in case. Make sure it's not an other libaray.
+        $wrap = $('<div class="modal in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">'+
+								'<div class="modal-dialog">'+
+									'<div class="modal-content">'+
+										'<div class="modal-header">'+
+											'<button type="button" class="close" data-dismiss="modal">×</button>'+
+											'<h4>上传文件</h4>'+
+										'</div>'+
+										'<div id="uploader" class="wu-example">'+
+											'<div class="modal-body">'+
+												'<div class="queueList">'+
+													'<div id="dndArea" class="placeholder">'+
+														'<div id="filePicker"></div>'+
+														'<p>或将文件拖到这里</p> &nbsp;&nbsp;'+hintMsg+
+													'</div>'+
+												'</div>'+
+											'</div>'+
+											'<div class="modal-footer statusBar" style="display:none;">'+
+												'<div class="progress">'+
+													'<span class="text">0%</span>'+
+													'<span class="percentage"></span>'+
+												'</div>'+
+												'<div class="info"></div>'+
+												'<div class="btns">'+
+													'<div id="filePicker2"></div>'+
+													'<div class="uploadBtn">开始上传</div>'+
+												'</div>'+
+											'</div>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>'),
         // 图片容器
         $queue = $('<ul class="filelist"></ul>')
             .appendTo( $wrap.find('.queueList') ),
@@ -54,46 +86,58 @@ jQuery(function() {
 
         // WebUploader实例
         uploader;
-
+        if($("#myModal")){
+        	$("#myModal").remove();
+        };
+        $wrap.appendTo("body");
+        
+	var settings = {
+    		pick: {
+            id: '#filePicker',
+            label: '点击选择文件'
+	        },
+	        dnd: '#uploader .queueList',
+	        paste: document.body,
+	
+	        accept: {
+	            title: 'Images',
+	            extensions: 'gif,jpg,jpeg,bmp,png',
+	            mimeTypes: 'image/*'
+	        },
+	
+	        // swf文件路径
+	        swf: '../plugins/webuploader/Uploader.swf',
+	
+	        disableGlobalDnd: true,
+	        fileVal:"Filedata",
+	        chunked: true,
+	        compress:false,
+	        // server: 'http://webuploader.duapp.com/server/fileupload.php',
+	        server: 'http://2betop.net/fileupload.php',
+	        fileNumLimit: 300,
+	        fileSizeLimit: 5 * 1024 * 1024,    // 200 M
+	        fileSingleSizeLimit: 1 * 1024 * 1024,    // 50 M
+	        queueSizeLimit:'1',
+	        uploadBeforeSend:null,//发送前
+	        uploadSuccess:null,//上传成功
+	        uploadError:null    // 上传失败
+	        
+    	};
     if ( !WebUploader.Uploader.support() ) {
         alert( 'Web Uploader 不支持您的浏览器！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
         throw new Error( 'WebUploader does not support the browser you are using.' );
     }
 
     // 实例化
-    uploader = WebUploader.create({
-        pick: {
-            id: '#filePicker',
-            label: '点击选择图片'
-        },
-        dnd: '#uploader .queueList',
-        paste: document.body,
-
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/*'
-        },
-
-        // swf文件路径
-        swf: BASE_URL + '/Uploader.swf',
-
-        disableGlobalDnd: true,
-
-        chunked: true,
-        // server: 'http://webuploader.duapp.com/server/fileupload.php',
-        server: 'http://2betop.net/fileupload.php',
-        fileNumLimit: 300,
-        fileSizeLimit: 5 * 1024 * 1024,    // 200 M
-        fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
-    });
+    uploader = WebUploader.create($.extend(true,settings,options));
 
     // 添加“添加文件”的按钮，
-    uploader.addButton({
-        id: '#filePicker2',
-        label: '继续添加'
-    });
-
+    if(settings.queueSizeLimit=='2'){
+    	uploader.addButton({
+            id: '#filePicker2',
+            label: '继续添加'
+        });
+    }
     // 当有文件添加进来时执行，负责view的创建
     function addFile( file ) {
         var $li = $( '<li id="' + file.id + '">' +
@@ -265,23 +309,23 @@ jQuery(function() {
         var text = '', stats;
 
         if ( state === 'ready' ) {
-            text = '选中' + fileCount + '张图片，共' +
+            text = '选中' + fileCount + '个文件，共' +
                     WebUploader.formatSize( fileSize ) + '。';
         } else if ( state === 'confirm' ) {
             stats = uploader.getStats();
             if ( stats.uploadFailNum ) {
-                text = '已成功上传' + stats.successNum+ '张照片至XX相册，'+
-                    stats.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>'
+                text = '已成功上传' + stats.successNum+ '个文件，'+
+                    stats.uploadFailNum + '个文件上传失败，<a class="retry" href="#">重新上传</a>或<a class="ignore" href="#">忽略</a>'
             }
 
         } else {
             stats = uploader.getStats();
-            text = '共' + fileCount + '张（' +
+            text = '共' + fileCount + '个（' +
                     WebUploader.formatSize( fileSize )  +
-                    '），已上传' + stats.successNum + '张';
+                    '），已上传' + stats.successNum + '个';
 
             if ( stats.uploadFailNum ) {
-                text += '，失败' + stats.uploadFailNum + '张';
+                text += '，失败' + stats.uploadFailNum + '个';
             }
         }
 
@@ -341,7 +385,7 @@ jQuery(function() {
             case 'finish':
                 stats = uploader.getStats();
                 if ( stats.successNum ) {
-                    alert( '上传成功' );
+                	
                 } else {
                     // 没有成功的图片，重设
                     state = 'done';
@@ -388,7 +432,21 @@ jQuery(function() {
         updateTotalProgress();
 
     };
-
+    uploader.on('uploadBeforeSend', function(file,obj) {
+    	if (typeof settings.uploadBeforeSend == 'function'){
+			settings.uploadBeforeSend(file,obj);
+		}
+    });
+    uploader.on('uploadSuccess', function(file,obj) {
+    	if (typeof settings.uploadSuccess == 'function'){
+            settings.uploadSuccess(file,obj);
+		}
+    });
+     uploader.on('uploadError', function(file,reason) {
+    	if (typeof settings.uploadError == 'function'){
+			settings.uploadError(file,reason);
+		}
+    });
     uploader.on( 'all', function( type ) {
         var stats;
         switch( type ) {
@@ -406,10 +464,10 @@ jQuery(function() {
 
         }
     });
-
-    uploader.onError = function( code ) {
+   
+    /*uploader.onError = function( code ) {
         alert( 'Eroor: ' + code );
-    };
+    };*/
 
     $upload.on('click', function() {
         if ( $(this).hasClass( 'disabled' ) ) {
@@ -430,9 +488,9 @@ jQuery(function() {
     } );
 
     $info.on( 'click', '.ignore', function() {
-        alert( 'todo' );
+         uploader.reset();
     } );
 
     $upload.addClass( 'state-' + state );
     updateTotalProgress();
-});
+};

@@ -6,7 +6,12 @@ import com.home.examination.mapper.MajorMapper;
 import com.home.examination.service.MajorService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 public class MajorServiceImpl extends ServiceImpl<MajorMapper, MajorDO> implements MajorService {
+
+    @Resource
+    private MajorMapper majorMapper;
 
 }

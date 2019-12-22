@@ -69,15 +69,15 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['序号', '门类', '专业类', '学历', '学位', '就业率', '年限', '操作'],
+            colNames: ['', '门类', '专业类', '学历', '学位', '就业率', '年限', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
-                {name: 'categoryType', index: 'invdate', width: '10%', sortable: false},
-                {name: 'majorType', index: 'name', width: '10%', sortable: false},
-                {name: 'education', index: 'name', width: '10%', sortable: false},
-                {name: 'academicDegree', index: 'name', width: '10%', sortable: false},
-                {name: 'employmentRate', index: 'name', width: '10%', sortable: false},
-                {name: 'years', index: 'name', width: '10%', sortable: false},
+                {name: 'id', index: 'id', width: '20%', sortable: false, hidden: true},
+                {name: 'categoryType', index: 'categoryType', width: '10%', sortable: false},
+                {name: 'majorType', index: 'majorType', width: '10%', sortable: false},
+                {name: 'education', index: 'education', width: '10%', sortable: false},
+                {name: 'academicDegree', index: 'academicDegree', width: '10%', sortable: false},
+                {name: 'employmentRate', index: 'employmentRate', width: '10%', sortable: false},
+                {name: 'years', index: 'years', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
             jsonReader : {
@@ -90,7 +90,7 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学院列表",
+            caption: "专业列表",
             toolbar: [true,"top"],
             gridComplete: function() {
                 var ids = jQuery("#majorList").jqGrid('getDataIDs');
@@ -152,7 +152,7 @@
             .append("创建");
         $("#t_majorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_majorList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/major/modify.jsp";
+            window.location.href = "${basePath}web/major/detail";
         });
 
     });

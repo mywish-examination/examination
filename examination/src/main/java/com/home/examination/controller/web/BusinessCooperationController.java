@@ -42,7 +42,7 @@ public class BusinessCooperationController {
     public ModelAndView detail(Long id, Model model) {
         BusinessCooperationDO businessCooperationDO = businessCooperationService.getById(id);
         ModelAndView mav = new ModelAndView("/pages/contentInformation/businessCooperation/modify");
-        model.addAttribute("businessCooperation", businessCooperationDO);
+        model.addAttribute("businessCooperation", businessCooperationDO == null ? new BusinessCooperationDO() : businessCooperationDO);
         return mav;
     }
 

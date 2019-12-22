@@ -34,8 +34,8 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
-                        <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
-                        <span class="text-muted text-xs block">超级管理员</span>
+                        <span class="block m-t-xs"><strong class="font-bold">${cookie.loginName.value}</strong></span>
+                        <span class="text-muted text-xs block">${cookie.trueName.value}</span>
                     </div>
                     <div class="logo-element">H+
                     </div>
@@ -51,11 +51,14 @@
                             <a class="J_menuItem" href="${basePath}pages/examinationManager/school/list.jsp" data-index="0">学院管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${basePath}pages/examinationManager/volunteer/list.jsp">报考志愿管理</a>
-                        </li>
-                        <li>
                             <a class="J_menuItem" href="${basePath}pages/examinationManager/major/list.jsp">专业管理</a>
                         </li>
+                        <li>
+                            <a class="J_menuItem" href="${basePath}pages/examinationManager/schoolMajor/list.jsp">学校专业管理</a>
+                        </li>
+<%--                        <li>--%>
+<%--                            <a class="J_menuItem" href="${basePath}pages/examinationManager/volunteer/list.jsp">报考志愿管理</a>--%>
+<%--                        </li>--%>
                     </ul>
 
                 </li>
@@ -70,14 +73,14 @@
                             <a class="J_menuItem" href="${basePath}pages/contentInformation/newsInformation/list.jsp">新闻资讯</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="${basePath}pages/contentInformation/myCollection/list.jsp">我的收藏</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/contentInformation/feedback/list.jsp" data-index="0">意见反馈</a>
-                        </li>
-                        <li>
                             <a class="J_menuItem" href="${basePath}pages/contentInformation/businessCooperation/list.jsp">业务合作</a>
                         </li>
+<%--                        <li>--%>
+<%--                            <a class="J_menuItem" href="${basePath}pages/contentInformation/myCollection/list.jsp">我的收藏</a>--%>
+<%--                        </li>--%>
+<%--                        <li>--%>
+<%--                            <a class="J_menuItem" href="${basePath}pages/contentInformation/feedback/list.jsp" data-index="0">意见反馈</a>--%>
+<%--                        </li>--%>
                     </ul>
 
                 </li>
@@ -91,12 +94,12 @@
                         <li>
                             <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp" data-index="0">用户表</a>
                         </li>
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/systemManager/dataDictionary/list.jsp">数据字典</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/systemManager/area/list.jsp">地域管理</a>
-                        </li>
+<%--                        <li>--%>
+<%--                            <a class="J_menuItem" href="${basePath}pages/systemManager/dataDictionary/list.jsp">数据字典</a>--%>
+<%--                        </li>--%>
+<%--                        <li>--%>
+<%--                            <a class="J_menuItem" href="${basePath}pages/systemManager/area/list.jsp">地域管理</a>--%>
+<%--                        </li>--%>
                     </ul>
 
                 </li>
@@ -138,7 +141,7 @@
                     </li>
                 </ul>
             </div>
-            <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            <a href="${basePath}web/user/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0"

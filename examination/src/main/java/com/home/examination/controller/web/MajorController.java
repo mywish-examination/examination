@@ -1,10 +1,8 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.domain.SchoolMajorDO;
 import com.home.examination.entity.page.Pager;
 import com.home.examination.service.MajorService;
-import com.home.examination.service.SchoolMajorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +21,8 @@ public class MajorController {
 
     @Resource
     private MajorService majorService;
-    @Resource
-    private SchoolMajorService schoolMajorService;
 
-    @PostMapping("/listPage")
+    @RequestMapping("/listPage")
     @ResponseBody
     public Pager<MajorDO> listPage(Pager<MajorDO> pager) {
         majorService.page(pager.getPager());
@@ -46,7 +42,7 @@ public class MajorController {
     public ModelAndView detail(Long id, Model model) {
         MajorDO majorDO = majorService.getById(id);
         ModelAndView mav = new ModelAndView("/pages/examinationManager/major/modify");
-        model.addAttribute("major", majorDO);
+        model.addAttribute("major", majorDO == null ? new MajorDO() : majorDO);
         return mav;
     }
 

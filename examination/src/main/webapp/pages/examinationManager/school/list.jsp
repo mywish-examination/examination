@@ -69,9 +69,9 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['序号', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
+            colNames: ['', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
+                {name: 'id', index: 'id', width: '0%', sortable: false, hidden: true},
                 {name: 'name', index: 'name', width: '10%', sortable: false},
                 {name: 'mainType', index: 'mainType', width: '10%', sortable: false},
                 {name: 'childrenType', index: 'childrenType', width: '10%', sortable: false},
@@ -80,7 +80,7 @@
                 {name: 'mainManagerDepartment', index: 'mainManagerDepartment', width: '10%', sortable: false},
                 {name: 'educationalInstitutionsSubjection', index: 'educationalInstitutionsSubjection', width: '10%', sortable: false},
                 {name: 'educationLevel', index: 'educationLevel', width: '10%', sortable: false},
-                {name: 'act', index: 'act', width: '10%', sortable: false}
+                {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
                 root: "pager.records",
@@ -154,7 +154,7 @@
             .append("创建");
         $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_schoolList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/school/modify.jsp";
+            window.location.href = "${basePath}web/school/detail";
         });
 
     });

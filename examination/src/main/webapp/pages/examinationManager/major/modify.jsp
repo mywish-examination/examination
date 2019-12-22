@@ -101,13 +101,13 @@
                                 <form:input path="toSunGuidance" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学校名称:</label>
+<%--                        <div class="form-group">--%>
+<%--                            <label class="col-sm-2 control-label">学校名称:</label>--%>
 
-                            <div class="col-sm-10">
-                                <form:input path="schoolId" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
+<%--                            <div class="col-sm-10">--%>
+<%--                                <form:input path="schoolId" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">

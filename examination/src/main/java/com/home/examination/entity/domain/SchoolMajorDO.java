@@ -12,13 +12,13 @@ public class SchoolMajorDO extends BaseEntity {
      */
     private Long schoolId;
     /**
-     * 招生人数
-     */
-    private Integer recruitNum;
-    /**
      * 专业Id
      */
     private Long majorId;
+    /**
+     * 招生人数
+     */
+    private Integer recruitNum;
     /**
      * 录取分数线
      */
