@@ -18,11 +18,12 @@ public class AccessHandlerInterceptor implements HandlerInterceptor {
 
     public static final Logger logger = LoggerFactory.getLogger(AccessHandlerInterceptor.class);
 
-    /**
-     * 检查标记@Security的方法,用户未登录,跳转登录页
-     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        if(request.getCookies() == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return false;
+        }
         List<Cookie> list = Arrays.asList(request.getCookies());
         boolean flag = list.stream().anyMatch(cookie -> cookie.getName().equals("token"));
         if(!flag) response.sendRedirect(request.getContextPath() + "/login.jsp");

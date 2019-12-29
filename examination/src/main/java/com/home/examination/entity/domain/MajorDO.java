@@ -1,5 +1,6 @@
 package com.home.examination.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -55,5 +56,12 @@ public class MajorDO extends BaseEntity {
      * 向阳指导
      */
     String toSunGuidance;
+
+    // 新增字段
+    /**
+     * 评价星级
+     */
+    @TableField(exist = false)
+    private String starRating;
 
 }

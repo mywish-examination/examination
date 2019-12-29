@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,7 +65,7 @@ public class NewsInformationController {
 
     @RequestMapping("/uploadFile")
     @ResponseBody
-    public String uploadFile(HttpServletRequest request, HttpServletResponse response) {
+    public String uploadFile(HttpServletRequest request) {
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("Filedata");
         String tempFileName = request.getParameter("Filename");
         String fileExtensionName = tempFileName.substring(tempFileName.lastIndexOf("."));

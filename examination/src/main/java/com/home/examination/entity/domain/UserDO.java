@@ -1,7 +1,10 @@
 package com.home.examination.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.net.ContentHandler;
 
 @Data
 @TableName("user")
@@ -43,5 +46,24 @@ public class UserDO extends BaseEntity {
      * 角色类型：0:管理员，1：学生
      */
     private String type;
+
+    // 新增字段
+    /**
+     * 高考分数
+     */
+    @TableField(exist = false)
+    private String collegeScore;
+
+    /**
+     * 预估分数
+     */
+    @TableField(exist = false)
+    private String predictedScore;
+
+    /**
+     * token
+     */
+    @TableField(exist = false)
+    private String token;
 
 }

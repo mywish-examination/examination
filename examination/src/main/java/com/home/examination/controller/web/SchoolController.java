@@ -16,13 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/web/school")
@@ -67,13 +66,12 @@ public class SchoolController {
 
     @RequestMapping("/uploadFile")
     @ResponseBody
-    public String uploadFile(HttpServletRequest request, HttpServletResponse response) {
+    public String uploadFile(HttpServletRequest request) {
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("Filedata");
         String tempFileName = request.getParameter("Filename");
         String fileExtensionName = tempFileName.substring(tempFileName.lastIndexOf("."));
-        String path = "";
         String realFileName = UUID.randomUUID().toString() + fileExtensionName;
-        path = schoolUrl + realFileName;
+        String path = schoolUrl + realFileName;
         String filePath = request.getServletContext().getRealPath("/") + path;
         try (InputStream is = file.getInputStream();) {
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);

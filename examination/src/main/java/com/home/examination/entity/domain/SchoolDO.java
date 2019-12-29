@@ -1,5 +1,6 @@
 package com.home.examination.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -75,5 +76,12 @@ public class SchoolDO extends BaseEntity {
      * 省份
      */
     private String province;
+
+    // 新增字段
+    /**
+     * 评价星级
+     */
+    @TableField(exist = false)
+    private String starRating;
 
 }
