@@ -81,7 +81,6 @@ public class SchoolDO extends BaseEntity {
     /**
      * 评价星级
      */
-    @TableField(exist = false)
     private String starRating;
 
 }

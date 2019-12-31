@@ -51,13 +51,11 @@ public class UserDO extends BaseEntity {
     /**
      * 高考分数
      */
-    @TableField(exist = false)
     private String collegeScore;
 
     /**
      * 预估分数
      */
-    @TableField(exist = false)
     private String predictedScore;
 
     /**

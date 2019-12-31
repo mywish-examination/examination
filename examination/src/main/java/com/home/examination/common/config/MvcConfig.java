@@ -11,7 +11,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AccessHandlerInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/web/user/login", "/error", "/webapp/login.jsp", "/css/**", "/js/**");
+                .excludePathPatterns("/app/**", "/web/user/login", "/error", "/webapp/login.jsp", "/css/**", "/js/**");
     }
 
 }

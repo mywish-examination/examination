@@ -46,17 +46,12 @@ public class UserAppController {
     }
 
     @GetMapping("/logout")
-    public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie: cookies) {
-            if(cookie.getName().equals("token")) {
-                cookie.setMaxAge(0);
-                cookie.setPath(request.getContextPath());
-                response.addCookie(cookie);
-                redisTemplate.delete(cookie.getValue());
-            }
-        }
+    public Map<String, String> logout(@RequestParam String token) {
+        Boolean delete = redisTemplate.delete(token);
         Map<String, String> map = new HashMap<>();
+        if(delete) {
+
+        }
         map.put("status", "success");
         return map;
     }
