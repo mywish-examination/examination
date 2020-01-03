@@ -1,5 +1,6 @@
 package com.home.examination.controller.app;
 
+import com.home.examination.entity.domain.ExecuteResult;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.page.Pager;
 import com.home.examination.service.MajorService;
@@ -19,14 +20,13 @@ public class MajorAppController {
 
     @RequestMapping("/listPage")
     @ResponseBody
-    public Pager<MajorDO> listPage(Pager<MajorDO> pager) {
-        majorService.page(pager.getPager());
-        return pager;
+    public ExecuteResult listPage(Pager<MajorDO> pager) {
+        return new ExecuteResult(majorService.page(pager.getPager()));
     }
 
     @GetMapping("/detail")
-    public MajorDO detail(Long id) {
-        return majorService.getById(id);
+    public ExecuteResult detail(Long id) {
+        return new ExecuteResult(majorService.getById(id));
     }
 
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/app/school")
@@ -20,15 +22,23 @@ public class SchoolAppController {
     private SchoolService schoolService;
 
     @PostMapping("/listPage")
-    public Pager<SchoolDO> listPage(Pager<SchoolDO> pager) {
+    public Map<String, Object> listPage(Pager<SchoolDO> pager) {
+        Map<String, Object> map = new HashMap<>();
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
         IPage<SchoolDO> page = schoolService.page(pager.getPager(), queryWrapper);
-        return pager;
+        map.put("page", page);
+        map.put("status", "success");
+
+        return map;
     }
 
     @PostMapping("/detail")
-    public SchoolDO detail(Long id) {
-        return schoolService.getById(id);
+    public Map<String, Object> detail(Long id) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("school", schoolService.getById(id));
+        map.put("status", "success");
+        return map;
     }
 
 }

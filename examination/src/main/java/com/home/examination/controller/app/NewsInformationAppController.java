@@ -1,5 +1,6 @@
 package com.home.examination.controller.app;
 
+import com.home.examination.entity.domain.ExecuteResult;
 import com.home.examination.entity.domain.NewsInformationDO;
 import com.home.examination.entity.page.Pager;
 import com.home.examination.service.NewsInformationService;
@@ -21,14 +22,13 @@ public class NewsInformationAppController {
     private String schoolUrl;
 
     @PostMapping("/listPage")
-    public Pager<NewsInformationDO> listPage(Pager<NewsInformationDO> pager) {
-        newsInformationService.page(pager.getPager());
-        return pager;
+    public ExecuteResult listPage(Pager<NewsInformationDO> pager) {
+        return new ExecuteResult(newsInformationService.page(pager.getPager()));
     }
 
     @GetMapping("/detail")
-    public NewsInformationDO detail(Long id) {
-        return newsInformationService.getById(id);
+    public ExecuteResult detail(Long id) {
+        return new ExecuteResult(newsInformationService.getById(id));
     }
 
 }
