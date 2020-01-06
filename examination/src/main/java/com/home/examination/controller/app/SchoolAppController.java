@@ -1,5 +1,6 @@
 package com.home.examination.controller.app;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.home.examination.entity.domain.SchoolDO;
@@ -23,9 +24,15 @@ public class SchoolAppController {
 
     @PostMapping("/listPage")
     public Map<String, Object> listPage(Pager<SchoolDO> pager) {
+        System.out.println(pager.getClass());
         Map<String, Object> map = new HashMap<>();
+        System.out.println(pager.getRequestParam());
+        SchoolDO school = (SchoolDO) pager.getRequestParam();
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
-        IPage<SchoolDO> page = schoolService.page(pager.getPager(), queryWrapper);
+        if(school != null) {
+            queryWrapper.apply(!StringUtils.isEmpty(school.getName()), " name like '%{0}%'", school.getName());
+        }
+        IPage<SchoolDO> page = schoolService.page( pager.getPager(), queryWrapper);
         map.put("page", page);
         map.put("status", "success");
 
