@@ -1,7 +1,8 @@
 package com.home.examination.controller.app;
 
+import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.domain.FeedbackDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.FeedbackPager;
 import com.home.examination.service.FeedbackService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,8 @@ public class FeedbackAppController {
     private FeedbackService feedbackService;
 
     @PostMapping("/listPage")
-    public Pager<FeedbackDO> listPage(Pager<FeedbackDO> pager) {
-        feedbackService.page(pager.getPager());
-        return pager;
+    public ExecuteResult listPage(FeedbackPager pager) {
+        return new ExecuteResult(feedbackService.page(pager.getPager()));
     }
 
     @PostMapping("/delete")
@@ -39,11 +39,8 @@ public class FeedbackAppController {
     }
 
     @PostMapping("/saveOrUpdate")
-    public Map<String, String> saveOrUpdate(FeedbackDO param) {
-        boolean result = feedbackService.saveOrUpdate(param);
-        Map<String, String> map = new HashMap<>();
-        map.put("status", result ? "success" : "error");
-        return map;
+    public ExecuteResult saveOrUpdate(FeedbackDO param) {
+        return new ExecuteResult(feedbackService.saveOrUpdate(param));
     }
 
 }

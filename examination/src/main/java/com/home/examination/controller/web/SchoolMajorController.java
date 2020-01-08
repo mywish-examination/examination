@@ -3,7 +3,7 @@ package com.home.examination.controller.web;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.SchoolMajorDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.SchoolMajorPager;
 import com.home.examination.service.MajorService;
 import com.home.examination.service.SchoolMajorService;
 import com.home.examination.service.SchoolService;
@@ -33,7 +33,7 @@ public class SchoolMajorController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<SchoolMajorDO> listPage(Pager<SchoolMajorDO> pager) {
+    public SchoolMajorPager listPage(SchoolMajorPager pager) {
         schoolMajorService.page(pager.getPager());
         return pager;
     }

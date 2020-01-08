@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.SchoolDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.SchoolPager;
 import com.home.examination.service.SchoolService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,7 @@ public class SchoolController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<SchoolDO> listPage(Pager<SchoolDO> pager) {
+    public SchoolPager listPage(SchoolPager pager) {
         schoolService.page(pager.getPager());
         return pager;
     }

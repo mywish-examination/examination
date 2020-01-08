@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.FeedbackDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.FeedbackPager;
 import com.home.examination.service.FeedbackService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class FeedbackController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<FeedbackDO> listPage(Pager<FeedbackDO> pager) {
+    public FeedbackPager listPage(FeedbackPager pager) {
         feedbackService.page(pager.getPager());
         return pager;
     }

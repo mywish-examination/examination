@@ -1,24 +1,25 @@
 package com.home.examination.entity.page;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.home.examination.entity.domain.NewsInformationDO;
+import com.home.examination.entity.domain.SchoolDO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
  * 分页类
- * @param <T> 要分页的对象
  */
 @Data
 @Component
-public class Pager<T> {
+public class NewsInformationPager {
 
     /**
      * 分页信息
      */
-    private Page<T> pager;
+    private Page<NewsInformationDO> pager;
     /**
      * 查询参数
      */
-    private T requestParam;
+    private NewsInformationDO requestParam;
 
 }

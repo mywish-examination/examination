@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.VolunteerDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.VolunteerPager;
 import com.home.examination.service.VolunteerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class VolunteerController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<VolunteerDO> listPage(Pager<VolunteerDO> pager) {
+    public VolunteerPager listPage(VolunteerPager pager) {
         volunteerService.page(pager.getPager());
         return pager;
     }

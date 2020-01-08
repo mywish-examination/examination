@@ -1,5 +1,6 @@
 package com.home.examination.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -11,16 +12,23 @@ import lombok.Data;
 public class MyCollectionDO extends BaseEntity {
 
     /**
-     * 学校名称
-     */
-    private String schoolName;
-    /**
-     * 学校Id
-     */
-    private Long schoolId;
-    /**
      * 用户Id
      */
     private Long userId;
+    /**
+     * 专业Id
+     */
+    private Long majorId;
+
+    /**
+     * 专业名称
+     */
+    @TableField(exist = false)
+    private String majorName;
+    /**
+     * 学校名称
+     */
+    @TableField(exist = false)
+    private String schoolName;
 
 }

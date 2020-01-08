@@ -1,7 +1,8 @@
 package com.home.examination.controller.app;
 
 import com.home.examination.entity.domain.BusinessCooperationDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.vo.ExecuteResult;
+import com.home.examination.entity.page.BusinessCooperationPager;
 import com.home.examination.service.BusinessCooperationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,8 @@ public class BusinessCooperationAppController {
     private BusinessCooperationService businessCooperationService;
 
     @PostMapping("/listPage")
-    public Pager<BusinessCooperationDO> listPage(Pager<BusinessCooperationDO> pager) {
-        businessCooperationService.page(pager.getPager());
-        return pager;
+    public ExecuteResult listPage(BusinessCooperationPager pager) {
+        return new ExecuteResult(businessCooperationService.page(pager.getPager()));
     }
 
     @PostMapping("/delete")

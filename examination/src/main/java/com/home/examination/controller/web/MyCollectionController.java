@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.MyCollectionDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.MyCollectionPager;
 import com.home.examination.service.MyCollectionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class MyCollectionController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<MyCollectionDO> listPage(Pager<MyCollectionDO> pager) {
+    public MyCollectionPager listPage(MyCollectionPager pager) {
         myCollectionService.page(pager.getPager());
         return pager;
     }

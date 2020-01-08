@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.MajorPager;
 import com.home.examination.service.MajorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class MajorController {
 
     @RequestMapping("/listPage")
     @ResponseBody
-    public Pager<MajorDO> listPage(Pager<MajorDO> pager) {
+    public MajorPager listPage(MajorPager pager) {
         majorService.page(pager.getPager());
         return pager;
     }

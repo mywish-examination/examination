@@ -2,7 +2,7 @@ package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.UserDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.UserPager;
 import com.home.examination.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class UserController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<UserDO> listPage(Pager<UserDO> pager) {
+    public UserPager listPage(UserPager pager) {
         userService.page(pager.getPager());
         return pager;
     }

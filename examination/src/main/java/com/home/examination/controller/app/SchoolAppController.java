@@ -4,9 +4,8 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.home.examination.entity.domain.SchoolDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.SchoolPager;
 import com.home.examination.service.SchoolService;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,16 +22,14 @@ public class SchoolAppController {
     private SchoolService schoolService;
 
     @PostMapping("/listPage")
-    public Map<String, Object> listPage(Pager<SchoolDO> pager) {
-        System.out.println(pager.getClass());
+    public Map<String, Object> listPage(SchoolPager pager) {
         Map<String, Object> map = new HashMap<>();
-        System.out.println(pager.getRequestParam());
-        SchoolDO school = (SchoolDO) pager.getRequestParam();
+        SchoolDO school = pager.getRequestParam();
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
-        if(school != null) {
-            queryWrapper.apply(!StringUtils.isEmpty(school.getName()), " name like '%{0}%'", school.getName());
+        if (school != null) {
+            queryWrapper.apply(!StringUtils.isEmpty(school.getName()), " name like '%" + school.getName() + "%'");
         }
-        IPage<SchoolDO> page = schoolService.page( pager.getPager(), queryWrapper);
+        IPage<SchoolDO> page = schoolService.page(pager.getPager(), queryWrapper);
         map.put("page", page);
         map.put("status", "success");
 

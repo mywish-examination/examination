@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.BusinessCooperationDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.BusinessCooperationPager;
 import com.home.examination.service.BusinessCooperationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class BusinessCooperationController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<BusinessCooperationDO> listPage(Pager<BusinessCooperationDO> pager) {
+    public BusinessCooperationPager listPage(BusinessCooperationPager pager) {
         businessCooperationService.page(pager.getPager());
         return pager;
     }

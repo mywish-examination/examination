@@ -1,4 +1,4 @@
-package com.home.examination.entity.domain;
+package com.home.examination.entity.vo;
 
 import lombok.Data;
 
@@ -21,6 +21,11 @@ public class ExecuteResult implements Serializable {
     public ExecuteResult(Object result) {
         this.result = result;
         this.status = this.SUCCESS;
+    }
+
+    public ExecuteResult(boolean result) {
+        this.status = result ? this.SUCCESS : this.ERROR;
+        this.msg = "系统异常";
     }
 
 }

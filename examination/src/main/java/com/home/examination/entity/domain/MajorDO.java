@@ -9,9 +9,10 @@ import lombok.Data;
 public class MajorDO extends BaseEntity {
 
     /**
-     *  专业名称
+     * 专业名称
      */
     String name;
+
     /**
      * 门类
      */
@@ -62,5 +63,20 @@ public class MajorDO extends BaseEntity {
      * 评价星级
      */
     private String starRating;
+
+    /**
+     * 学校Id
+     */
+    private Long schoolId;
+    /**
+     * 招生人数
+     */
+    private Integer recruitNum;
+    /**
+     * 录取分数线
+     */
+    private Integer admissionScoreLine;
+
+
 
 }

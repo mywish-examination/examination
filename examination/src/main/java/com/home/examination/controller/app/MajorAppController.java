@@ -1,9 +1,9 @@
 package com.home.examination.controller.app;
 
-import com.home.examination.entity.domain.ExecuteResult;
-import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.vo.ExecuteResult;
+import com.home.examination.entity.page.MajorPager;
 import com.home.examination.service.MajorService;
+import com.home.examination.service.SchoolMajorService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,10 +17,12 @@ public class MajorAppController {
 
     @Resource
     private MajorService majorService;
+    @Resource
+    private SchoolMajorService schoolService;
 
     @RequestMapping("/listPage")
     @ResponseBody
-    public ExecuteResult listPage(Pager<MajorDO> pager) {
+    public ExecuteResult listPage(MajorPager pager) {
         return new ExecuteResult(majorService.page(pager.getPager()));
     }
 

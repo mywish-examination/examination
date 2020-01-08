@@ -1,7 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.home.examination.entity.domain.NewsInformationDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.page.NewsInformationPager;
 import com.home.examination.service.NewsInformationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,7 @@ public class NewsInformationController {
 
     @PostMapping("/listPage")
     @ResponseBody
-    public Pager<NewsInformationDO> listPage(Pager<NewsInformationDO> pager) {
+    public NewsInformationPager listPage(NewsInformationPager pager) {
         newsInformationService.page(pager.getPager());
         return pager;
     }

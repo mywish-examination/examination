@@ -1,8 +1,7 @@
 package com.home.examination.controller.app;
 
-import com.home.examination.entity.domain.ExecuteResult;
-import com.home.examination.entity.domain.NewsInformationDO;
-import com.home.examination.entity.page.Pager;
+import com.home.examination.entity.vo.ExecuteResult;
+import com.home.examination.entity.page.NewsInformationPager;
 import com.home.examination.service.NewsInformationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,7 @@ public class NewsInformationAppController {
     private String schoolUrl;
 
     @PostMapping("/listPage")
-    public ExecuteResult listPage(Pager<NewsInformationDO> pager) {
+    public ExecuteResult listPage(NewsInformationPager pager) {
         return new ExecuteResult(newsInformationService.page(pager.getPager()));
     }
 
