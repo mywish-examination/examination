@@ -1,7 +1,7 @@
 package com.home.examination.entity.page;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.home.examination.entity.domain.SchoolMajorDO;
+import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-public class SchoolMajorPager {
+public class HistoryAdmissionDataPager {
 
     /**
      * 分页信息
      */
-    private Page<SchoolMajorDO> pager;
+    private Page<HistoryAdmissionDataDO> pager;
     /**
      * 查询参数
      */
-    private SchoolMajorDO requestParam;
+    private HistoryAdmissionDataDO requestParam;
 
 }

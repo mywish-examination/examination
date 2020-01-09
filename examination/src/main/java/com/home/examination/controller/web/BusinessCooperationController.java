@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/web/businessCooperation")
+@Deprecated
 public class BusinessCooperationController {
 
     @Resource

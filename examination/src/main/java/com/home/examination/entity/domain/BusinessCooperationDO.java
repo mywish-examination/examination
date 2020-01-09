@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 @TableName("business_cooperation")
+@Deprecated
 public class BusinessCooperationDO extends BaseEntity {
 
 }

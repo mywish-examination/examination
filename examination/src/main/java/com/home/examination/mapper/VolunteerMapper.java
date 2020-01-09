@@ -1,14 +1,31 @@
 package com.home.examination.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.VolunteerDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 @Mapper
 public interface VolunteerMapper extends BaseMapper<VolunteerDO> {
+
+    @Select("select t.*, s.name as schoolName, u.name as userName, m.name as majorName " +
+            "from major t " +
+            "inner join school s on t.school_id = s.id " +
+            "inner join major m on t.major_id = m.id " +
+            "inner join user u on t.user_id = u.id " +
+            "${ew.customSqlSegment}")
+    List<VolunteerDO> pageByQueryWrapper(@Param("ew") Wrapper<VolunteerDO> queryWrapper);
+
+    @Select("select count(t.id) " +
+            "from major t " +
+            "inner join school s on m.school_id = s.id " +
+            "inner join major m on t.major_id = m.id " +
+            "inner join user u on t.user_id = u.id " +
+            "${ew.customSqlSegment}")
+    int countByQueryWrapper(@Param("ew") Wrapper<VolunteerDO> queryWrapper);
 
 }

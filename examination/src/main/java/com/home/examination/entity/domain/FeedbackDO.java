@@ -1,5 +1,6 @@
 package com.home.examination.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -17,4 +18,10 @@ public class FeedbackDO extends BaseEntity {
      * 用户Id
      */
     private Long userId;
+
+    /**
+     * 用户名称
+     */
+    @TableField(exist = false)
+    private String userName;
 }

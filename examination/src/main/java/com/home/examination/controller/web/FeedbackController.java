@@ -1,5 +1,7 @@
 package com.home.examination.controller.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.domain.FeedbackDO;
 import com.home.examination.entity.page.FeedbackPager;
 import com.home.examination.service.FeedbackService;
@@ -25,7 +27,8 @@ public class FeedbackController {
     @PostMapping("/listPage")
     @ResponseBody
     public FeedbackPager listPage(FeedbackPager pager) {
-        feedbackService.page(pager.getPager());
+        LambdaQueryWrapper<FeedbackDO> queryWrapper = new LambdaQueryWrapper<>();
+        feedbackService.page(pager.getPager(), queryWrapper);
         return pager;
     }
 

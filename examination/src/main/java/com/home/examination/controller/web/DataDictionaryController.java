@@ -1,5 +1,6 @@
 package com.home.examination.controller.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.page.DataDictionaryPager;
 import com.home.examination.service.DataDictionaryService;
@@ -25,7 +26,8 @@ public class DataDictionaryController {
     @PostMapping("/listPage")
     @ResponseBody
     public DataDictionaryPager listPage(DataDictionaryPager pager) {
-        dataDictionaryService.page(pager.getPager());
+        LambdaQueryWrapper<DataDictionaryDO> queryWrapper = new LambdaQueryWrapper<>();
+        dataDictionaryService.page(pager.getPager(), queryWrapper);
         return pager;
     }
 

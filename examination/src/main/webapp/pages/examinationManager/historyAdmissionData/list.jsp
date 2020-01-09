@@ -22,12 +22,12 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>学校专业管理 / 列表</h5>
+                    <h5>历年录入数据管理 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
                     <div class="jqGrid_wrapper">
-                        <table id="majorList"></table>
+                        <table id="historyAdmissionDataList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -55,8 +55,8 @@
         $.jgrid.defaults.styleUI = 'Bootstrap';
 
         // Configuration for jqGrid Example 1
-        $("#majorList").jqGrid({
-            url: "${basePath}web/schoolMajor/listPage",
+        $("#historyAdmissionDataList").jqGrid({
+            url: "${basePath}web/historyAdmissionData/listPage",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -69,13 +69,16 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '学校名称', '专业名称', '招生人数', '录取分数线', '操作'],
+            colNames: ['', '学校名称', '专业名称', '年份', '最高分', '最低分', '平均分', '控制线', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: true},
-                {name: 'schoolId', index: 'schoolId', width: '10%', sortable: false},
-                {name: 'majorId', index: 'majorId', width: '10%', sortable: false},
-                {name: 'recruitNum', index: 'recruitNum', width: '10%', sortable: false},
-                {name: 'admissionScoreLine', index: 'admissionScoreLine', width: '10%', sortable: false},
+                {name: 'id', index: 'id', width: '20%', sortable: false, hidden: true},
+                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
+                {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
+                {name: 'years', index: 'years', width: '10%', sortable: false},
+                {name: 'highestScore', index: 'highestScore', width: '10%', sortable: false},
+                {name: 'minimumScore', index: 'minimumScore', width: '10%', sortable: false},
+                {name: 'average', index: 'average', width: '10%', sortable: false},
+                {name: 'controlLine', index: 'controlLine', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
             jsonReader : {
@@ -88,10 +91,10 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学院列表",
+            caption: "历年录入数据列表",
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#majorList").jqGrid('getDataIDs');
+                var ids = jQuery("#historyAdmissionDataList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
@@ -103,7 +106,7 @@
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#majorList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#historyAdmissionDataList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
             },
             loadComplete: function(){
@@ -111,7 +114,7 @@
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
                     var prompt = "确定要删除所选择的记录吗？";
-                    var url = "${basePath}web/schoolMajor/delete?id=" + rowid;
+                    var url = "${basePath}web/historyAdmissionData/delete?id=" + rowid;
                     index = top.layer.confirm(prompt, {
                         btn: ["确认", "取消"] //按钮
                     }, function(){
@@ -123,7 +126,7 @@
                             success:function(jsonData){
                                 if(jsonData.status == 'success') {
                                     top.layer.close(index);
-                                    $("#majorList").trigger("reloadGrid");
+                                    $("#historyAdmissionDataList").trigger("reloadGrid");
                                 }
                             }
                         });
@@ -133,7 +136,7 @@
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/schoolMajor/detail?id=" + rowid;
+                    window.location.href = "${basePath}web/historyAdmissionData/detail?id=" + rowid;
                 });
             }
         });
@@ -141,16 +144,16 @@
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#majorList').setGridWidth(width);
+            $('#historyAdmissionDataList').setGridWidth(width);
         });
 
         var $content = $("<a></a>").attr("href","javascript:void(0)")
             .attr("id","create")
             .attr("class","btn btn-sm btn-primary")
             .append("创建");
-        $("#t_majorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_majorList").click(function(){
-            window.location.href = "${basePath}web/schoolMajor/detail";
+        $("#t_historyAdmissionDataList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#create","#t_historyAdmissionDataList").click(function(){
+            window.location.href = "${basePath}web/historyAdmissionData/detail";
         });
 
     });

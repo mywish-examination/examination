@@ -1,5 +1,7 @@
 package com.home.examination.controller.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.home.examination.entity.domain.MyCollectionDO;
 import com.home.examination.entity.domain.NewsInformationDO;
 import com.home.examination.entity.page.NewsInformationPager;
 import com.home.examination.service.NewsInformationService;
@@ -35,7 +37,8 @@ public class NewsInformationController {
     @PostMapping("/listPage")
     @ResponseBody
     public NewsInformationPager listPage(NewsInformationPager pager) {
-        newsInformationService.page(pager.getPager());
+        LambdaQueryWrapper<NewsInformationDO> queryWrapper = new LambdaQueryWrapper<>();
+        newsInformationService.page(pager.getPager(), queryWrapper);
         return pager;
     }
 

@@ -1,5 +1,6 @@
 package com.home.examination.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -12,21 +13,37 @@ public class VolunteerDO extends BaseEntity {
     /**
      * 志愿Id
      */
-    Long majorId;
+    private Long majorId;
     /**
      * 用户Id
      */
-    Long userId;
+    private Long userId;
     /**
      * 学校Id
      */
-    Long schoolId;
+    private Long schoolId;
     /**
      * 分数
      */
-    BigDecimal score;
+    private BigDecimal score;
     /**
      * 状态
      */
-    String status;
+    private String status;
+
+    /**
+     * 学校名称
+     */
+    @TableField(exist = false)
+    private String schoolName;
+    /**
+     * 专业名称
+     */
+    @TableField(exist = false)
+    private String majorName;
+    /**
+     * 用户名称
+     */
+    @TableField(exist = false)
+    private String userName;
 }

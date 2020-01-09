@@ -41,67 +41,51 @@
                     </div>
                 </li>
                 <li>
-                    <a href="#">
+                    <a class="J_menuItem" href="${basePath}pages/examinationManager/school/list.jsp">
                         <i class="fa fa-home"></i>
-                        <span class="nav-label">报考管理</span>
-                        <span class="fa arrow"></span>
+                        <span class="nav-label">学院管理</span>
+                        <span class="fa "></span>
                     </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/examinationManager/school/list.jsp" data-index="0">学院管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/examinationManager/major/list.jsp">专业管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/examinationManager/schoolMajor/list.jsp">学校专业管理</a>
-                        </li>
-<%--                        <li>--%>
-<%--                            <a class="J_menuItem" href="${basePath}pages/examinationManager/volunteer/list.jsp">报考志愿管理</a>--%>
-<%--                        </li>--%>
-                    </ul>
-
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-edit"></i>
-                        <span class="nav-label">内容资讯</span>
-                        <span class="fa arrow"></span>
+                    <a class="J_menuItem" href="${basePath}pages/examinationManager/major/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">专业管理</span>
+                        <span class="fa "></span>
                     </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/contentInformation/newsInformation/list.jsp">新闻资讯</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/contentInformation/businessCooperation/list.jsp">业务合作</a>
-                        </li>
-<%--                        <li>--%>
-<%--                            <a class="J_menuItem" href="${basePath}pages/contentInformation/myCollection/list.jsp">我的收藏</a>--%>
-<%--                        </li>--%>
-<%--                        <li>--%>
-<%--                            <a class="J_menuItem" href="${basePath}pages/contentInformation/feedback/list.jsp" data-index="0">意见反馈</a>--%>
-<%--                        </li>--%>
-                    </ul>
-
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-desktop"></i>
-                        <span class="nav-label">系统管理</span>
-                        <span class="fa arrow"></span>
+                    <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">志愿管理</span>
+                        <span class="fa "></span>
                     </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp" data-index="0">用户表</a>
-                        </li>
-<%--                        <li>--%>
-<%--                            <a class="J_menuItem" href="${basePath}pages/systemManager/dataDictionary/list.jsp">数据字典</a>--%>
-<%--                        </li>--%>
-<%--                        <li>--%>
-<%--                            <a class="J_menuItem" href="${basePath}pages/systemManager/area/list.jsp">地域管理</a>--%>
-<%--                        </li>--%>
-                    </ul>
-
+                    <a class="J_menuItem" href="${basePath}pages/examinationManager/major/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">历年录取数据管理</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/contentInformation/newsInformation/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">新闻资讯</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">意见反馈管理</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">我的收藏</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">用户管理</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/systemManager/user/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">数据字典管理</span>
+                        <span class="fa "></span>
+                    </a>
                 </li>
 
             </ul>

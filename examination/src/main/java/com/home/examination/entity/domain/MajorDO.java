@@ -77,6 +77,7 @@ public class MajorDO extends BaseEntity {
      */
     private Integer admissionScoreLine;
 
-
+    @TableField(exist = false)
+    private String schoolName;
 
 }

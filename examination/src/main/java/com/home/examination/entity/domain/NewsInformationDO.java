@@ -10,13 +10,13 @@ public class NewsInformationDO extends BaseEntity {
     /**
      * 标题
      */
-    String title;
+    private String title;
     /**
      * 图片url
      */
-    String imageUrl;
+    private String imageUrl;
     /**
      * 内容
      */
-    String content;
+    private String content;
 }

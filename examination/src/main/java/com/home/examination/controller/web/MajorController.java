@@ -1,5 +1,6 @@
 package com.home.examination.controller.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.page.MajorPager;
 import com.home.examination.service.MajorService;
@@ -25,7 +26,8 @@ public class MajorController {
     @RequestMapping("/listPage")
     @ResponseBody
     public MajorPager listPage(MajorPager pager) {
-        majorService.page(pager.getPager());
+        LambdaQueryWrapper<MajorDO> queryWrapper = new LambdaQueryWrapper<>();
+        majorService.page(pager.getPager(), queryWrapper);
         return pager;
     }
 
