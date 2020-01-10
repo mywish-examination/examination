@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface MajorService extends IService<MajorDO> {
 
-    List<MajorDO> pager(Wrapper<MajorDO> queryWrapper);
+    List<MajorDO> pageByQueryWrapper(Wrapper<MajorDO> queryWrapper);
 
-    int count(Wrapper<MajorDO> queryWrapper);
+    int countByQueryWrapper(Wrapper<MajorDO> queryWrapper);
 
 }

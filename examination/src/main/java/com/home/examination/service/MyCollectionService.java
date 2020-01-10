@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface MyCollectionService extends IService<MyCollectionDO> {
 
-    List<MyCollectionDO> pageByUserId(Wrapper<MyCollectionDO> queryWrapper);
+    List<MyCollectionDO> pageByQueryWrapper(Wrapper<MyCollectionDO> queryWrapper);
 
-    Long countByUserId(Wrapper<MyCollectionDO> queryWrapper);
+    int countByQueryWrapper(Wrapper<MyCollectionDO> queryWrapper);
 
 }

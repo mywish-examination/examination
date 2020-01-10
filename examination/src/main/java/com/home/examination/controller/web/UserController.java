@@ -50,7 +50,7 @@ public class UserController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         UserDO userDO = userService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/systemManager/user/modify");
+        ModelAndView mav = new ModelAndView("/pages/user/modify");
         model.addAttribute("user", userDO == null ? new UserDO() : userDO);
 
         return mav;
@@ -58,7 +58,7 @@ public class UserController {
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(UserDO param) {
-        ModelAndView mav = new ModelAndView("/pages/systemManager/user/list");
+        ModelAndView mav = new ModelAndView("/pages/user/list");
         userService.saveOrUpdate(param);
         return mav;
     }

@@ -17,12 +17,12 @@ public class VolunteerServiceImpl extends ServiceImpl<VolunteerMapper, Volunteer
     private VolunteerMapper volunteerMapper;
 
     @Override
-    public List<VolunteerDO> pager(Wrapper<VolunteerDO> queryWrapper) {
+    public List<VolunteerDO> pageByQueryWrapper(Wrapper<VolunteerDO> queryWrapper) {
         return volunteerMapper.pageByQueryWrapper(queryWrapper);
     }
 
     @Override
-    public int count(Wrapper<VolunteerDO> queryWrapper) {
+    public int countByQueryWrapper(Wrapper<VolunteerDO> queryWrapper) {
         return volunteerMapper.countByQueryWrapper(queryWrapper);
     }
 

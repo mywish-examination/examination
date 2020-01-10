@@ -21,4 +21,9 @@ public class FeedbackPager {
      */
     private FeedbackDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

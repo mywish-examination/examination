@@ -1,8 +1,8 @@
 package com.home.examination.controller.app;
 
 import com.home.examination.entity.domain.BusinessCooperationDO;
-import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.page.BusinessCooperationPager;
+import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.service.BusinessCooperationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/app/businessCooperation")
+@Deprecated
 public class BusinessCooperationAppController {
 
     @Resource

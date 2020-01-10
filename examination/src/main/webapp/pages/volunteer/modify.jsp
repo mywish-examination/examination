@@ -63,6 +63,10 @@
                             <label class="col-sm-2 control-label">状态:</label>
 
                             <div class="col-sm-10">
+                                <form:select path="status">
+                                    <form:option value="0">草稿</form:option>
+                                    <form:option value="1">发布</form:option>
+                                </form:select>
                                 <form:input path="status" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>

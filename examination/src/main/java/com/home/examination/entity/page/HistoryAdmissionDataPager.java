@@ -21,4 +21,9 @@ public class HistoryAdmissionDataPager {
      */
     private HistoryAdmissionDataDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

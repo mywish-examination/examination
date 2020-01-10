@@ -1,7 +1,9 @@
 package com.home.examination.controller.app;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.entity.domain.*;
+import com.home.examination.entity.domain.HistoryAdmissionDataDO;
+import com.home.examination.entity.domain.MajorDO;
+import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.TargetCollegesVO;
 import com.home.examination.service.HistoryAdmissionDataService;
@@ -29,7 +31,7 @@ public class TargetCollegesController {
     @PostMapping("/detail")
     public ExecuteResult detail(Long schoolId, Long majorId) {
         TargetCollegesVO targetColleges = new TargetCollegesVO();
-        if(schoolId != null) {
+        if (schoolId != null) {
             SchoolDO schoolDO = schoolService.getById(schoolId);
             BeanUtils.copyProperties(schoolDO, targetColleges);
             targetColleges.setSchoolName(schoolDO.getName());
@@ -48,7 +50,7 @@ public class TargetCollegesController {
             targetColleges.setMajorList(majorList);
         }
 
-        if(majorId != null) {
+        if (majorId != null) {
             MajorDO one = majorService.getById(majorId);
 
             Long bySchoolId = one.getSchoolId();

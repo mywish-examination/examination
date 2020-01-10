@@ -43,14 +43,14 @@ public class DataDictionaryController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         DataDictionaryDO dataDictionaryDO = dataDictionaryService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/examinationManager/dataDictionary/modify");
+        ModelAndView mav = new ModelAndView("/pages/dataDictionary/modify");
         model.addAttribute("dataDictionary", dataDictionaryDO);
         return mav;
     }
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(DataDictionaryDO param) {
-        ModelAndView mav = new ModelAndView("/pages/examinationManager/dataDictionary/list");
+        ModelAndView mav = new ModelAndView("/pages/dataDictionary/list");
         dataDictionaryService.saveOrUpdate(param);
         return mav;
     }

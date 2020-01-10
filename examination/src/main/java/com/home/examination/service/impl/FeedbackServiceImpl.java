@@ -17,12 +17,12 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, FeedbackDO>
     private FeedbackMapper feedbackMapper;
 
     @Override
-    public List<FeedbackDO> pager(Wrapper<FeedbackDO> queryWrapper) {
+    public List<FeedbackDO> pageByQueryWrapper(Wrapper<FeedbackDO> queryWrapper) {
         return feedbackMapper.pageByQueryWrapper(queryWrapper);
     }
 
     @Override
-    public int count(Wrapper<FeedbackDO> queryWrapper) {
+    public int countByQueryWrapper(Wrapper<FeedbackDO> queryWrapper) {
         return feedbackMapper.countByQueryWrapper(queryWrapper);
     }
 

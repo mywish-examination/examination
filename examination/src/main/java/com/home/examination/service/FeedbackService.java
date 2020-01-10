@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface FeedbackService extends IService<FeedbackDO> {
 
-    List<FeedbackDO> pager(Wrapper<FeedbackDO> queryWrapper);
+    List<FeedbackDO> pageByQueryWrapper(Wrapper<FeedbackDO> queryWrapper);
 
-    int count(Wrapper<FeedbackDO> queryWrapper);
+    int countByQueryWrapper(Wrapper<FeedbackDO> queryWrapper);
 
 }

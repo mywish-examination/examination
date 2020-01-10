@@ -22,4 +22,9 @@ public class NewsInformationPager {
      */
     private NewsInformationDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

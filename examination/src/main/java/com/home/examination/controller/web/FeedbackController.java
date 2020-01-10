@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/web/feedback")
@@ -28,7 +27,15 @@ public class FeedbackController {
     @ResponseBody
     public FeedbackPager listPage(FeedbackPager pager) {
         LambdaQueryWrapper<FeedbackDO> queryWrapper = new LambdaQueryWrapper<>();
-        feedbackService.page(pager.getPager(), queryWrapper);
+        int total = feedbackService.countByQueryWrapper(queryWrapper);
+        List<FeedbackDO> list = Collections.emptyList();
+        if(total > 0) {
+            queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
+            list = feedbackService.pageByQueryWrapper(queryWrapper);
+        }
+
+        pager.getPager().setTotal(total);
+        pager.getPager().setRecords(list);
         return pager;
     }
 
@@ -44,14 +51,14 @@ public class FeedbackController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         FeedbackDO feedbackDO = feedbackService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/contentInformation/feedback/modify");
+        ModelAndView mav = new ModelAndView("/pages/feedback/modify");
         model.addAttribute("feedback", feedbackDO);
         return mav;
     }
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(FeedbackDO param) {
-        ModelAndView mav = new ModelAndView("/pages/contentInformation/feedback/list");
+        ModelAndView mav = new ModelAndView("/pages/feedback/list");
         feedbackService.saveOrUpdate(param);
         return mav;
     }

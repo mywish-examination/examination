@@ -151,7 +151,7 @@
             .append("创建");
         $("#t_volunteerList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_volunteerList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/volunteer/modify.jsp";
+            window.location.href = "${basePath}pages/volunteer/detail";
         });
 
     });

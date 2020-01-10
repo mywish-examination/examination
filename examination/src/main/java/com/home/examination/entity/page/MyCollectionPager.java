@@ -21,4 +21,9 @@ public class MyCollectionPager {
      */
     private MyCollectionDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

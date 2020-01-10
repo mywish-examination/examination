@@ -17,12 +17,12 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, MajorDO> implemen
     private MajorMapper majorMapper;
 
     @Override
-    public List<MajorDO> pager(Wrapper<MajorDO> queryWrapper) {
+    public List<MajorDO> pageByQueryWrapper(Wrapper<MajorDO> queryWrapper) {
         return majorMapper.pageByQueryWrapper(queryWrapper);
     }
 
     @Override
-    public int count(Wrapper<MajorDO> queryWrapper) {
+    public int countByQueryWrapper(Wrapper<MajorDO> queryWrapper) {
         return majorMapper.countByQueryWrapper(queryWrapper);
     }
 

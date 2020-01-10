@@ -21,4 +21,9 @@ public class VolunteerPager {
      */
     private VolunteerDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

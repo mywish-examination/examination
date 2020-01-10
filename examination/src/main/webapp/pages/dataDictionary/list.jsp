@@ -3,6 +3,9 @@
 <html>
 <head>
 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>${title}</title>
 
     <link rel="shortcut icon" href="${basePath}favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
@@ -17,14 +20,15 @@
 </head>
 
 <body class="gray-bg">
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content  animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>学院管理 / 列表</h5>
+                    <h5>数据字典 / 列表</h5>
                 </div>
                 <div class="ibox-content">
+                    <h4>基本示例</h4>
 
                     <div class="jqGrid_wrapper">
                         <table id="schoolList"></table>
@@ -48,48 +52,46 @@
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
 
+<!-- 自定义js -->
+<script src="${basePath}js/content.js?v=1.0.0"></script>
+
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
 
         $.jgrid.defaults.styleUI = 'Bootstrap';
+        // Examle data for jqGrid
+        var mydata = [
+            {
+                id: "1",
+                invdate: "2010-05-24",
+                name: "test",
+                note: "note",
+                tax: "10.00",
+                total: "2111.00"
+            }
+        ];
 
         // Configuration for jqGrid Example 1
         $("#schoolList").jqGrid({
-            url: "${basePath}web/school/listPage",
-            ExpandColumn: 'name',
-            ExpandColClick: true,
-            height: 520,
+            data: mydata,
+            datatype: "local",
+            height: 250,
             autowidth: true,
             shrinkToFit: true,
-            datatype: 'json',
-            rowNum: 10,
-            prmNames: {
-                page: "pager.current",
-                rows: "pager.size",
-            },
-            mtype: "POST",
-            colNames: ['序号', '学校名称', '学校主类型', '学校子类型', '学历层次', '创建时间', '操作'],
+            rowNum: 14,
+            rowList: [10, 20, 30],
+            colNames: ['序号', '学校名称', '客户', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
+                {name: 'id', index: 'id', width: '10%', sortable: false},
                 {name: 'invdate', index: 'invdate', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
-                {name: 'name', index: 'name', width: '10%', sortable: false},
+                {name: 'name', index: 'name', width: '10%'},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
-            jsonReader : {
-                root: "pager.records",
-                page: "pager.current",
-                total: "pager.pages",
-                records: "pager.size",
-                repeatitems: false
-            },
             pager: "#pager",
-            // viewrecords: true,
-            // multiselect: true,
+            viewrecords: true,
             caption: "学院列表",
+            hidegrid: false,
             toolbar: [true,"top"],
             gridComplete: function() {
                 var ids = jQuery("#schoolList").jqGrid('getDataIDs');
@@ -111,30 +113,34 @@
                 //删除
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
-                    var prompt = "确定要删除所选择的记录吗？";
-                    var url = "${basePath}web/school/delete?id=" + rowid;
+                    var rowdata = jQuery("#schoolList").jqGrid('getRowData',rowid);
+                    var prompt = "删除失败";
+                    var url = "${basePath}delete.json?id=" + rowid;
                     index = top.layer.confirm(prompt, {
-                        btn: ["确认", "取消"] //按钮
+                        btn: ["<msg:message code='button.confirm'/>", "<msg:message code='button.cancel'/>"] //按钮
                     }, function(){
                         $.ajax({
                             url:url,
-                            type:'POST',
+                            type:'post',
                             timeout:'60000',
                             dataType:'json',
-                            success:function(jsonData){
-                                if(jsonData.status == 'success') {
-                                    top.layer.close(index);
-                                    $("#schoolList").trigger("reloadGrid");
+                            success:function(jsonData,textStatus){
+                                if(textStatus == "success"){
+                                    if(jsonData.status == "success"){
+                                        top.layer.close(index);
+                                        $("#schoolList").trigger("reloadGrid");
+                                    }
                                 }
                             }
                         });
                     }, function(){
+
                     });
                 });
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/school/detail?id=" + rowid;
+                    window.location.href = "${basePath}pages/examinationManager/school/modify.jsp?id=" + rowid;
                 });
             }
         });
@@ -151,11 +157,14 @@
             .append("创建");
         $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_schoolList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/school/modify.jsp";
+            window.location.href = "${basePath}pages/school/detail.jsp";
         });
 
     });
 </script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
 
 </body>
 </html>

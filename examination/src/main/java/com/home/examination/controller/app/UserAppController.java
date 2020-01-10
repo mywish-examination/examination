@@ -11,8 +11,6 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -26,6 +24,7 @@ public class UserAppController {
 
     /**
      * 登录
+     *
      * @param loginName
      * @param password
      * @return
@@ -54,6 +53,7 @@ public class UserAppController {
 
     /**
      * 退出
+     *
      * @param token
      * @return
      */
@@ -71,6 +71,7 @@ public class UserAppController {
 
     /**
      * 注册（手机号、验证码、序列号、授权码）
+     *
      * @param userDO
      * @return
      */
@@ -96,6 +97,7 @@ public class UserAppController {
 
     /**
      * 完善信息
+     *
      * @param userDO
      * @return
      */
@@ -104,7 +106,7 @@ public class UserAppController {
         Map<String, String> map = new HashMap<>();
 
         UserDO user = (UserDO) redisTemplate.opsForValue().get(userDO.getToken());
-        if(user == null) {
+        if (user == null) {
             map.put("status", "error");
             map.put("msg", "该用户没有登录，不能设置密码");
             return map;
@@ -112,7 +114,8 @@ public class UserAppController {
 
         BeanUtils.copyProperties(userDO, user);
 
-        boolean result = userService.saveOrUpdate(user);;
+        boolean result = userService.saveOrUpdate(user);
+        ;
         if (result) {
             map.put("status", "success");
         } else {
@@ -123,6 +126,7 @@ public class UserAppController {
 
     /**
      * 设置登密码
+     *
      * @param token
      * @param password
      * @return
@@ -132,14 +136,15 @@ public class UserAppController {
         Map<String, String> map = new HashMap<>();
 
         UserDO userDO = (UserDO) redisTemplate.opsForValue().get(token);
-        if(userDO == null) {
+        if (userDO == null) {
             map.put("status", "error");
             map.put("msg", "该用户没有登录，不能设置密码");
             return map;
         }
 
         userDO.setPassword(password);
-        boolean result = userService.saveOrUpdate(userDO);;
+        boolean result = userService.saveOrUpdate(userDO);
+        ;
         if (result) {
             map.put("status", "success");
         } else {

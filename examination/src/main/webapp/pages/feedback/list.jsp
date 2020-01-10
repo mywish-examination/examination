@@ -151,7 +151,7 @@
             .append("创建");
         $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_schoolList").click(function(){
-            window.location.href = "${basePath}pages/examinationManager/school/modify.jsp";
+            window.location.href = "${basePath}pages/school/detail";
         });
 
     });

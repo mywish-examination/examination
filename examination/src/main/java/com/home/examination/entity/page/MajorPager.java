@@ -21,4 +21,9 @@ public class MajorPager {
      */
     private MajorDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

@@ -21,4 +21,9 @@ public class SchoolPager {
      */
     private SchoolDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

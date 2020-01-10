@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,7 +30,15 @@ public class MyCollectionController {
     @ResponseBody
     public MyCollectionPager listPage(MyCollectionPager pager) {
         LambdaQueryWrapper<MyCollectionDO> queryWrapper = new LambdaQueryWrapper<>();
-        myCollectionService.page(pager.getPager(), queryWrapper);
+        int total = myCollectionService.countByQueryWrapper(queryWrapper);
+        List<MyCollectionDO> list = Collections.emptyList();
+        if (total > 0) {
+            queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
+            list = myCollectionService.pageByQueryWrapper(queryWrapper);
+        }
+
+        pager.getPager().setTotal(total);
+        pager.getPager().setRecords(list);
         return pager;
     }
 
@@ -44,14 +54,14 @@ public class MyCollectionController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         MyCollectionDO myCollectionDO = myCollectionService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/contentInformation/myCollection/modify");
+        ModelAndView mav = new ModelAndView("/pages/myCollection/modify");
         model.addAttribute("myCollection", myCollectionDO);
         return mav;
     }
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(MyCollectionDO param) {
-        ModelAndView mav = new ModelAndView("/pages/contentInformation/myCollection/list");
+        ModelAndView mav = new ModelAndView("/pages/myCollection/list");
         myCollectionService.saveOrUpdate(param);
         return mav;
     }

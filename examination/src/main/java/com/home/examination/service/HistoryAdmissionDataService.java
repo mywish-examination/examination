@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface HistoryAdmissionDataService extends IService<HistoryAdmissionDataDO> {
 
-    List<HistoryAdmissionDataDO> pager(Wrapper<HistoryAdmissionDataDO> queryWrapper);
+    List<HistoryAdmissionDataDO> pageByQueryWrapper(Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
-    int count(Wrapper<HistoryAdmissionDataDO> queryWrapper);
+    int countByQueryWrapper(Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
 }

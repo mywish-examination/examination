@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
+@Deprecated
 public class BusinessCooperationPager {
 
     /**

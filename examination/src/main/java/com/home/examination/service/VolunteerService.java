@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface VolunteerService extends IService<VolunteerDO> {
 
-    List<VolunteerDO> pager(Wrapper<VolunteerDO> queryWrapper);
+    List<VolunteerDO> pageByQueryWrapper(Wrapper<VolunteerDO> queryWrapper);
 
-    int count(Wrapper<VolunteerDO> queryWrapper);
+    int countByQueryWrapper(Wrapper<VolunteerDO> queryWrapper);
 
 }

@@ -1,7 +1,7 @@
 package com.home.examination.controller.app;
 
-import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.page.NewsInformationPager;
+import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.service.NewsInformationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -28,10 +28,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -49,15 +46,14 @@ public class HistoryAdmissionDataController {
     @ResponseBody
     public HistoryAdmissionDataPager listPage(HistoryAdmissionDataPager pager) {
         LambdaQueryWrapper<HistoryAdmissionDataDO> queryWrapper = new LambdaQueryWrapper<>();
-        int count = historyAdmissionDataService.count(queryWrapper);
-        if (count < 1) {
-            return pager;
+        int total = historyAdmissionDataService.countByQueryWrapper(queryWrapper);
+        List<HistoryAdmissionDataDO> list = Collections.emptyList();
+        if (total > 0) {
+            queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
+            list = historyAdmissionDataService.pageByQueryWrapper(queryWrapper);
         }
 
-        queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
-        List<HistoryAdmissionDataDO> list = historyAdmissionDataService.pager(queryWrapper);
-
-        pager.getPager().setTotal(count);
+        pager.getPager().setTotal(total);
         pager.getPager().setRecords(list);
         return pager;
     }
@@ -74,7 +70,7 @@ public class HistoryAdmissionDataController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         HistoryAdmissionDataDO historyAdmissionDataDO = historyAdmissionDataService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/examinationManager/HistoryAdmissionData/modify");
+        ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/modify");
         model.addAttribute("historyAdmissionData", historyAdmissionDataDO == null ? new HistoryAdmissionDataDO() : historyAdmissionDataDO);
 
         return mav;
@@ -82,7 +78,7 @@ public class HistoryAdmissionDataController {
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(HistoryAdmissionDataDO param) {
-        ModelAndView mav = new ModelAndView("/pages/examinationManager/historyAdmissionData/list");
+        ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/list");
         historyAdmissionDataService.saveOrUpdate(param);
         return mav;
     }
@@ -168,8 +164,10 @@ public class HistoryAdmissionDataController {
         Map<String, Long> majorMap = majorList.stream().collect(Collectors.toMap(MajorDO::getName, MajorDO::getId));
 
         for (HistoryAdmissionDataDO historyAdmissionDataDO : list) {
-            if(schoolMap.containsKey(historyAdmissionDataDO.getSchoolName())) schoolMap.get(historyAdmissionDataDO.getSchoolName());
-            if(majorMap.containsKey(historyAdmissionDataDO.getMajorName())) majorMap.get(historyAdmissionDataDO.getMajorName());
+            if (schoolMap.containsKey(historyAdmissionDataDO.getSchoolName()))
+                schoolMap.get(historyAdmissionDataDO.getSchoolName());
+            if (majorMap.containsKey(historyAdmissionDataDO.getMajorName()))
+                majorMap.get(historyAdmissionDataDO.getMajorName());
         }
         boolean result = historyAdmissionDataService.saveBatch(list);
         return result ? "success" : "error";

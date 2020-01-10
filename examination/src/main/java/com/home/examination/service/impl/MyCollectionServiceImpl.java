@@ -17,13 +17,13 @@ public class MyCollectionServiceImpl extends ServiceImpl<MyCollectionMapper, MyC
     private MyCollectionMapper myCollectionMapper;
 
     @Override
-    public List<MyCollectionDO> pageByUserId(Wrapper<MyCollectionDO> queryWrapper) {
-        return myCollectionMapper.pageByUserId(queryWrapper);
+    public List<MyCollectionDO> pageByQueryWrapper(Wrapper<MyCollectionDO> queryWrapper) {
+        return myCollectionMapper.pageByQueryWrapper(queryWrapper);
     }
 
     @Override
-    public Long countByUserId(Wrapper<MyCollectionDO> queryWrapper) {
-        return myCollectionMapper.countByUserId(queryWrapper);
+    public int countByQueryWrapper(Wrapper<MyCollectionDO> queryWrapper) {
+        return myCollectionMapper.countByQueryWrapper(queryWrapper);
     }
 
 }

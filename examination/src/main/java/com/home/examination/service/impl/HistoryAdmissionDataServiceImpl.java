@@ -17,12 +17,12 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
     private HistoryAdmissionDataMapper historyAdmissionDataMapper;
 
     @Override
-    public List<HistoryAdmissionDataDO> pager(Wrapper<HistoryAdmissionDataDO> queryWrapper) {
+    public List<HistoryAdmissionDataDO> pageByQueryWrapper(Wrapper<HistoryAdmissionDataDO> queryWrapper) {
         return historyAdmissionDataMapper.pageByQueryWrapper(queryWrapper);
     }
 
     @Override
-    public int count(Wrapper<HistoryAdmissionDataDO> queryWrapper) {
+    public int countByQueryWrapper(Wrapper<HistoryAdmissionDataDO> queryWrapper) {
         return historyAdmissionDataMapper.countByQueryWrapper(queryWrapper);
     }
 }

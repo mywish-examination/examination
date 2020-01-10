@@ -13,7 +13,7 @@ import java.util.List;
 public interface VolunteerMapper extends BaseMapper<VolunteerDO> {
 
     @Select("select t.*, s.name as schoolName, u.name as userName, m.name as majorName " +
-            "from major t " +
+            "from volunteer t " +
             "inner join school s on t.school_id = s.id " +
             "inner join major m on t.major_id = m.id " +
             "inner join user u on t.user_id = u.id " +
@@ -21,8 +21,8 @@ public interface VolunteerMapper extends BaseMapper<VolunteerDO> {
     List<VolunteerDO> pageByQueryWrapper(@Param("ew") Wrapper<VolunteerDO> queryWrapper);
 
     @Select("select count(t.id) " +
-            "from major t " +
-            "inner join school s on m.school_id = s.id " +
+            "from volunteer t " +
+            "inner join school s on t.school_id = s.id " +
             "inner join major m on t.major_id = m.id " +
             "inner join user u on t.user_id = u.id " +
             "${ew.customSqlSegment}")

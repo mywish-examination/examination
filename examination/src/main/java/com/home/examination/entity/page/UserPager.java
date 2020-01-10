@@ -21,4 +21,9 @@ public class UserPager {
      */
     private UserDO requestParam;
 
+    /**
+     * token
+     */
+    private String token;
+
 }

@@ -1,9 +1,11 @@
 package com.home.examination.controller.web;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.NewsInformationDO;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.page.SchoolPager;
+import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.SchoolService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,6 +45,16 @@ public class SchoolController {
         return pager;
     }
 
+    @GetMapping("/listSuggest")
+    @ResponseBody
+    public SuggestVO<SchoolDO> listSuggest(SchoolDO schoolDO) {
+        LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.apply(!StringUtils.isEmpty(schoolDO.getName())," name like '%" + schoolDO.getName() + "%'");
+        List<SchoolDO> list = schoolService.list(queryWrapper);
+
+        return new SuggestVO<>(list);
+    }
+
     @PostMapping("/delete")
     @ResponseBody
     public Map<String, String> delete(Long id) {
@@ -54,7 +67,7 @@ public class SchoolController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         SchoolDO schoolDO = schoolService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/examinationManager/school/modify");
+        ModelAndView mav = new ModelAndView("/pages/school/modify");
         model.addAttribute("school", schoolDO == null ? new SchoolDO() : schoolDO);
 
         return mav;
@@ -62,7 +75,7 @@ public class SchoolController {
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(SchoolDO param) {
-        ModelAndView mav = new ModelAndView("/pages/examinationManager/school/list");
+        ModelAndView mav = new ModelAndView("/pages/school/list");
         schoolService.saveOrUpdate(param);
         return mav;
     }

@@ -54,14 +54,14 @@ public class NewsInformationController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         NewsInformationDO newsInformationDO = newsInformationService.getById(id);
-        ModelAndView mav = new ModelAndView("/pages/contentInformation/newsInformation/modify");
+        ModelAndView mav = new ModelAndView("/pages/newsInformation/modify");
         model.addAttribute("newsInformation", newsInformationDO == null ? new NewsInformationDO() : newsInformationDO);
         return mav;
     }
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(NewsInformationDO param) {
-        ModelAndView mav = new ModelAndView("/pages/contentInformation/newsInformation/list");
+        ModelAndView mav = new ModelAndView("/pages/newsInformation/list");
         newsInformationService.saveOrUpdate(param);
         return mav;
     }
