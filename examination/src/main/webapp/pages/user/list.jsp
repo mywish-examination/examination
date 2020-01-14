@@ -71,8 +71,8 @@
             mtype: "POST",
             colNames: ['', '真实姓名', '登录名', '省份', '地域', '民族', '高考年份', '科类', '类型', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: true},
-                {name: 'trueName', index: 'trueName', width: '10%', sortable: false},
+                {name: 'id', index: 'id', hidden: true},
+                {name: 'trueName', index: 'trueName', width: '15%', sortable: false},
                 {name: 'loginName', index: 'loginName', width: '10%', sortable: false},
                 {name: 'province', index: 'province', width: '10%', sortable: false},
                 {name: 'area', index: 'area', width: '10%', sortable: false},
@@ -90,7 +90,7 @@
                         return content;
                     }
                 },
-                {name: 'act', index: 'act', width: '10%', sortable: false}
+                {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
                 root: "pager.records",

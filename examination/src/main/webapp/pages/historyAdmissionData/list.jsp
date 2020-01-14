@@ -22,7 +22,7 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>历年录入数据管理 / 列表</h5>
+                    <h5>历年录入数据 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -71,15 +71,15 @@
             mtype: "POST",
             colNames: ['', '学校名称', '专业名称', '年份', '最高分', '最低分', '平均分', '控制线', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '20%', sortable: false, hidden: true},
-                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
-                {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
-                {name: 'years', index: 'years', width: '10%', sortable: false},
+                {name: 'id', index: 'id',hidden: true},
+                {name: 'schoolName', index: 'schoolName', width: '15%', sortable: false},
+                {name: 'majorName', index: 'majorName', width: '15%', sortable: false},
+                {name: 'years', index: 'years', width: '15%', sortable: false},
                 {name: 'highestScore', index: 'highestScore', width: '10%', sortable: false},
                 {name: 'minimumScore', index: 'minimumScore', width: '10%', sortable: false},
                 {name: 'average', index: 'average', width: '10%', sortable: false},
                 {name: 'controlLine', index: 'controlLine', width: '10%', sortable: false},
-                {name: 'act', index: 'act', width: '10%', sortable: false}
+                {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
                 root: "pager.records",

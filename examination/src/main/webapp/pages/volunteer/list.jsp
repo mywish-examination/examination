@@ -22,7 +22,7 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>报考志愿管理 / 列表</h5>
+                    <h5>志愿档案 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -69,12 +69,12 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['序号', '志愿名称', '用户名称', '学校名称', '分数', '状态', '操作'],
+            colNames: ['', '用户名称', '学校名称','专业名称', '分数', '状态', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
-                {name: 'majorId', index: 'majorId', width: '10%', sortable: false},
-                {name: 'userId', index: 'userId', width: '10%', sortable: false},
-                {name: 'schoolId', index: 'schoolId', width: '10%', sortable: false},
+                {name: 'id', index: 'id', hidden: true},
+                {name: 'userName', index: 'userName', width: '10%', sortable: false},
+                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
+                {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
                 {name: 'score', index: 'score', width: '10%', sortable: false},
                 {name: 'status', index: 'status', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
@@ -151,7 +151,7 @@
             .append("创建");
         $("#t_volunteerList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_volunteerList").click(function(){
-            window.location.href = "${basePath}pages/volunteer/detail";
+            window.location.href = "${basePath}web/volunteer/detail";
         });
 
     });

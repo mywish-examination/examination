@@ -26,30 +26,45 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>报考志愿管理 / 创建</h5>
+                    <h5>志愿档案 / 更新</h5>
                 </div>
                 <div class="ibox-content">
                     <form:form method="post" action="saveOrUpdate" modelAttribute="volunteer" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">志愿Id:</label>
+                            <label class="col-sm-2 control-label">专业名称:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="majorId" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="majorName" value="${volunteer.majorName}" data-id="${volunteer.majorId}">
+                                    <form:hidden path="majorId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">用户Id:</label>
+                            <label class="col-sm-2 control-label">用户名称:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="userId" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学校Id:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="schoolId" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="userName" value="${volunteer.userName}" data-id="${volunteer.userId}">
+                                    <form:hidden path="userId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -63,19 +78,15 @@
                             <label class="col-sm-2 control-label">状态:</label>
 
                             <div class="col-sm-10">
-                                <form:select path="status">
-                                    <form:option value="0">草稿</form:option>
-                                    <form:option value="1">发布</form:option>
-                                </form:select>
                                 <form:input path="status" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <input type="submit" class="btn btn-primary" value="保存" />
+                                <input type="button" class="btn btn-primary" value="保存" id="save"/>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/examinationManager/volunteer/list.jsp'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/volunteer/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>
@@ -94,8 +105,66 @@
 <script src="${basePath}js/plugins/summernote/summernote-zh-CN.js"></script>
 <!-- iCheck -->
 <script src="${basePath}js/plugins/iCheck/icheck.min.js"></script>
+<script src="${basePath}js/plugins/suggest/bootstrap-suggest.min.js"></script>
 <script>
     $(document).ready(function () {
+        $("#save").click(function() {
+            $("#schoolId").val($("#schoolName").attr("data-id"));
+            $("#majorId").val($("#majorName").attr("data-id"));
+            $("#userId").val($("#userName").attr("data-id"));
+            $("form#volunteer").submit();
+        });
+    });
+
+    /**
+     * 学校
+     */
+    var testBsSuggest = $("#schoolName").bsSuggest({
+        url: "${basePath}web/school/listSuggest",
+        showBtn: false,
+        idField: "id",
+        keyField: "name",
+        effectiveFields: ["name"],
+    }).on('onDataRequestSuccess', function (e, result) {
+        console.log('onDataRequestSuccess: ', result);
+    }).on('onSetSelectValue', function (e, keyword) {
+        console.log('onSetSelectValue: ', keyword);
+    }).on('onUnsetSelectValue', function (e) {
+        console.log("onUnsetSelectValue");
+    });
+
+    /**
+     * 专业
+     */
+    var testBsSuggest = $("#majorName").bsSuggest({
+        url: "${basePath}web/major/listSuggest",
+        showBtn: false,
+        idField: "id",
+        keyField: "name",
+        effectiveFields: ["name"],
+    }).on('onDataRequestSuccess', function (e, result) {
+        console.log('onDataRequestSuccess: ', result);
+    }).on('onSetSelectValue', function (e, keyword) {
+        console.log('onSetSelectValue: ', keyword);
+    }).on('onUnsetSelectValue', function (e) {
+        console.log("onUnsetSelectValue");
+    });
+
+    /**
+     * 用户
+     */
+    var testBsSuggest = $("#userName").bsSuggest({
+        url: "${basePath}web/user/listSuggest",
+        showBtn: false,
+        idField: "id",
+        keyField: "trueName",
+        effectiveFields: ["trueName"],
+    }).on('onDataRequestSuccess', function (e, result) {
+        console.log('onDataRequestSuccess: ', result);
+    }).on('onSetSelectValue', function (e, keyword) {
+        console.log('onSetSelectValue: ', keyword);
+    }).on('onUnsetSelectValue', function (e) {
+        console.log("onUnsetSelectValue");
     });
 </script>
 

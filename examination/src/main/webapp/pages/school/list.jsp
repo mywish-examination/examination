@@ -71,7 +71,7 @@
             mtype: "POST",
             colNames: ['', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '0%', sortable: false, hidden: true},
+                {name: 'id', index: 'id', hidden: true},
                 {name: 'name', index: 'name', width: '10%', sortable: false},
                 {name: 'mainType', index: 'mainType', width: '10%', sortable: false},
                 {name: 'childrenType', index: 'childrenType', width: '10%', sortable: false},
@@ -80,7 +80,7 @@
                 {name: 'mainManagerDepartment', index: 'mainManagerDepartment', width: '10%', sortable: false},
                 {name: 'educationalInstitutionsSubjection', index: 'educationalInstitutionsSubjection', width: '10%', sortable: false},
                 {name: 'educationLevel', index: 'educationLevel', width: '10%', sortable: false},
-                {name: 'act', index: 'act', width: '15%', sortable: false}
+                {name: 'act', index: 'act', width: '20%', sortable: false}
             ],
             jsonReader : {
                 root: "pager.records",
@@ -106,6 +106,10 @@
                     // 删除
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
+                    content += "</a>";
+                    // 专业管理
+                    content += "<a href='javascript:void(0);' title='专业管理' id='" + id + "' class='btn btn-link shortcut_major' title='专业管理'>";
+                    content += "<i class='fa fa-times'></i>专业管理";
                     content += "</a>";
                     jQuery("#schoolList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
@@ -138,6 +142,12 @@
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
                     window.location.href = "${basePath}web/school/detail?id=" + rowid;
+                });
+                //专业管理
+                $(".shortcut_major").click(function() {
+                    var rowid = $(this).attr("id");
+                    var rowName = $(this).parents("tr").find("[aria-describedby='schoolList_name']").text();
+                    window.location.href = "${basePath}pages/major/list.jsp?schoolName=" + rowName + "&schoolId=" + rowid;
                 });
             }
         });

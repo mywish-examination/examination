@@ -53,9 +53,12 @@ public class NewsInformationController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        NewsInformationDO newsInformationDO = newsInformationService.getById(id);
+        NewsInformationDO newsInformationDO = new NewsInformationDO();
+        if(id != null) {
+            newsInformationDO = newsInformationService.getById(id);
+        }
         ModelAndView mav = new ModelAndView("/pages/newsInformation/modify");
-        model.addAttribute("newsInformation", newsInformationDO == null ? new NewsInformationDO() : newsInformationDO);
+        model.addAttribute("newsInformation", newsInformationDO);
         return mav;
     }
 

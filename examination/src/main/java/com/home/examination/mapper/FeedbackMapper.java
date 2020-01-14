@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface FeedbackMapper extends BaseMapper<FeedbackDO> {
 
-    @Select("select t.*, u.name as userName " +
+    @Select("select t.*, u.true_name as userName " +
             "from feedback t " +
             "inner join user u on t.user_id = u.id " +
             "${ew.customSqlSegment}")

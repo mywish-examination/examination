@@ -3,8 +3,10 @@ package com.home.examination.controller.web;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.domain.FeedbackDO;
+import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.FeedbackPager;
 import com.home.examination.service.FeedbackService;
+import com.home.examination.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ public class FeedbackController {
 
     @Resource
     private FeedbackService feedbackService;
+    @Resource
+    private UserService userService;
 
     @PostMapping("/listPage")
     @ResponseBody
@@ -50,7 +54,12 @@ public class FeedbackController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        FeedbackDO feedbackDO = feedbackService.getById(id);
+        FeedbackDO feedbackDO = new FeedbackDO();
+        if(id != null) {
+            feedbackDO = feedbackService.getById(id);
+            UserDO userDO = userService.getById(feedbackDO.getUserId());
+            feedbackDO.setUserName(userDO.getTrueName());
+        }
         ModelAndView mav = new ModelAndView("/pages/feedback/modify");
         model.addAttribute("feedback", feedbackDO);
         return mav;

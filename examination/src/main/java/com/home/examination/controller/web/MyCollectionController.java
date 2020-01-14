@@ -3,8 +3,12 @@ package com.home.examination.controller.web;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.MyCollectionDO;
+import com.home.examination.entity.domain.SchoolDO;
+import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.MyCollectionPager;
+import com.home.examination.service.MajorService;
 import com.home.examination.service.MyCollectionService;
+import com.home.examination.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +29,10 @@ public class MyCollectionController {
 
     @Resource
     private MyCollectionService myCollectionService;
+    @Resource
+    private UserService userService;
+    @Resource
+    private MajorService majorService;
 
     @PostMapping("/listPage")
     @ResponseBody
@@ -53,7 +61,16 @@ public class MyCollectionController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        MyCollectionDO myCollectionDO = myCollectionService.getById(id);
+        MyCollectionDO myCollectionDO = new MyCollectionDO();
+        if(id != null) {
+            myCollectionDO = myCollectionService.getById(id);
+
+            UserDO userDO = userService.getById(myCollectionDO.getUserId());
+            myCollectionDO.setUserName(userDO.getTrueName());
+
+            MajorDO majorDO = majorService.getById(myCollectionDO.getMajorId());
+            myCollectionDO.setMajorName(majorDO.getName());
+        }
         ModelAndView mav = new ModelAndView("/pages/myCollection/modify");
         model.addAttribute("myCollection", myCollectionDO);
         return mav;

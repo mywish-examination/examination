@@ -22,7 +22,9 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>专业管理 / 列表</h5>
+                    <h5>
+                        <a href="#" onclick="javascript:window.location.href='${basePath}pages/school/list.jsp';">学院管理</a> / 专业管理 / 列表
+                    </h5>
                 </div>
                 <div class="ibox-content">
 
@@ -56,7 +58,7 @@
 
         // Configuration for jqGrid Example 1
         $("#majorList").jqGrid({
-            url: "${basePath}web/major/listPage",
+            url: "${basePath}web/major/listPage?requestParam.schoolId=${param.schoolId}",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -69,16 +71,18 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '门类', '专业类', '学历', '学位', '就业率', '年限', '操作'],
+            colNames: ['', '学校名称', '专业名称', '门类', '专业类', '学历', '学位', '就业率', '年限', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '20%', sortable: false, hidden: true},
+                {name: 'id', index: 'id', hidden: true},
+                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false, hidden: false},
+                {name: 'name', index: 'name', width: '15%', sortable: false, hidden: false},
                 {name: 'categoryType', index: 'categoryType', width: '10%', sortable: false},
                 {name: 'majorType', index: 'majorType', width: '10%', sortable: false},
                 {name: 'education', index: 'education', width: '10%', sortable: false},
                 {name: 'academicDegree', index: 'academicDegree', width: '10%', sortable: false},
                 {name: 'employmentRate', index: 'employmentRate', width: '10%', sortable: false},
                 {name: 'years', index: 'years', width: '10%', sortable: false},
-                {name: 'act', index: 'act', width: '10%', sortable: false}
+                {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
                 root: "pager.records",
@@ -135,7 +139,7 @@
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/major/detail?id=" + rowid;
+                    window.location.href = "${basePath}web/major/detail?schoolId=${param.schoolId}&id=" + rowid;
                 });
             }
         });
@@ -152,7 +156,7 @@
             .append("创建");
         $("#t_majorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_majorList").click(function(){
-            window.location.href = "${basePath}web/major/detail";
+            window.location.href = "${basePath}web/major/detail?schoolName=${param.schoolName}&schoolId=${param.schoolId}";
         });
 
     });

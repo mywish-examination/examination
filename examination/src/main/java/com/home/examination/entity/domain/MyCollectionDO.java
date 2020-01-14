@@ -31,4 +31,11 @@ public class MyCollectionDO extends BaseEntity {
     @TableField(exist = false)
     private String schoolName;
 
+    /**
+     * 用户名称
+     */
+    @TableField(exist = false)
+    private String userName;
+
+
 }

@@ -69,9 +69,9 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['序号', '学校名称', '专业名称', '用户名称', '创建时间', '操作'],
+            colNames: ['', '学校名称', '专业名称', '用户名称', '创建时间', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: false},
+                {name: 'id', index: 'id', hidden: true},
                 {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
                 {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
                 {name: 'userName', index: 'userName', width: '10%', sortable: false},
@@ -88,7 +88,7 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学院列表",
+            caption: "我的收藏列表",
             toolbar: [true,"top"],
             gridComplete: function() {
                 var ids = jQuery("#myCollectionList").jqGrid('getDataIDs');
@@ -150,7 +150,7 @@
             .append("创建");
         $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_myCollectionList").click(function(){
-            window.location.href = "${basePath}pages/myCollection/detail";
+            window.location.href = "${basePath}web/myCollection/detail";
         });
 
     });

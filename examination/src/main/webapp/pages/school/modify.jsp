@@ -34,7 +34,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>学院 / 更新</h5>
+                    <h5>学院管理 / 更新</h5>
                 </div>
                 <div class="ibox-content">
                     <form:form method="post" action="saveOrUpdate" modelAttribute="school" class="form-horizontal">
@@ -174,7 +174,7 @@
                             <div class="col-sm-4 col-sm-offset-3">
                                 <input type="submit" class="btn btn-primary" value="保存" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/examinationManager/school/list.jsp'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/school/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>

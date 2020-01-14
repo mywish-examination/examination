@@ -42,7 +42,11 @@ public class DataDictionaryController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        DataDictionaryDO dataDictionaryDO = dataDictionaryService.getById(id);
+        DataDictionaryDO dataDictionaryDO = new DataDictionaryDO();
+        if(id != null) {
+            dataDictionaryDO = dataDictionaryService.getById(id);
+        }
+
         ModelAndView mav = new ModelAndView("/pages/dataDictionary/modify");
         model.addAttribute("dataDictionary", dataDictionaryDO);
         return mav;

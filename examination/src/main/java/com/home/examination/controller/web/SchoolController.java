@@ -66,9 +66,12 @@ public class SchoolController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        SchoolDO schoolDO = schoolService.getById(id);
+        SchoolDO schoolDO = new SchoolDO();
+        if(id != null) {
+            schoolDO = schoolService.getById(id);
+        }
         ModelAndView mav = new ModelAndView("/pages/school/modify");
-        model.addAttribute("school", schoolDO == null ? new SchoolDO() : schoolDO);
+        model.addAttribute("school", schoolDO);
 
         return mav;
     }

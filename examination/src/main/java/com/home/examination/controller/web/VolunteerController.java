@@ -2,8 +2,14 @@ package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.config.DataDictionaryHandler;
+import com.home.examination.entity.domain.MajorDO;
+import com.home.examination.entity.domain.SchoolDO;
+import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.domain.VolunteerDO;
 import com.home.examination.entity.page.VolunteerPager;
+import com.home.examination.service.MajorService;
+import com.home.examination.service.SchoolService;
+import com.home.examination.service.UserService;
 import com.home.examination.service.VolunteerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +31,13 @@ public class VolunteerController {
 
     @Resource
     private VolunteerService volunteerService;
+
+    @Resource
+    private SchoolService schoolService;
+    @Resource
+    private MajorService majorService;
+    @Resource
+    private UserService userService;
 
     @PostMapping("/listPage")
     @ResponseBody
@@ -57,7 +70,19 @@ public class VolunteerController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        VolunteerDO volunteerDO = volunteerService.getById(id);
+        VolunteerDO volunteerDO = new VolunteerDO();
+        if (id != null) {
+            volunteerDO = volunteerService.getById(id);
+
+            SchoolDO schoolDO = schoolService.getById(volunteerDO.getSchoolId());
+            volunteerDO.setSchoolName(schoolDO.getName());
+
+            MajorDO majorDO = majorService.getById(volunteerDO.getMajorId());
+            volunteerDO.setMajorName(majorDO.getName());
+
+            UserDO userDO = userService.getById(volunteerDO.getUserId());
+            volunteerDO.setUserName(userDO.getTrueName());
+        }
         ModelAndView mav = new ModelAndView("/pages/volunteer/modify");
         model.addAttribute("volunteer", volunteerDO);
         return mav;
@@ -66,6 +91,10 @@ public class VolunteerController {
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(VolunteerDO param) {
         ModelAndView mav = new ModelAndView("/pages/volunteer/list");
+        if(param.getMajorId() != null) {
+            MajorDO majorDO = majorService.getById(param.getMajorId());
+            param.setSchoolId(majorDO.getSchoolId());
+        }
         volunteerService.saveOrUpdate(param);
         return mav;
     }

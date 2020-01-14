@@ -22,7 +22,7 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>新闻资讯管理 / 列表</h5>
+                    <h5>新闻资讯 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -71,7 +71,7 @@
             mtype: "POST",
             colNames: ['', '标题', '图片url', '内容', '操作'],
             colModel: [
-                {name: 'id', index: 'id', width: '10%', sortable: false, hidden: true},
+                {name: 'id', index: 'id', hidden: true},
                 {name: 'title', index: 'title', width: '10%', sortable: false},
                 {name: 'imageUrl', index: 'imageUrl', width: '10%', sortable: false,
                     formatter: function (cellvalue, options, rowdata) {

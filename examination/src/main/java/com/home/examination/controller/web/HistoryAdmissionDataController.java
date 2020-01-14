@@ -69,9 +69,17 @@ public class HistoryAdmissionDataController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        HistoryAdmissionDataDO historyAdmissionDataDO = historyAdmissionDataService.getById(id);
+        HistoryAdmissionDataDO historyAdmissionDataDO = new HistoryAdmissionDataDO();
+        if(id != null) {
+            historyAdmissionDataDO = historyAdmissionDataService.getById(id);
+
+            SchoolDO schoolDO = schoolService.getById(historyAdmissionDataDO.getSchoolId());
+            MajorDO majorDO = majorService.getById(historyAdmissionDataDO.getMajorId());
+            historyAdmissionDataDO.setSchoolName(schoolDO.getName());
+            historyAdmissionDataDO.setMajorName(majorDO.getName());
+        }
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/modify");
-        model.addAttribute("historyAdmissionData", historyAdmissionDataDO == null ? new HistoryAdmissionDataDO() : historyAdmissionDataDO);
+        model.addAttribute("historyAdmissionData", historyAdmissionDataDO);
 
         return mav;
     }
@@ -79,6 +87,10 @@ public class HistoryAdmissionDataController {
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(HistoryAdmissionDataDO param) {
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/list");
+        if(param.getMajorId() != null) {
+            MajorDO majorDO = majorService.getById(param.getMajorId());
+            param.setSchoolId(majorDO.getSchoolId());
+        }
         historyAdmissionDataService.saveOrUpdate(param);
         return mav;
     }

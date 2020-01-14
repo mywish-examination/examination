@@ -1,9 +1,10 @@
 package com.home.examination.controller.web;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.UserPager;
+import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +40,16 @@ public class UserController {
         return pager;
     }
 
+    @GetMapping("/listSuggest")
+    @ResponseBody
+    public SuggestVO<UserDO> listSuggest(UserDO userDO) {
+        LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.apply(!StringUtils.isEmpty(userDO.getTrueName()), " name like '%" + userDO.getTrueName() + "%'");
+        List<UserDO> list = userService.list(queryWrapper);
+
+        return new SuggestVO<>(list);
+    }
+
     @PostMapping("/delete")
     @ResponseBody
     public Map<String, String> delete(Long id) {
@@ -49,9 +61,12 @@ public class UserController {
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        UserDO userDO = userService.getById(id);
+        UserDO userDO = new UserDO();
+        if (id != null) {
+            userDO = userService.getById(id);
+        }
         ModelAndView mav = new ModelAndView("/pages/user/modify");
-        model.addAttribute("user", userDO == null ? new UserDO() : userDO);
+        model.addAttribute("user", userDO);
 
         return mav;
     }
@@ -65,7 +80,7 @@ public class UserController {
 
     @PostMapping("/login")
     public void login(HttpServletRequest request, HttpServletResponse response,
-                              @RequestParam String loginName, @RequestParam String password) throws IOException {
+                      @RequestParam String loginName, @RequestParam String password) throws IOException {
         LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserDO::getLoginName, loginName).eq(UserDO::getPassword, password).eq(UserDO::getType, "0");
         UserDO one = userService.getOne(queryWrapper);
@@ -96,8 +111,8 @@ public class UserController {
     @GetMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie: cookies) {
-            if(cookie.getName().equals("token")) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("token")) {
                 cookie.setMaxAge(0);
                 cookie.setPath(request.getContextPath());
                 response.addCookie(cookie);

@@ -102,7 +102,7 @@
                             <div class="col-sm-4 col-sm-offset-3">
                                 <input type="submit" class="btn btn-primary" value="保存" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/systemManager/user/list.jsp'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/user/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>

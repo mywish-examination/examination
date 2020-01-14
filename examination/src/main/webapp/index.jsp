@@ -46,19 +46,19 @@
                         <span class="nav-label">学院管理</span>
                         <span class="fa "></span>
                     </a>
-                    <a class="J_menuItem" href="${basePath}pages/major/list.jsp">
-                        <i class="fa fa-home"></i>
-                        <span class="nav-label">专业管理</span>
-                        <span class="fa "></span>
-                    </a>
+<%--                    <a class="J_menuItem" href="${basePath}pages/major/list.jsp">--%>
+<%--                        <i class="fa fa-home"></i>--%>
+<%--                        <span class="nav-label">专业管理</span>--%>
+<%--                        <span class="fa "></span>--%>
+<%--                    </a>--%>
                     <a class="J_menuItem" href="${basePath}pages/volunteer/list.jsp">
                         <i class="fa fa-home"></i>
-                        <span class="nav-label">志愿管理</span>
+                        <span class="nav-label">志愿档案</span>
                         <span class="fa "></span>
                     </a>
                     <a class="J_menuItem" href="${basePath}pages/historyAdmissionData/list.jsp">
                         <i class="fa fa-home"></i>
-                        <span class="nav-label">历年录取数据管理</span>
+                        <span class="nav-label">历年录取数据</span>
                         <span class="fa "></span>
                     </a>
                     <a class="J_menuItem" href="${basePath}pages/newsInformation/list.jsp">
@@ -68,7 +68,7 @@
                     </a>
                     <a class="J_menuItem" href="${basePath}pages/feedback/list.jsp">
                         <i class="fa fa-home"></i>
-                        <span class="nav-label">意见反馈管理</span>
+                        <span class="nav-label">意见反馈</span>
                         <span class="fa "></span>
                     </a>
                     <a class="J_menuItem" href="${basePath}pages/myCollection/list.jsp">
@@ -81,11 +81,11 @@
                         <span class="nav-label">用户管理</span>
                         <span class="fa "></span>
                     </a>
-<%--                    <a class="J_menuItem" href="${basePath}pages/dataDictionary/list.jsp">--%>
-<%--                        <i class="fa fa-home"></i>--%>
-<%--                        <span class="nav-label">数据字典管理</span>--%>
-<%--                        <span class="fa "></span>--%>
-<%--                    </a>--%>
+                    <a class="J_menuItem" href="${basePath}pages/dataDictionary/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">数据字典</span>
+                        <span class="fa "></span>
+                    </a>
                 </li>
 
             </ul>
