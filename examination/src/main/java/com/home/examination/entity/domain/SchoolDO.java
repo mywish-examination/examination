@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @TableName("school")
 public class SchoolDO extends BaseEntity {
@@ -82,5 +84,10 @@ public class SchoolDO extends BaseEntity {
      * 评价星级
      */
     private String starRating;
+
+    /**
+     * 专业列表
+     */
+    private List<MajorDO> majorList;
 
 }

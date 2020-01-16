@@ -5,7 +5,11 @@
 
     <title>${title}</title>
 
-    <link rel="shortcut icon" href="${basePath}favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="${basePath}favicon.ico">
+    <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${basePath}css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
     <!-- jqgrid-->
@@ -13,6 +17,14 @@
 
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
+    <style>
+        .uploadify ,.ke-container{
+            float:left;
+        }
+    </style>
 
 </head>
 
@@ -41,12 +53,18 @@
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
 
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
+
 <!-- Peity -->
 <script src="${basePath}js/plugins/peity/jquery.peity.min.js"></script>
 
 <!-- jqGrid -->
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
+
+<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
 
 <!-- Page-Level Scripts -->
 <script>
@@ -155,8 +173,39 @@
         $("#create","#t_historyAdmissionDataList").click(function(){
             window.location.href = "${basePath}web/historyAdmissionData/detail";
         });
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","import")
+            .attr("class","btn btn-sm btn-primary")
+            .attr("data-target", "#myModal")
+            .attr("data-toggle", "modal")
+            .append("导入");
+        $("#t_historyAdmissionDataList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#import","#t_historyAdmissionDataList").click(function(){
+            showUploadDialog();
+        });
 
     });
+
+    function showUploadDialog(){
+        picUpload({
+            server: '${basePath}web/historyAdmissionData/uploadFile;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'xls,xlsx',//允许的文件后缀
+                mimeTypes: "*.xls;*.xlsx;" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
+
 </script>
 
 </body>

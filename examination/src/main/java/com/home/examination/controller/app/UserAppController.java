@@ -1,7 +1,9 @@
 package com.home.examination.controller.app;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.UserDO;
+import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -144,13 +146,30 @@ public class UserAppController {
 
         userDO.setPassword(password);
         boolean result = userService.saveOrUpdate(userDO);
-        ;
         if (result) {
             map.put("status", "success");
         } else {
             map.put("status", "error");
         }
         return map;
+    }
+
+    /**
+     * 设置预估分和高考分数
+     * @param userDO
+     * @return
+     */
+    @PostMapping("/settingScore")
+    public ExecuteResult settingScore(UserDO userDO) {
+        UserDO currentUser = (UserDO) redisTemplate.opsForValue().get(userDO.getToken());
+        if(StringUtils.isEmpty(userDO.getCollegeScore())) {
+            currentUser.setCollegeScore(userDO.getCollegeScore());
+        }
+        if(StringUtils.isEmpty(userDO.getPredictedScore())) {
+            currentUser.setPredictedScore(userDO.getPredictedScore());
+        }
+
+        return new ExecuteResult(userService.saveOrUpdate(currentUser));
     }
 
 }

@@ -17,8 +17,6 @@ public class NewsInformationAppController {
 
     @Resource
     private NewsInformationService newsInformationService;
-    @Value("${examination.upload.newsInformation-url}")
-    private String schoolUrl;
 
     @PostMapping("/listPage")
     public ExecuteResult listPage(NewsInformationPager pager) {

@@ -46,4 +46,5 @@ public class VolunteerDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String userName;
+
 }

@@ -104,7 +104,7 @@ public class HistoryAdmissionDataController {
 
         Workbook book = null;
         try {
-            if (fileExtensionName.contains(".xls")) {
+            if (fileExtensionName.equals(".xls")) {
                 book = new HSSFWorkbook(file.getInputStream());
             } else {
                 book = new XSSFWorkbook(file.getInputStream());
@@ -120,7 +120,7 @@ public class HistoryAdmissionDataController {
         List<String> majorNameList = new ArrayList<>(lastRowNum);
         List<HistoryAdmissionDataDO> list = new ArrayList<>();
         HistoryAdmissionDataDO historyAdmissionData;
-        for (int i = 1; i < lastRowNum; i++) {
+        for (int i = 1; i <= lastRowNum; i++) {
             historyAdmissionData = new HistoryAdmissionDataDO();
             Row row = sheetAt.getRow(i);
 
@@ -138,8 +138,8 @@ public class HistoryAdmissionDataController {
 
             // 年份
             Cell cell2 = row.getCell(2);
-            String years = cell2.getStringCellValue();
-            historyAdmissionData.setYears(Integer.valueOf(years));
+
+            historyAdmissionData.setYears((int) cell2.getNumericCellValue());
 
             // 最高分
             Cell cell3 = row.getCell(3);
@@ -177,9 +177,9 @@ public class HistoryAdmissionDataController {
 
         for (HistoryAdmissionDataDO historyAdmissionDataDO : list) {
             if (schoolMap.containsKey(historyAdmissionDataDO.getSchoolName()))
-                schoolMap.get(historyAdmissionDataDO.getSchoolName());
+                historyAdmissionDataDO.setSchoolId(schoolMap.get(historyAdmissionDataDO.getSchoolName()));
             if (majorMap.containsKey(historyAdmissionDataDO.getMajorName()))
-                majorMap.get(historyAdmissionDataDO.getMajorName());
+                historyAdmissionDataDO.setMajorId(majorMap.get(historyAdmissionDataDO.getMajorName()));
         }
         boolean result = historyAdmissionDataService.saveBatch(list);
         return result ? "success" : "error";
