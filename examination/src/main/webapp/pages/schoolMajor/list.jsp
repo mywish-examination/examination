@@ -22,12 +22,14 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>学院管理 / 列表</h5>
+                    <h5>
+                        学校专业管理 / 列表
+                    </h5>
                 </div>
                 <div class="ibox-content">
 
                     <div class="jqGrid_wrapper">
-                        <table id="schoolList"></table>
+                        <table id="majorList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -55,8 +57,8 @@
         $.jgrid.defaults.styleUI = 'Bootstrap';
 
         // Configuration for jqGrid Example 1
-        $("#schoolList").jqGrid({
-            url: "${basePath}web/school/listPage",
+        $("#majorList").jqGrid({
+            url: "${basePath}web/schoolMajor/listPage?requestParam.schoolId=${param.schoolId}",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -69,17 +71,15 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
+            colNames: ['', '学校名称', '专业名称', '学科', '评估星级', '招生人数', '录取分数线', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'name', index: 'name', width: '15%', sortable: false},
-                {name: 'mainType', index: 'mainType', width: '10%', sortable: false},
-                {name: 'childrenType', index: 'childrenType', width: '10%', sortable: false},
-                {name: 'onceName', index: 'onceName', width: '10%', sortable: false},
-                {name: 'remark', index: 'remark', width: '10%', sortable: false},
-                {name: 'mainManagerDepartment', index: 'mainManagerDepartment', width: '10%', sortable: false},
-                {name: 'educationalInstitutionsSubjection', index: 'educationalInstitutionsSubjection', width: '10%', sortable: false},
-                {name: 'educationLevel', index: 'educationLevel', width: '10%', sortable: false},
+                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false, hidden: false},
+                {name: 'majorName', index: 'majorName', width: '15%', sortable: false, hidden: false},
+                {name: 'subjectName', index: 'subjectName', width: '10%', sortable: false},
+                {name: 'starRating', index: 'starRating', width: '10%', sortable: false},
+                {name: 'recruitNum', index: 'recruitNum', width: '10%', sortable: false},
+                {name: 'admissionScoreLine', index: 'admissionScoreLine', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
@@ -92,10 +92,10 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学院列表",
+            caption: "专业列表",
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#schoolList").jqGrid('getDataIDs');
+                var ids = jQuery("#majorList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
@@ -107,7 +107,7 @@
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#schoolList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#majorList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
             },
             loadComplete: function(){
@@ -115,7 +115,7 @@
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
                     var prompt = "确定要删除所选择的记录吗？";
-                    var url = "${basePath}web/school/delete?id=" + rowid;
+                    var url = "${basePath}web/schoolMajor/delete?id=" + rowid;
                     index = top.layer.confirm(prompt, {
                         btn: ["确认", "取消"] //按钮
                     }, function(){
@@ -127,7 +127,7 @@
                             success:function(jsonData){
                                 if(jsonData.status == 'success') {
                                     top.layer.close(index);
-                                    $("#schoolList").trigger("reloadGrid");
+                                    $("#majorList").trigger("reloadGrid");
                                 }
                             }
                         });
@@ -137,7 +137,7 @@
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/school/detail?id=" + rowid;
+                    window.location.href = "${basePath}web/schoolMajor/detail?schoolId=${param.schoolId}&id=" + rowid;
                 });
             }
         });
@@ -145,16 +145,16 @@
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#schoolList').setGridWidth(width);
+            $('#majorList').setGridWidth(width);
         });
 
         var $content = $("<a></a>").attr("href","javascript:void(0)")
             .attr("id","create")
             .attr("class","btn btn-sm btn-primary")
             .append("创建");
-        $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_schoolList").click(function(){
-            window.location.href = "${basePath}web/school/detail";
+        $("#t_majorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#create","#t_majorList").click(function(){
+            window.location.href = "${basePath}web/schoolMajor/detail?schoolName=${param.schoolName}&schoolId=${param.schoolId}";
         });
 
     });

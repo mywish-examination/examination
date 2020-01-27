@@ -108,30 +108,12 @@
                                 <form:input path="toSunGuidance" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">学校名称:</label>
-
-                                <div class="col-sm-10">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="schoolName" value="${major.schoolName}" data-id="${major.schoolId}">
-                                        <form:hidden path="schoolId" />
-                                        <div class="input-group-btn">
-                                            <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                            </ul>
-                                        </div>
-                                        <!-- /btn-group -->
-                                    </div>
-                                </div>
-                        </div>
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <input type="button" class="btn btn-primary" value="保存" id="save" />
+                                <input type="submit" class="btn btn-primary" value="保存" id="save" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/major/list.jsp?schoolName=${major.schoolName}&schoolId=${major.schoolId}'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/major/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>
@@ -153,32 +135,7 @@
 <script src="${basePath}js/plugins/suggest/bootstrap-suggest.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#save").click(function() {
-            $("#schoolId").val($("#schoolName").attr("data-id"));
-            $("form#major").submit();
-        });
     });
-
-    /**
-     * 不显示下拉按钮
-     */
-    var testBsSuggest = $("#schoolName").bsSuggest({
-        //url: "/rest/sys/getuserlist?keyword=",
-        url: "${basePath}web/school/listSuggest",
-        /*effectiveFields: ["userName", "shortAccount"],
-        searchFields: [ "shortAccount"],
-        effectiveFieldsAlias:{userName: "姓名"},*/
-        showBtn: false,
-        idField: "id",
-        keyField: "name",
-    effectiveFields: ["name"],
-}).on('onDataRequestSuccess', function (e, result) {
-    console.log('onDataRequestSuccess: ', result);
-}).on('onSetSelectValue', function (e, keyword) {
-    console.log('onSetSelectValue: ', keyword);
-}).on('onUnsetSelectValue', function (e) {
-    console.log("onUnsetSelectValue");
-});
 </script>
 
 </body>

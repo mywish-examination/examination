@@ -88,6 +88,7 @@ public class SchoolDO extends BaseEntity {
     /**
      * 专业列表
      */
+    @TableField(exist = false)
     private List<MajorDO> majorList;
 
 }

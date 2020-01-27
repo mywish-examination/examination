@@ -1,6 +1,9 @@
 package com.home.examination.controller.app;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.Query;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.UserDO;
@@ -34,24 +37,6 @@ public class VolunteerAppController {
     @Resource
     private MajorService majorService;
 
-    @PostMapping("/listPage")
-    public ExecuteResult listPage(VolunteerPager pager) {
-        UserDO user = (UserDO) redisTemplate.opsForValue().get(pager.getToken());
-
-        LambdaQueryWrapper<VolunteerDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(VolunteerDO::getUserId, user.getId());
-        int total = volunteerService.countByQueryWrapper(queryWrapper);
-        List<VolunteerDO> list = Collections.emptyList();
-        if (total > 0) {
-            queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
-            list = volunteerService.pageByQueryWrapper(queryWrapper);
-        }
-
-        pager.getPager().setRecords(list);
-        pager.getPager().setTotal(total);
-        return new ExecuteResult(pager);
-    }
-
     /**
      * 专业主导
      * @return
@@ -62,6 +47,11 @@ public class VolunteerAppController {
         LambdaQueryWrapper<VolunteerDO> volunteerQueryWrapper = new LambdaQueryWrapper<>();
         volunteerQueryWrapper.eq(VolunteerDO::getUserId, userDO.getId());
         List<VolunteerDO> list = volunteerService.list(volunteerQueryWrapper);
+
+        if(list.isEmpty()) {
+            return new ExecuteResult();
+        }
+
         List<Long> schoolIdList = list.stream().map(VolunteerDO::getSchoolId).collect(Collectors.toList());
         Map<Long, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getSchoolId));
 
@@ -89,19 +79,17 @@ public class VolunteerAppController {
     }
 
     @PostMapping("/delete")
-    public ExecuteResult delete(Long id) {
-        volunteerService.removeById(id);
-        return new ExecuteResult();
+    public ExecuteResult delete(Long schoolId, Long majorId, String token) {
+        UserDO userDO = (UserDO) redisTemplate.opsForValue().get(token);
+        LambdaQueryWrapper<VolunteerDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(VolunteerDO::getMajorId, majorId).eq(VolunteerDO::getSchoolId, schoolId).eq(VolunteerDO::getUserId, userDO.getId());
+        boolean result = volunteerService.remove(wrapper);
+        return new ExecuteResult(result);
     }
 
     @GetMapping("/detail")
     public ExecuteResult detail(Long id) {
         return new ExecuteResult(volunteerService.getById(id));
-    }
-
-    @PostMapping("/saveOrUpdate")
-    public ExecuteResult saveOrUpdate(VolunteerDO param) {
-        return new ExecuteResult(volunteerService.saveOrUpdate(param));
     }
 
 }

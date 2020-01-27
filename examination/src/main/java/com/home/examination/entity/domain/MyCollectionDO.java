@@ -37,5 +37,10 @@ public class MyCollectionDO extends BaseEntity {
     @TableField(exist = false)
     private String userName;
 
+    /**
+     * 当前用户token
+     */
+    @TableField(exist = false)
+    private String token;
 
 }

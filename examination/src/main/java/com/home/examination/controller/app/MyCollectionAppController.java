@@ -54,6 +54,8 @@ public class MyCollectionAppController {
 
     @PostMapping("/collection")
     public ExecuteResult saveOrUpdate(MyCollectionDO param, int type) {
+        UserDO user = (UserDO) redisTemplate.opsForValue().get(param.getToken());
+
         boolean result;
         if (type == 0) {
             result = myCollectionService.removeById(param.getMajorId());

@@ -46,11 +46,16 @@
                         <span class="nav-label">学院管理</span>
                         <span class="fa "></span>
                     </a>
-<%--                    <a class="J_menuItem" href="${basePath}pages/major/list.jsp">--%>
-<%--                        <i class="fa fa-home"></i>--%>
-<%--                        <span class="nav-label">专业管理</span>--%>
-<%--                        <span class="fa "></span>--%>
-<%--                    </a>--%>
+                    <a class="J_menuItem" href="${basePath}pages/major/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">专业管理</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/schoolMajor/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">学校专业管理</span>
+                        <span class="fa "></span>
+                    </a>
                     <a class="J_menuItem" href="${basePath}pages/volunteer/list.jsp">
                         <i class="fa fa-home"></i>
                         <span class="nav-label">志愿档案</span>

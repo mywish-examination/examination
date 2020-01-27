@@ -12,7 +12,6 @@ public class MajorDO extends BaseEntity {
      * 专业名称
      */
     String name;
-
     /**
      * 门类
      */
@@ -21,10 +20,6 @@ public class MajorDO extends BaseEntity {
      * 专业类
      */
     String majorType;
-    /**
-     * 学科名称
-     */
-    String subjectName;
     /**
      * 学历
      */
@@ -58,26 +53,10 @@ public class MajorDO extends BaseEntity {
      */
     String toSunGuidance;
 
-    // 新增字段
     /**
-     * 评价星级
+     * 收藏状态，1=收藏，0=不收藏
      */
-    private String starRating;
-
-    /**
-     * 学校Id
-     */
-    private Long schoolId;
-    /**
-     * 招生人数
-     */
-    private Integer recruitNum;
-    /**
-     * 录取分数线
-     */
-    private Integer admissionScoreLine;
-
     @TableField(exist = false)
-    private String schoolName;
+    String collectionStatus;
 
 }

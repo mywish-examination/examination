@@ -12,15 +12,13 @@ import java.util.List;
 @Mapper
 public interface MajorMapper extends BaseMapper<MajorDO> {
 
-    @Select("select t.*, s.name as schoolName " +
+    @Select("select t.*" +
             "from major t " +
-            "inner join school s on t.school_id = s.id " +
             "${ew.customSqlSegment}")
     List<MajorDO> pageByQueryWrapper(@Param("ew") Wrapper<MajorDO> queryWrapper);
 
     @Select("select count(t.id) " +
             "from major t " +
-            "inner join school s on t.school_id = s.id " +
             "${ew.customSqlSegment}")
     int countByQueryWrapper(@Param("ew") Wrapper<MajorDO> queryWrapper);
 

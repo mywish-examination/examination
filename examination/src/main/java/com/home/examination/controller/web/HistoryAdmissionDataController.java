@@ -89,7 +89,7 @@ public class HistoryAdmissionDataController {
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/list");
         if(param.getMajorId() != null) {
             MajorDO majorDO = majorService.getById(param.getMajorId());
-            param.setSchoolId(majorDO.getSchoolId());
+//            param.setSchoolId(majorDO.getSchoolId());
         }
         historyAdmissionDataService.saveOrUpdate(param);
         return mav;

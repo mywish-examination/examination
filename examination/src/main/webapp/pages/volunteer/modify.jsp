@@ -32,6 +32,24 @@
                     <form:form method="post" action="saveOrUpdate" modelAttribute="volunteer" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">学校名称:</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="schoolName" value="${volunteer.schoolName}" data-id="${volunteer.schoolId}">
+                                    <form:hidden path="schoolId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">专业名称:</label>
 
                             <div class="col-sm-10">

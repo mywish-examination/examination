@@ -91,10 +91,6 @@ public class VolunteerController {
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(VolunteerDO param) {
         ModelAndView mav = new ModelAndView("/pages/volunteer/list");
-        if(param.getMajorId() != null) {
-            MajorDO majorDO = majorService.getById(param.getMajorId());
-            param.setSchoolId(majorDO.getSchoolId());
-        }
         volunteerService.saveOrUpdate(param);
         return mav;
     }

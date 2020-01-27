@@ -2,6 +2,7 @@ package com.home.examination.entity.vo;
 
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.MajorDO;
+import com.home.examination.entity.domain.SchoolDO;
 import lombok.Data;
 
 import java.util.List;
@@ -94,5 +95,10 @@ public class TargetCollegesVO {
      * 历年录取分数列表
      */
     private List<HistoryAdmissionDataDO> historyAdmissionDataList;
+
+    /**
+     * 学校列表
+     */
+    private List<SchoolDO> schoolList;
 
 }
