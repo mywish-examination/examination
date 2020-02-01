@@ -32,17 +32,17 @@
                     <form:form method="post" action="saveOrUpdate" modelAttribute="dataDictionary" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">字典编码:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="dictCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">字典名称:</label>
 
                             <div class="col-sm-10">
                                 <form:input path="dictName" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">字典编码:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="dictCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
                         <div class="form-group">

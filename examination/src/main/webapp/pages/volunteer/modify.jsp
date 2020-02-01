@@ -96,7 +96,12 @@
                             <label class="col-sm-2 control-label">状态:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="status" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="status" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_volunteer_status}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
 

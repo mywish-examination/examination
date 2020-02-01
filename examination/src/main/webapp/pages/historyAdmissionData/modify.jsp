@@ -32,10 +32,61 @@
                     <form:form method="post" action="saveOrUpdate" modelAttribute="historyAdmissionData" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">学校名称:</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="schoolName" value="${historyAdmissionData.schoolName}" data-id="${historyAdmissionData.schoolId}">
+                                    <form:hidden path="schoolId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">专业名称:</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="majorName" name="majorName" value="${historyAdmissionData.majorName}" data-id="${historyAdmissionData.majorId}">
+                                    <form:hidden path="majorId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">年份:</label>
 
                             <div class="col-sm-10">
                                 <form:input path="years" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">科类代码:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="subjectCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">批次代码:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="batchCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -59,6 +110,29 @@
                                 <form:input path="average" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">最高位次:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="highestRank" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">最低位次:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="minimumRank" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">平均位次:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="avgRank" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">控制线:</label>
 
@@ -67,21 +141,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">专业名称:</label>
+                            <label class="col-sm-2 control-label">录取人数:</label>
 
                             <div class="col-sm-10">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="majorName" value="${historyAdmissionData.majorName}" data-id="${historyAdmissionData.majorId}">
-                                    <form:hidden path="majorId" />
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                        </ul>
-                                    </div>
-                                    <!-- /btn-group -->
-                                </div>
+                                <form:input path="enrolment" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">备注:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="remark" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
 

@@ -1,5 +1,6 @@
 package com.home.examination.controller.web;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.MajorDO;
@@ -74,9 +75,7 @@ public class HistoryAdmissionDataController {
             historyAdmissionDataDO = historyAdmissionDataService.getById(id);
 
             SchoolDO schoolDO = schoolService.getById(historyAdmissionDataDO.getSchoolId());
-            MajorDO majorDO = majorService.getById(historyAdmissionDataDO.getMajorId());
             historyAdmissionDataDO.setSchoolName(schoolDO.getName());
-            historyAdmissionDataDO.setMajorName(majorDO.getName());
         }
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/modify");
         model.addAttribute("historyAdmissionData", historyAdmissionDataDO);
@@ -87,10 +86,6 @@ public class HistoryAdmissionDataController {
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(HistoryAdmissionDataDO param) {
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/list");
-        if(param.getMajorId() != null) {
-            MajorDO majorDO = majorService.getById(param.getMajorId());
-//            param.setSchoolId(majorDO.getSchoolId());
-        }
         historyAdmissionDataService.saveOrUpdate(param);
         return mav;
     }
@@ -127,6 +122,7 @@ public class HistoryAdmissionDataController {
             // 学校名称
             Cell cell = row.getCell(0);
             String schoolName = cell.getStringCellValue();
+            if(StringUtils.isEmpty(schoolName)) continue;
             schoolNameList.add(schoolName);
             historyAdmissionData.setSchoolName(schoolName);
 
@@ -138,7 +134,6 @@ public class HistoryAdmissionDataController {
 
             // 年份
             Cell cell2 = row.getCell(2);
-
             historyAdmissionData.setYears((int) cell2.getNumericCellValue());
 
             // 最高分
@@ -160,6 +155,28 @@ public class HistoryAdmissionDataController {
             Cell cell6 = row.getCell(6);
             BigDecimal controlLine = new BigDecimal(cell6.getNumericCellValue());
             historyAdmissionData.setControlLine(controlLine);
+
+            // 批次代码
+            Cell cell7 = row.getCell(7);
+            historyAdmissionData.setBatchCode(cell7.getStringCellValue());
+            // 科类代码
+            Cell cell8 = row.getCell(8);
+            historyAdmissionData.setSubjectCode(cell8.getStringCellValue());
+            // 最高位次
+            Cell cell9 = row.getCell(9);
+            historyAdmissionData.setHighestRank(cell9.getStringCellValue());
+            // 最低位次
+            Cell cell10 = row.getCell(10);
+            historyAdmissionData.setMinimumRank(cell10.getStringCellValue());
+            // 平均位次
+            Cell cell11 = row.getCell(11);
+            historyAdmissionData.setAvgRank(cell11.getStringCellValue());
+            // 录取人数
+            Cell cell12 = row.getCell(12);
+            historyAdmissionData.setEnrolment(cell12.getStringCellValue());
+            // 备注
+            Cell cell13 = row.getCell(13);
+            historyAdmissionData.setRemark(cell13.getStringCellValue());
 
             list.add(historyAdmissionData);
         }

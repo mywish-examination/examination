@@ -1,15 +1,17 @@
 package com.home.examination.common.runner;
 
+import com.home.examination.entity.domain.CityDO;
 import com.home.examination.entity.domain.DataDictionaryDO;
+import com.home.examination.service.CityService;
 import com.home.examination.service.DataDictionaryService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
+import java.util.Map;
 
 /**
  * @Auther: Jhon Li
@@ -19,18 +21,18 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Component
 public class MyStartupRunner implements CommandLineRunner {
 
+    public static final Map<String, List<DataDictionaryDO>> map = new HashMap<>();
+    public static final List<CityDO> list = new ArrayList<>();
+
     @Resource
     private DataDictionaryService dataDictionaryService;
     @Resource
-    private RedisTemplate redisTemplate;
+    private CityService cityService;
 
     @Override
     public void run(String... args) {
-        List<DataDictionaryDO> list = dataDictionaryService.list();
-        for (DataDictionaryDO dataDictionaryDO : list) {
-            redisTemplate.opsForList().leftPush("dataDictionaryList", dataDictionaryDO);
-        }
-        redisTemplate.expire("dataDictionaryList", 1000, SECONDS);
+        list.addAll(cityService.list());
+        map.putAll(dataDictionaryService.initList());
     }
 
 }

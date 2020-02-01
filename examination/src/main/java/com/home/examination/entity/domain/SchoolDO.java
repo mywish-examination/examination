@@ -71,10 +71,10 @@ public class SchoolDO extends BaseEntity {
      */
     private String educationalInstitutionsIconUrl;
     /**
-     * 半血层次
+     * 办学层次
      */
     private String schoolRunningLevel;
-    /**
+    /**+
      * 省份
      */
     private String province;
@@ -90,5 +90,8 @@ public class SchoolDO extends BaseEntity {
      */
     @TableField(exist = false)
     private List<MajorDO> majorList;
+
+    @TableField(exist = false)
+    private String batchCode;
 
 }

@@ -12,17 +12,17 @@ import java.util.List;
 @Mapper
 public interface HistoryAdmissionDataMapper extends BaseMapper<HistoryAdmissionDataDO> {
 
-    @Select("select t.*, m.name as majorName, s.name as schoolName " +
+    @Select("select t.*, s.name as schoolName " +
             "from history_admission_data t " +
             "inner join major m on t.major_id = m.id " +
-            "inner join school s on m.school_id = s.id " +
+            "inner join school s on t.school_id = s.id " +
             "${ew.customSqlSegment}")
     List<HistoryAdmissionDataDO> pageByQueryWrapper(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
     @Select("select count(t.id) " +
             "from history_admission_data t " +
             "inner join major m on t.major_id = m.id " +
-            "inner join school s on m.school_id = s.id " +
+            "inner join school s on t.school_id = s.id " +
             "${ew.customSqlSegment}")
     int countByQueryWrapper(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 

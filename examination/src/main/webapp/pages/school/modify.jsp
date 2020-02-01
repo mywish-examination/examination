@@ -50,14 +50,24 @@
                             <label class="col-sm-2 control-label">学校主类型:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="mainType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="mainType" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_main_type}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">学校子类型:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="childrenType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="childrenType" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_children_type}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -92,7 +102,12 @@
                             <label class="col-sm-2 control-label">学历层次:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="educationLevel" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="educationLevel" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_education_level}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -106,7 +121,12 @@
                             <label class="col-sm-2 control-label">院校属性:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsAttribute" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="educationalInstitutionsAttribute" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_educational_institutions_attribute}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">

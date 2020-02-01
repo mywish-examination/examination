@@ -1,6 +1,7 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.home.examination.common.runner.MyStartupRunner;
 import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.page.DataDictionaryPager;
 import com.home.examination.service.DataDictionaryService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +39,10 @@ public class DataDictionaryController {
         boolean result = dataDictionaryService.removeById(id);
         Map<String, String> map = new HashMap<>();
         map.put("status", result ? "success" : "error");
+
+        // 重新初始化数据字典到redis
+        MyStartupRunner.map.clear();
+        MyStartupRunner.map.putAll(dataDictionaryService.initList());
         return map;
     }
 
@@ -53,9 +59,14 @@ public class DataDictionaryController {
     }
 
     @PostMapping("/saveOrUpdate")
-    public ModelAndView saveOrUpdate(DataDictionaryDO param) {
+    public ModelAndView saveOrUpdate(DataDictionaryDO param, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("/pages/dataDictionary/list");
         dataDictionaryService.saveOrUpdate(param);
+
+        // 重新初始化数据字典到redis
+        MyStartupRunner.map.clear();
+        MyStartupRunner.map.putAll(dataDictionaryService.initList());
+
         return mav;
     }
 

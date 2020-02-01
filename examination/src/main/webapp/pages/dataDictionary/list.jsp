@@ -69,11 +69,11 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '字典编码', '字典名称' , '字典值', '操作'],
+            colNames: ['', '字典名称', '字典编码' , '字典值', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'dictCode', index: 'dictCode', width: '25%', sortable: false},
                 {name: 'dictName', index: 'dictName', width: '30%', sortable: false},
+                {name: 'dictCode', index: 'dictCode', width: '25%', sortable: false},
                 {name: 'dictValue', index: 'dictValue', width: '30%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],

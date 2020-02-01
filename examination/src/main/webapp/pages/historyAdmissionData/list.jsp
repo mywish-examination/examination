@@ -200,6 +200,7 @@
 
             },
             uploadSuccess:function(files,obj){//上传成功
+                $("#historyAdmissionDataList").trigger("reloadGrid");
             },
             uploadError:function(){//文件上传
             }

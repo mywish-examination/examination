@@ -70,7 +70,12 @@
                             <label class="col-sm-2 control-label">民族:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="nation" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="nation" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_user_status}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -84,16 +89,23 @@
                             <label class="col-sm-2 control-label">科类:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="subjectType" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="nation" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_user_status}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">角色类型:</label>
 
                             <div class="col-sm-10">
-                                <form:select path="type" class="form-control">
-                                    <form:option value="0">管理员</form:option>
-                                    <form:option value="1">学生</form:option>
+                                <form:select path="type" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_type}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
                                 </form:select>
                             </div>
                         </div>

@@ -1,7 +1,6 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.common.config.DataDictionaryHandler;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.UserDO;
@@ -48,10 +47,6 @@ public class VolunteerController {
         if (total > 0) {
             queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
             list = volunteerService.pageByQueryWrapper(queryWrapper);
-        }
-
-        for (VolunteerDO volunteerDO : list) {
-            volunteerDO.setStatus(DataDictionaryHandler.getContentByType("volunteer_status", volunteerDO.getStatus()));
         }
 
         pager.getPager().setTotal(total);

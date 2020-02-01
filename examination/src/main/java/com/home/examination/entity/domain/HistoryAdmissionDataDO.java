@@ -42,12 +42,41 @@ public class HistoryAdmissionDataDO extends BaseEntity {
     /**
      * 专业名称
      */
-    @TableField(exist = false)
     private String majorName;
     /**
      * 学校名称
      */
     @TableField(exist = false)
     private String schoolName;
+
+    /**
+     * 批次代码
+     */
+    private String batchCode;
+
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     * 录取人数
+     */
+    private String enrolment;
+    /**
+     * 平均位次
+     */
+    private String avgRank;
+    /**
+     * 最高位次
+     */
+    private String highestRank;
+    /**
+     * 最低位次
+     */
+    private String minimumRank;
+    /**
+     * 科类代码
+     */
+    private String subjectCode;
 
 }

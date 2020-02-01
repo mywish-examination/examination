@@ -13,6 +13,9 @@
 
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
 
 </head>
 
@@ -41,12 +44,18 @@
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
 
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
+
 <!-- Peity -->
 <script src="${basePath}js/plugins/peity/jquery.peity.min.js"></script>
 
 <!-- jqGrid -->
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
+
+<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
 
 <!-- Page-Level Scripts -->
 <script>
@@ -157,7 +166,39 @@
             window.location.href = "${basePath}web/school/detail";
         });
 
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","import")
+            .attr("class","btn btn-sm btn-primary")
+            .attr("data-target", "#myModal")
+            .attr("data-toggle", "modal")
+            .append("导入");
+        $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#import","#t_schoolList").click(function(){
+            showUploadDialog();
+        });
+
     });
+
+    function showUploadDialog(){
+        picUpload({
+            server: '${basePath}web/school/uploadFileExcel;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'xls,xlsx',//允许的文件后缀
+                mimeTypes: "*.xls;*.xlsx;" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                $("#schoolList").trigger("reloadGrid");
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
 </script>
 
 </body>
