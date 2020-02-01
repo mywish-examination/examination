@@ -2,6 +2,7 @@ package com.home.examination.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.home.examination.common.enumerate.DictCodeEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -30,6 +31,9 @@ public class VolunteerDO extends BaseEntity {
      * 状态
      */
     private String status;
+    public String getStatusName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_VOLUNTEER_STATUS.getCode(), this.status);
+    }
 
     /**
      * 学校名称

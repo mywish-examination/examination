@@ -2,6 +2,7 @@ package com.home.examination.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.home.examination.common.enumerate.DictCodeEnum;
 import lombok.Data;
 
 @Data
@@ -16,18 +17,30 @@ public class MajorDO extends BaseEntity {
      * 门类
      */
     String categoryType;
+    public String getCategoryTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.categoryType);
+    }
     /**
      * 专业类
      */
     String majorType;
+    public String getMajorTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_MAJOR_TYPE.getCode(), this.majorType);
+    }
     /**
      * 学历
      */
     String education;
+    public String getEducationName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_EDUCATION.getCode(), this.education);
+    }
     /**
      * 学位
      */
     String academicDegree;
+    public String getAcademicDegreeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_ACADEMIC_DEGREE.getCode(), this.academicDegree);
+    }
     /**
      * 就业率
      */

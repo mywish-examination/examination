@@ -2,6 +2,7 @@ package com.home.examination.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.home.examination.common.enumerate.DictCodeEnum;
 import lombok.Data;
 
 import java.net.ContentHandler;
@@ -23,17 +24,21 @@ public class UserDO extends BaseEntity {
      */
     private String password;
     /**
-     * 省份
+     * 省份Id
      */
-    private String province;
+    private Long provinceId;
     /**
-     * 地域
+     * 省份名称
      */
-    private String area;
+    @TableField(exist = false)
+    private String provinceName;
     /**
      * 民族
      */
     private String nation;
+    public String getNationName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_NATION.getCode(), this.nation);
+    }
     /**
      * 高考年份
      */
@@ -42,11 +47,16 @@ public class UserDO extends BaseEntity {
      * 科类
      */
     private String subjectType;
+    public String getSubjectTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_SUBJECT_TYPE.getCode(), this.subjectType);
+    }
     /**
      * 角色类型：0:管理员，1：学生
      */
     private String type;
-
+    public String getTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_TYPE.getCode(), this.type);
+    }
     // 新增字段
     /**
      * 高考分数
@@ -63,5 +73,13 @@ public class UserDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String token;
+
+    /**
+     * 男女
+     */
+    private String sex;
+    public String getSexName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_SEX.getCode(), this.sex);
+    }
 
 }

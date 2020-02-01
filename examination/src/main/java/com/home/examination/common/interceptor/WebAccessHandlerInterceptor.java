@@ -1,8 +1,10 @@
 package com.home.examination.common.interceptor;
 
 import com.home.examination.common.runner.MyStartupRunner;
+import com.home.examination.service.DataDictionaryService;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ public class WebAccessHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         request.getSession().setAttribute("sys_dict", MyStartupRunner.map);
+        request.getSession().setAttribute("sys_city", MyStartupRunner.list);
         if(request.getCookies() == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return false;

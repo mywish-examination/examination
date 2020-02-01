@@ -2,6 +2,8 @@ package com.home.examination.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
 import java.util.List;
@@ -18,10 +20,20 @@ public class SchoolDO extends BaseEntity {
      * 学校主类型
      */
     private String mainType;
+
+    public String getMainTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), this.mainType);
+    }
+
     /**
      * 学校子类型
      */
     private String childrenType;
+
+    public String getChildrenTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), this.childrenType);
+    }
+
     /**
      * 曾用名
      */
@@ -34,14 +46,29 @@ public class SchoolDO extends BaseEntity {
      * 主管部门
      */
     private String mainManagerDepartment;
+
+    public String getMainManagerDepartmentName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), this.mainManagerDepartment);
+    }
+
     /**
      * 院校隶属
      */
     private String educationalInstitutionsSubjection;
+
+    public String getEducationalInstitutionsSubjectionName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), this.educationalInstitutionsSubjection);
+    }
+
     /**
      * 学历层次
      */
     private String educationLevel;
+
+    public String getEducationLevelName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), this.educationLevel);
+    }
+
     /**
      * 院校官网链接
      */
@@ -50,6 +77,11 @@ public class SchoolDO extends BaseEntity {
      * 院校属性
      */
     private String educationalInstitutionsAttribute;
+
+    public String getEducationalInstitutionsAttributeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), this.educationalInstitutionsAttribute);
+    }
+
     /**
      * 基本信息
      */
@@ -74,10 +106,24 @@ public class SchoolDO extends BaseEntity {
      * 办学层次
      */
     private String schoolRunningLevel;
-    /**+
-     * 省份
+
+    public String getSchoolRunningLevelName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), this.schoolRunningLevel);
+    }
+
+    /**
+     * 省份Id
      */
-    private String province;
+    private Long provinceId;
+    /**
+     * 省份名称
+     */
+    @TableField(exist = false)
+    private String provinceName;
+
+    public String getProvinceName() {
+        return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
+    }
 
     // 新增字段
     /**

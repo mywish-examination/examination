@@ -75,10 +75,10 @@
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'name', index: 'name', width: '20%', sortable: false, hidden: false},
-                {name: 'categoryType', index: 'categoryType', width: '15%', sortable: false},
-                {name: 'majorType', index: 'majorType', width: '10%', sortable: false},
-                {name: 'education', index: 'education', width: '10%', sortable: false},
-                {name: 'academicDegree', index: 'academicDegree', width: '10%', sortable: false},
+                {name: 'categoryTypeName', index: 'categoryTypeName', width: '15%', sortable: false},
+                {name: 'majorTypeName', index: 'majorTypeName', width: '10%', sortable: false},
+                {name: 'educationName', index: 'educationName', width: '10%', sortable: false},
+                {name: 'academicDegreeName', index: 'academicDegreeName', width: '10%', sortable: false},
                 {name: 'employmentRate', index: 'employmentRate', width: '10%', sortable: false},
                 {name: 'years', index: 'years', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}

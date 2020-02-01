@@ -2,10 +2,9 @@ package com.home.examination.controller.web;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.entity.domain.HistoryAdmissionDataDO;
-import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.domain.NewsInformationDO;
-import com.home.examination.entity.domain.SchoolDO;
+import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.common.runner.MyStartupRunner;
+import com.home.examination.entity.domain.*;
 import com.home.examination.entity.page.SchoolPager;
 import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.SchoolService;
@@ -56,7 +55,7 @@ public class SchoolController {
     @ResponseBody
     public SuggestVO<SchoolDO> listSuggest(SchoolDO schoolDO) {
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.apply(!StringUtils.isEmpty(schoolDO.getName())," name like '%" + schoolDO.getName() + "%'");
+        queryWrapper.apply(!StringUtils.isEmpty(schoolDO.getName()), " name like '%" + schoolDO.getName() + "%'");
         List<SchoolDO> list = schoolService.list(queryWrapper);
 
         return new SuggestVO<>(list);
@@ -74,7 +73,7 @@ public class SchoolController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         SchoolDO schoolDO = new SchoolDO();
-        if(id != null) {
+        if (id != null) {
             schoolDO = schoolService.getById(id);
         }
         ModelAndView mav = new ModelAndView("/pages/school/modify");
@@ -143,18 +142,18 @@ public class SchoolController {
             // 学校名称
             Cell cell = row.getCell(0);
             String name = cell.getStringCellValue();
-            if(StringUtils.isEmpty(name)) continue;
+            if (StringUtils.isEmpty(name)) continue;
             schoolDO.setName(name);
 
             // 学校主类型
             Cell cell1 = row.getCell(1);
             String mainType = cell1.getStringCellValue();
-            schoolDO.setMainType(mainType);
+            schoolDO.setMainType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), mainType));
 
             // 学校子类型
             Cell cell2 = row.getCell(2);
             String childrenType = cell2.getStringCellValue();
-            schoolDO.setChildrenType(childrenType);
+            schoolDO.setChildrenType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), childrenType));
 
             // 曾用名
             Cell cell3 = row.getCell(3);
@@ -169,17 +168,17 @@ public class SchoolController {
             // 主管部门
             Cell cell5 = row.getCell(5);
             String mainManagerDepartment = cell5.getStringCellValue();
-            schoolDO.setMainManagerDepartment(mainManagerDepartment);
+            schoolDO.setMainManagerDepartment(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), mainManagerDepartment));
 
             // 院校隶属
             Cell cell6 = row.getCell(6);
             String educationalInstitutionsSubjection = cell6.getStringCellValue();
-            schoolDO.setEducationalInstitutionsSubjection(mainType);
+            schoolDO.setEducationalInstitutionsSubjection(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), educationalInstitutionsSubjection));
 
             // 学历层次
             Cell cell7 = row.getCell(7);
             String educationLevel = cell7.getStringCellValue();
-            schoolDO.setEducationLevel(educationLevel);
+            schoolDO.setEducationLevel(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), educationLevel));
 
             // 院校官网链接
             Cell cell8 = row.getCell(8);
@@ -189,7 +188,7 @@ public class SchoolController {
             // 院校属性
             Cell cell9 = row.getCell(9);
             String educationalInstitutionsAttribute = cell9.getStringCellValue();
-            schoolDO.setEducationalInstitutionsAttribute(educationalInstitutionsAttribute);
+            schoolDO.setEducationalInstitutionsAttribute(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), educationalInstitutionsAttribute));
 
             // 基本信息
             Cell cell10 = row.getCell(10);
@@ -219,12 +218,13 @@ public class SchoolController {
             // 办学层次
             Cell cell15 = row.getCell(15);
             String schoolRunningLevel = cell15.getStringCellValue();
-            schoolDO.setSchoolRunningLevel(schoolRunningLevel);
+            schoolDO.setSchoolRunningLevel(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), schoolRunningLevel));
 
             // 省份
             Cell cell16 = row.getCell(16);
             String province = cell16.getStringCellValue();
-            schoolDO.setProvince(province);
+            Long provinceId = MyStartupRunner.list.stream().filter(city -> city.getCityName().equals(province)).map(CityDO::getId).findFirst().get();
+            schoolDO.setProvinceId(provinceId);
 
             list.add(schoolDO);
         }

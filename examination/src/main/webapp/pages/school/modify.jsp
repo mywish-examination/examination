@@ -88,14 +88,24 @@
                             <label class="col-sm-2 control-label">主管部门:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="mainManagerDepartment" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="mainManagerDepartment" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_main_manager_department}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">院校隶属:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="educationalInstitutionsSubjection" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="educationalInstitutionsSubjection" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_educational_institutions_subjection}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -179,20 +189,36 @@
                             <label class="col-sm-2 control-label">办学层次:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="schoolRunningLevel" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="schoolRunningLevel" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_school_school_running_level}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">省份:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="province" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="provinceName" value="${school.provinceName}" data-id="${school.provinceId}">
+                                    <form:hidden path="provinceId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <input type="submit" class="btn btn-primary" value="保存" />
+                                <input type="button" class="btn btn-primary" value="保存" id="save"/>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/school/list.jsp'" value="返回"/>
                             </div>
@@ -217,9 +243,13 @@
 
 <script src="${basePath}js/content.js?v=1.0.0"></script>
 <script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
+<script src="${basePath}js/plugins/suggest/bootstrap-suggest.min.js"></script>
 <script>
     $(document).ready(function () {
-
+        $("#save").click(function() {
+            $("#provinceId").val($("#provinceName").attr("data-id"));
+            $("form#school").submit();
+        });
     });
 
     function showUploadDialog(fileDel,eid){
@@ -252,6 +282,27 @@
         $('#' + fileDel).html("");
         $("#" + eid).val('');
     }
+
+    /**
+     * 城市
+     */
+    var testBsSuggest = $("#provinceName").bsSuggest({
+        //url: "/rest/sys/getuserlist?keyword=",
+        url: "${basePath}web/city/listSuggest",
+        /*effectiveFields: ["userName", "shortAccount"],
+        searchFields: [ "shortAccount"],
+        effectiveFieldsAlias:{userName: "姓名"},*/
+        showBtn: false,
+        idField: "id",
+        keyField: "cityName",
+        effectiveFields: ["cityName"],
+    }).on('onDataRequestSuccess', function (e, result) {
+        console.log('onDataRequestSuccess: ', result);
+    }).on('onSetSelectValue', function (e, keyword) {
+        console.log('onSetSelectValue: ', keyword);
+    }).on('onUnsetSelectValue', function (e) {
+        console.log("onUnsetSelectValue");
+    });
 
 </script>
 

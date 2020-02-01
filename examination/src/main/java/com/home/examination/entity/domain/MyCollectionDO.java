@@ -21,6 +21,11 @@ public class MyCollectionDO extends BaseEntity {
     private Long majorId;
 
     /**
+     * 学校Id
+     */
+    private Long schoolId;
+
+    /**
      * 专业名称
      */
     @TableField(exist = false)

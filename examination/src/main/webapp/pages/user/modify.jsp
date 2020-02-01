@@ -56,14 +56,18 @@
                             <label class="col-sm-2 control-label">省份:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="province" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">地域:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="area" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="provinceName" value="${user.provinceName}" data-id="${user.provinceId}">
+                                    <form:hidden path="provinceId" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -72,7 +76,7 @@
                             <div class="col-sm-10">
                                 <form:select path="nation" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_user_status}" var="it"  >
+                                    <c:forEach items="${sys_dict.dict_user_nation}" var="it"  >
                                         <form:option value="${it.id }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
@@ -89,9 +93,21 @@
                             <label class="col-sm-2 control-label">科类:</label>
 
                             <div class="col-sm-10">
-                                <form:select path="nation" class="form-control valid-control">
+                                <form:select path="subjectType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_user_status}" var="it"  >
+                                    <c:forEach items="${sys_dict.dict_user_subject_Type}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">性别:</label>
+
+                            <div class="col-sm-10">
+                                <form:select path="sex" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_user_sex}" var="it"  >
                                         <form:option value="${it.id }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
@@ -103,7 +119,7 @@
                             <div class="col-sm-10">
                                 <form:select path="type" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_type}" var="it"  >
+                                    <c:forEach items="${sys_dict.dict_user_type}" var="it"  >
                                         <form:option value="${it.id }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
@@ -112,7 +128,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <input type="submit" class="btn btn-primary" value="保存" />
+                                <input type="button" class="btn btn-primary" value="保存" id="save" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/user/list.jsp'" value="返回"/>
                             </div>
@@ -133,8 +149,34 @@
 <script src="${basePath}js/plugins/summernote/summernote-zh-CN.js"></script>
 <!-- iCheck -->
 <script src="${basePath}js/plugins/iCheck/icheck.min.js"></script>
+<script src="${basePath}js/plugins/suggest/bootstrap-suggest.min.js"></script>
 <script>
     $(document).ready(function () {
+        $("#save").click(function() {
+            $("#provinceId").val($("#provinceName").attr("data-id"));
+            $("form#school").submit();
+        });
+    });
+
+    /**
+     * 城市
+     */
+    var testBsSuggest = $("#provinceName").bsSuggest({
+        //url: "/rest/sys/getuserlist?keyword=",
+        url: "${basePath}web/city/listSuggest",
+        /*effectiveFields: ["userName", "shortAccount"],
+        searchFields: [ "shortAccount"],
+        effectiveFieldsAlias:{userName: "姓名"},*/
+        showBtn: false,
+        idField: "id",
+        keyField: "cityName",
+        effectiveFields: ["name"],
+    }).on('onDataRequestSuccess', function (e, result) {
+        console.log('onDataRequestSuccess: ', result);
+    }).on('onSetSelectValue', function (e, keyword) {
+        console.log('onSetSelectValue: ', keyword);
+    }).on('onUnsetSelectValue', function (e) {
+        console.log("onUnsetSelectValue");
     });
 </script>
 

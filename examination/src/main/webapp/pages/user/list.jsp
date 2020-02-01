@@ -69,27 +69,16 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '真实姓名', '登录名', '省份', '地域', '民族', '高考年份', '科类', '类型', '操作'],
+            colNames: ['', '真实姓名', '登录名', '省份', '民族', '高考年份', '科类', '类型', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'trueName', index: 'trueName', width: '15%', sortable: false},
                 {name: 'loginName', index: 'loginName', width: '10%', sortable: false},
-                {name: 'province', index: 'province', width: '10%', sortable: false},
-                {name: 'area', index: 'area', width: '10%', sortable: false},
-                {name: 'nation', index: 'nation', width: '10%', sortable: false},
+                {name: 'provinceName', index: 'provinceName', width: '10%', sortable: false},
+                {name: 'nationName', index: 'nationName', width: '10%', sortable: false},
                 {name: 'collegeYears', index: 'collegeYears', width: '10%', sortable: false},
-                {name: 'subjectType', index: 'subjectType', width: '10%', sortable: false},
-                {name: 'type', index: 'type', width: '10%', sortable: false,
-                    formatter: function (cellvalue, options, rowdata) {
-                        var content = "";
-                        if (cellvalue == "1") {
-                            content = "学生";
-                        } else if(cellvalue == "0") {
-                            content = "管理员";
-                        }
-                        return content;
-                    }
-                },
+                {name: 'subjectTypeName', index: 'subjectTypeName', width: '10%', sortable: false},
+                {name: 'typeName', index: 'typeName', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {

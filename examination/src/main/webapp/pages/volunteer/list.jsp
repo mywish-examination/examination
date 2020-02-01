@@ -76,7 +76,7 @@
                 {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
                 {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
                 {name: 'score', index: 'score', width: '10%', sortable: false},
-                {name: 'status', index: 'status', width: '10%', sortable: false},
+                {name: 'statusName', index: 'statusName', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '10%', sortable: false}
             ],
             jsonReader : {

@@ -90,12 +90,7 @@
                             <label class="col-sm-2 control-label">就业率:</label>
 
                             <div class="col-sm-10">
-                                <form:select path="employmentRate" class="form-control valid-control">
-                                    <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_major_employment_rate}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
-                                    </c:forEach>
-                                </form:select>
+                                <form:input path="employmentRate" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
                         <div class="form-group">

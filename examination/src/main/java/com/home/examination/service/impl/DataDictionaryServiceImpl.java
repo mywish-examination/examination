@@ -29,7 +29,6 @@ public class DataDictionaryServiceImpl extends ServiceImpl<DataDictionaryMapper,
                 collect.entrySet()) {
             redisTemplate.opsForList().leftPush(ConstantHandler.redis_key_data_dict + entry.getKey(), entry.getValue());
         }
-        redisTemplate.expire("dataDictionaryList", 60, MINUTES);
         return collect;
     }
 
@@ -40,7 +39,6 @@ public class DataDictionaryServiceImpl extends ServiceImpl<DataDictionaryMapper,
                 collect.entrySet()) {
             redisTemplate.opsForList().leftPush(ConstantHandler.redis_key_data_dict + entry.getKey(), entry.getValue());
         }
-        redisTemplate.expire("dataDictionaryList", 60, MINUTES);
 
         return collect.get(code);
     }
