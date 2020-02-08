@@ -40,6 +40,13 @@
                     <form:form method="post" action="saveOrUpdate" modelAttribute="school" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">院校代码:</label>
+
+                            <div class="col-sm-10">
+                                <form:input path="educationalCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">学校名称:</label>
 
                             <div class="col-sm-10">
@@ -131,6 +138,7 @@
                             <label class="col-sm-2 control-label">院校属性:</label>
 
                             <div class="col-sm-10">
+                                <form:checkboxes path="educationalInstitutionsAttribute" items="${sys_dict.dict_school_educational_institutions_attribute}" itemValue="${dictValue}" />
                                 <form:select path="educationalInstitutionsAttribute" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_educational_institutions_attribute}" var="it"  >

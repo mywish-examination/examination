@@ -135,93 +135,99 @@ public class SchoolController {
         int lastRowNum = sheetAt.getLastRowNum();
         List<SchoolDO> list = new ArrayList<>();
         SchoolDO schoolDO;
-        for (int i = 1; i <= lastRowNum; i++) {
+        for (int i = 1; i < lastRowNum; i++) {
             schoolDO = new SchoolDO();
             Row row = sheetAt.getRow(i);
 
-            // 学校名称
+            // 院校代码
             Cell cell = row.getCell(0);
-            String name = cell.getStringCellValue();
+            String educationalCode = cell.getStringCellValue();
+            if (StringUtils.isEmpty(educationalCode)) continue;
+            schoolDO.setEducationalCode(educationalCode);
+
+            // 学校名称
+            Cell cell0 = row.getCell(1);
+            String name = cell0.getStringCellValue();
             if (StringUtils.isEmpty(name)) continue;
             schoolDO.setName(name);
 
             // 学校主类型
-            Cell cell1 = row.getCell(1);
+            Cell cell1 = row.getCell(2);
             String mainType = cell1.getStringCellValue();
             schoolDO.setMainType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), mainType));
 
             // 学校子类型
-            Cell cell2 = row.getCell(2);
+            Cell cell2 = row.getCell(3);
             String childrenType = cell2.getStringCellValue();
             schoolDO.setChildrenType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), childrenType));
 
             // 曾用名
-            Cell cell3 = row.getCell(3);
+            Cell cell3 = row.getCell(4);
             String onceName = cell3.getStringCellValue();
             schoolDO.setOnceName(onceName);
 
             // 备注
-            Cell cell4 = row.getCell(4);
+            Cell cell4 = row.getCell(5);
             String remark = cell4.getStringCellValue();
             schoolDO.setRemark(remark);
 
             // 主管部门
-            Cell cell5 = row.getCell(5);
+            Cell cell5 = row.getCell(6);
             String mainManagerDepartment = cell5.getStringCellValue();
             schoolDO.setMainManagerDepartment(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), mainManagerDepartment));
 
             // 院校隶属
-            Cell cell6 = row.getCell(6);
+            Cell cell6 = row.getCell(7);
             String educationalInstitutionsSubjection = cell6.getStringCellValue();
             schoolDO.setEducationalInstitutionsSubjection(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), educationalInstitutionsSubjection));
 
             // 学历层次
-            Cell cell7 = row.getCell(7);
+            Cell cell7 = row.getCell(8);
             String educationLevel = cell7.getStringCellValue();
             schoolDO.setEducationLevel(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), educationLevel));
 
             // 院校官网链接
-            Cell cell8 = row.getCell(8);
+            Cell cell8 = row.getCell(9);
             String educationalInstitutionsWebsite = cell8.getStringCellValue();
             schoolDO.setEducationalInstitutionsWebsite(educationalInstitutionsWebsite);
 
             // 院校属性
-            Cell cell9 = row.getCell(9);
+            Cell cell9 = row.getCell(10);
             String educationalInstitutionsAttribute = cell9.getStringCellValue();
             schoolDO.setEducationalInstitutionsAttribute(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), educationalInstitutionsAttribute));
 
             // 基本信息
-            Cell cell10 = row.getCell(10);
+            Cell cell10 = row.getCell(11);
             String baseInfo = cell10.getStringCellValue();
             schoolDO.setBaseInfo(baseInfo);
 
             // 院校招办链接
-            Cell cell11 = row.getCell(11);
+            Cell cell11 = row.getCell(12);
             String educationalInstitutionsRecruitUrl = cell11.getStringCellValue();
             schoolDO.setEducationalInstitutionsRecruitUrl(educationalInstitutionsRecruitUrl);
 
             // 招生章程链接
-            Cell cell12 = row.getCell(12);
+            Cell cell12 = row.getCell(13);
             String recruitConstitutionUrl = cell12.getStringCellValue();
             schoolDO.setRecruitConstitutionUrl(recruitConstitutionUrl);
 
             // 双一流学科
-            Cell cell13 = row.getCell(13);
+            Cell cell13 = row.getCell(14);
             String doubleFirstClassSubject = cell13.getStringCellValue();
             schoolDO.setDoubleFirstClassSubject(doubleFirstClassSubject);
 
             // 院校图标
-            Cell cell14 = row.getCell(14);
+            Cell cell14 = row.getCell(15);
             String educationalInstitutionsIconUrl = cell14.getStringCellValue();
             schoolDO.setEducationalInstitutionsIconUrl(educationalInstitutionsIconUrl);
 
             // 办学层次
-            Cell cell15 = row.getCell(15);
+            Cell cell15 = row.getCell(16);
             String schoolRunningLevel = cell15.getStringCellValue();
             schoolDO.setSchoolRunningLevel(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), schoolRunningLevel));
 
             // 省份
-            Cell cell16 = row.getCell(16);
+            Cell cell16 = row.getCell(17);
             String province = cell16.getStringCellValue();
             Long provinceId = MyStartupRunner.list.stream().filter(city -> city.getCityName().equals(province)).map(CityDO::getId).findFirst().get();
             schoolDO.setProvinceId(provinceId);

@@ -32,13 +32,6 @@
                     <form:form method="post" action="saveOrUpdate" modelAttribute="schoolMajor" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">学科名称:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="subjectName" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">招生人数:</label>
 
                             <div class="col-sm-10">
@@ -60,22 +53,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">学校名称:</label>
+                            <label class="col-sm-2 control-label">院校代码:</label>
 
-                                <div class="col-sm-10">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="schoolName" value="${schoolMajor.schoolName}" data-id="${schoolMajor.schoolId}">
-                                        <form:hidden path="schoolId" />
-                                        <div class="input-group-btn">
-                                            <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                            </ul>
-                                        </div>
-                                        <!-- /btn-group -->
-                                    </div>
-                                </div>
+                            <div class="col-sm-10">
+                                <form:input path="educationalCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">专业名称:</label>
@@ -123,32 +105,10 @@
 <script>
     $(document).ready(function () {
         $("#save").click(function() {
-            $("#schoolId").val($("#schoolName").attr("data-id"));
             $("#majorId").val($("#majorName").attr("data-id"));
             $("form#schoolMajor").submit();
         });
     });
-
-    /**
-     * 不显示下拉按钮
-     */
-    var testBsSuggest1 = $("#schoolName").bsSuggest({
-        //url: "/rest/sys/getuserlist?keyword=",
-        url: "${basePath}web/school/listSuggest",
-        /*effectiveFields: ["userName", "shortAccount"],
-        searchFields: [ "shortAccount"],
-        effectiveFieldsAlias:{userName: "姓名"},*/
-        showBtn: false,
-        idField: "id",
-        keyField: "name",
-    effectiveFields: ["name"],
-}).on('onDataRequestSuccess', function (e, result) {
-    console.log('onDataRequestSuccess: ', result);
-}).on('onSetSelectValue', function (e, keyword) {
-    console.log('onSetSelectValue: ', keyword);
-}).on('onUnsetSelectValue', function (e) {
-    console.log("onUnsetSelectValue");
-});
 
     /**
      * 不显示下拉按钮

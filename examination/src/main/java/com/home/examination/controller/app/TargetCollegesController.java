@@ -34,58 +34,51 @@ public class TargetCollegesController {
     private SchoolMajorService schoolMajorService;
 
     @PostMapping("/detail")
-    public ExecuteResult detail(Long schoolId, Long majorId) {
+    public ExecuteResult detail(String educationalCode, Long majorId) {
         TargetCollegesVO targetColleges = new TargetCollegesVO();
-        SchoolDO school = schoolService.getById(schoolId);
-        if (majorId == null && schoolId != null) {
-            BeanUtils.copyProperties(school, targetColleges);
-            targetColleges.setSchoolName(school.getName());
 
-            LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
-            historyQueryWrapper.eq(HistoryAdmissionDataDO::getSchoolId, schoolId);
-            // 历史录取数据列表
-            List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
-
-
-            LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
-            schoolMajorQueryWrapper.eq(SchoolMajorDO::getSchoolId, schoolId);
-            List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
-            List<Long> collect = schoolMajorList.stream().map(SchoolMajorDO::getMajorId).collect(Collectors.toList());
-
-            LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
-            majorQueryWrapper.in(MajorDO::getId, collect);
-            // 专业列表
-            List<MajorDO> majorList = majorService.list(majorQueryWrapper);
-
-            targetColleges.setHistoryAdmissionDataList(historyAdmissionDataList);
-            targetColleges.setMajorList(majorList);
-        }
-
-        if (majorId != null && schoolId != null) {
+        SchoolDO school = schoolService.getByEducationalCode(educationalCode);
+        if (majorId != null && educationalCode != null) {
             MajorDO one = majorService.getById(majorId);
 
             LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
             schoolMajorQueryWrapper.eq(SchoolMajorDO::getMajorId, one.getId());
             List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
-            List<Long> collect = schoolMajorList.stream().map(SchoolMajorDO::getSchoolId).collect(Collectors.toList());
+            List<String> collect = schoolMajorList.stream().map(SchoolMajorDO::getEducationalCode).collect(Collectors.toList());
 
             LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
-            schoolQueryWrapper.in(SchoolDO::getId, collect);
+            schoolQueryWrapper.in(SchoolDO::getEducationalCode, collect);
             List<SchoolDO> list = schoolService.list(schoolQueryWrapper);
 
             targetColleges.setSchoolList(list);
-            
 
             targetColleges.setSchoolName(school.getName());
             targetColleges.setMajorName(one.getName());
 
-            LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
-            historyQueryWrapper.eq(HistoryAdmissionDataDO::getSchoolId, schoolId);
-            // 历史录取数据列表
-            List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
+        } else if (majorId == null && educationalCode != null) {
+            BeanUtils.copyProperties(school, targetColleges);
+            targetColleges.setSchoolName(school.getName());
 
-            targetColleges.setHistoryAdmissionDataList(historyAdmissionDataList);
+            LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
+            schoolMajorQueryWrapper.eq(SchoolMajorDO::getEducationalCode, educationalCode);
+            List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
+            List<Long> collect = schoolMajorList.stream().map(SchoolMajorDO::getMajorId).collect(Collectors.toList());
+
+            if(!collect.isEmpty()) {
+                LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
+                majorQueryWrapper.in(MajorDO::getId, collect);
+                // 专业列表
+                List<MajorDO> majorList = majorService.list(majorQueryWrapper);
+                targetColleges.setMajorList(majorList);
+            }
+
         }
+
+        LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
+        historyQueryWrapper.eq(HistoryAdmissionDataDO::getEducationalCode, educationalCode);
+        // 历史录取数据列表
+        List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
+        targetColleges.setHistoryAdmissionDataList(historyAdmissionDataList);
 
         return new ExecuteResult(targetColleges);
     }

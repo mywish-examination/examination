@@ -20,9 +20,9 @@ public class VolunteerDO extends BaseEntity {
      */
     private Long userId;
     /**
-     * 学校Id
+     * 院校代码
      */
-    private Long schoolId;
+    private String educationalCode;
     /**
      * 分数
      */

@@ -31,9 +31,9 @@ public class HistoryAdmissionDataDO extends BaseEntity {
      */
     private BigDecimal controlLine;
     /**
-     * 学校Id
+     * 院校代码
      */
-    private Long schoolId;
+    private String educationalCode;
     /**
      * 专业Id
      */

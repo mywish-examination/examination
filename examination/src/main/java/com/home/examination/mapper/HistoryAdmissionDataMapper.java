@@ -15,14 +15,14 @@ public interface HistoryAdmissionDataMapper extends BaseMapper<HistoryAdmissionD
     @Select("select t.*, s.name as schoolName " +
             "from history_admission_data t " +
             "inner join major m on t.major_id = m.id " +
-            "inner join school s on t.school_id = s.id " +
+            "inner join school s on t.educational_code = s.educational_code " +
             "${ew.customSqlSegment}")
     List<HistoryAdmissionDataDO> pageByQueryWrapper(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
     @Select("select count(t.id) " +
             "from history_admission_data t " +
             "inner join major m on t.major_id = m.id " +
-            "inner join school s on t.school_id = s.id " +
+            "inner join school s on t.educational_code = s.educational_code " +
             "${ew.customSqlSegment}")
     int countByQueryWrapper(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 

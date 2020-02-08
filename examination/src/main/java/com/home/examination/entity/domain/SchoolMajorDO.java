@@ -9,10 +9,6 @@ import lombok.Data;
 public class SchoolMajorDO extends BaseEntity {
 
     /**
-     * 学科名称
-     */
-    String subjectName;
-    /**
      * 招生人数
      */
     private Integer recruitNum;
@@ -27,7 +23,7 @@ public class SchoolMajorDO extends BaseEntity {
     /**
      * 学校Id
      */
-    private Long schoolId;
+    private String educationalCode;
     /**
      * 专业Id
      */

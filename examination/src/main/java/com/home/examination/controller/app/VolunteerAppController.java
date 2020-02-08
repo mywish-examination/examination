@@ -1,11 +1,7 @@
 package com.home.examination.controller.app;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.Query;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.home.examination.entity.domain.*;
-import com.home.examination.entity.page.VolunteerPager;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.VolunteerVO;
 import com.home.examination.service.HistoryAdmissionDataService;
@@ -20,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,17 +52,17 @@ public class VolunteerAppController {
             return new ExecuteResult();
         }
 
-        List<Long> schoolIdList = list.stream().map(VolunteerDO::getSchoolId).collect(Collectors.toList());
+        List<String> educationalCodeList = list.stream().map(VolunteerDO::getEducationalCode).collect(Collectors.toList());
 
         LambdaQueryWrapper<HistoryAdmissionDataDO> historyAdmissionDataQueryWrapper = new LambdaQueryWrapper<>();
-        historyAdmissionDataQueryWrapper.eq(HistoryAdmissionDataDO::getYears, LocalDate.now().getYear()).in(HistoryAdmissionDataDO::getSchoolId, schoolIdList);
+        historyAdmissionDataQueryWrapper.eq(HistoryAdmissionDataDO::getYears, LocalDate.now().getYear()).in(HistoryAdmissionDataDO::getEducationalCode, educationalCodeList);
         List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyAdmissionDataQueryWrapper);
-        Map<Long, String> historyAdmissionDataMap = historyAdmissionDataList.stream().collect(Collectors.toMap(HistoryAdmissionDataDO::getSchoolId, HistoryAdmissionDataDO::getBatchCode));
+        Map<String, List<HistoryAdmissionDataDO>> historyAdmissionDataMap = historyAdmissionDataList.stream().collect(Collectors.groupingBy(HistoryAdmissionDataDO::getEducationalCode));
 
-        Map<Long, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getSchoolId));
+        Map<String, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getEducationalCode));
 
-        Map<Long, List<MajorDO>> volunteerList = new HashMap<>();
-        for(Map.Entry<Long, List<VolunteerDO>> entry :collect.entrySet()) {
+        Map<String, List<MajorDO>> volunteerList = new HashMap<>();
+        for(Map.Entry<String, List<VolunteerDO>> entry :collect.entrySet()) {
             List<Long> majorIdList = entry.getValue().stream().map(VolunteerDO::getMajorId).collect(Collectors.toList());
             LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
             majorQueryWrapper.in(MajorDO::getId, majorIdList);
@@ -72,12 +71,12 @@ public class VolunteerAppController {
         }
 
         LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
-        schoolQueryWrapper.in(SchoolDO::getId, schoolIdList);
+        schoolQueryWrapper.in(SchoolDO::getEducationalCode, educationalCodeList);
         List<SchoolDO> schoolList = schoolService.list(schoolQueryWrapper);
 
         schoolList.forEach(schoolDO -> {
-            schoolDO.setMajorList(volunteerList.get(schoolDO.getId()));
-            schoolDO.setBatchCode(historyAdmissionDataMap.get(schoolDO.getId()));
+            schoolDO.setMajorList(volunteerList.get(schoolDO.getEducationalCode()));
+            schoolDO.setBatchCode(historyAdmissionDataMap.get(schoolDO.getEducationalCode()).get(0).getBatchCode());
         });
 
         Map<String, List<SchoolDO>> result = schoolList.stream().collect(Collectors.groupingBy(SchoolDO::getBatchCode));
@@ -107,11 +106,11 @@ public class VolunteerAppController {
             return new ExecuteResult();
         }
 
-        List<Long> schoolIdList = list.stream().map(VolunteerDO::getSchoolId).collect(Collectors.toList());
-        Map<Long, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getSchoolId));
+        List<String> schoolIdList = list.stream().map(VolunteerDO::getEducationalCode).collect(Collectors.toList());
+        Map<String, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getEducationalCode));
 
-        Map<Long, List<MajorDO>> volunteerList = new HashMap<>();
-        for(Map.Entry<Long, List<VolunteerDO>> entry :collect.entrySet()) {
+        Map<String, List<MajorDO>> volunteerList = new HashMap<>();
+        for(Map.Entry<String, List<VolunteerDO>> entry :collect.entrySet()) {
             List<Long> majorIdList = entry.getValue().stream().map(VolunteerDO::getMajorId).collect(Collectors.toList());
             LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
             majorQueryWrapper.in(MajorDO::getId, majorIdList);
@@ -132,10 +131,10 @@ public class VolunteerAppController {
     }
 
     @PostMapping("/delete")
-    public ExecuteResult delete(Long schoolId, Long majorId, String token) {
+    public ExecuteResult delete(String educationalCode, Long majorId, String token) {
         UserDO userDO = (UserDO) redisTemplate.opsForValue().get(token);
         LambdaQueryWrapper<VolunteerDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(VolunteerDO::getMajorId, majorId).eq(VolunteerDO::getSchoolId, schoolId).eq(VolunteerDO::getUserId, userDO.getId());
+        wrapper.eq(VolunteerDO::getMajorId, majorId).eq(VolunteerDO::getEducationalCode, educationalCode).eq(VolunteerDO::getUserId, userDO.getId());
         boolean result = volunteerService.remove(wrapper);
         return new ExecuteResult(result);
     }

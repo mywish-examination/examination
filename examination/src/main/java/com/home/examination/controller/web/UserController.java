@@ -82,7 +82,7 @@ public class UserController {
     public void login(HttpServletRequest request, HttpServletResponse response,
                       @RequestParam String loginName, @RequestParam String password) throws IOException {
         LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(UserDO::getLoginName, loginName).eq(UserDO::getPassword, password).eq(UserDO::getType, "0");
+        queryWrapper.eq(UserDO::getLoginName, loginName).eq(UserDO::getPassword, password);
         UserDO one = userService.getOne(queryWrapper);
         if (one == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");

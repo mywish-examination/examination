@@ -5,4 +5,6 @@ import com.home.examination.entity.domain.SchoolDO;
 
 public interface SchoolService extends IService<SchoolDO> {
 
+    SchoolDO getByEducationalCode(String educationalCode);
+
 }

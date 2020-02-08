@@ -76,7 +76,6 @@
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false, hidden: false},
                 {name: 'majorName', index: 'majorName', width: '15%', sortable: false, hidden: false},
-                {name: 'subjectName', index: 'subjectName', width: '10%', sortable: false},
                 {name: 'starRating', index: 'starRating', width: '10%', sortable: false},
                 {name: 'recruitNum', index: 'recruitNum', width: '10%', sortable: false},
                 {name: 'admissionScoreLine', index: 'admissionScoreLine', width: '10%', sortable: false},

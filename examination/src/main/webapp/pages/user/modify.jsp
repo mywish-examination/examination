@@ -154,7 +154,7 @@
     $(document).ready(function () {
         $("#save").click(function() {
             $("#provinceId").val($("#provinceName").attr("data-id"));
-            $("form#school").submit();
+            $("form#user").submit();
         });
     });
 

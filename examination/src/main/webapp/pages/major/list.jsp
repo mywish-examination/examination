@@ -58,7 +58,7 @@
 
         // Configuration for jqGrid Example 1
         $("#majorList").jqGrid({
-            url: "${basePath}web/major/listPage?requestParam.schoolId=${param.schoolId}",
+            url: "${basePath}web/major/listPage",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -71,10 +71,11 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '专业名称', '门类', '专业类', '学历', '学位', '就业率', '年限', '操作'],
+            colNames: ['', '专业名称', '科类', '门类', '专业类', '学历', '学位', '就业率', '年限', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'name', index: 'name', width: '20%', sortable: false, hidden: false},
+                {name: 'subjectTypeName', index: 'subjectTypeName', width: '10%', sortable: false},
                 {name: 'categoryTypeName', index: 'categoryTypeName', width: '15%', sortable: false},
                 {name: 'majorTypeName', index: 'majorTypeName', width: '10%', sortable: false},
                 {name: 'educationName', index: 'educationName', width: '10%', sortable: false},

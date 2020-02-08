@@ -66,6 +66,16 @@
                         <span class="nav-label">历年录取数据</span>
                         <span class="fa "></span>
                     </a>
+                    <a class="J_menuItem" href="${basePath}pages/subjectAssessmentRanking/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">学科评估排名</span>
+                        <span class="fa "></span>
+                    </a>
+                    <a class="J_menuItem" href="${basePath}pages/subsection/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">分段管理</span>
+                        <span class="fa "></span>
+                    </a>
                     <a class="J_menuItem" href="${basePath}pages/newsInformation/list.jsp">
                         <i class="fa fa-home"></i>
                         <span class="nav-label">新闻资讯</span>

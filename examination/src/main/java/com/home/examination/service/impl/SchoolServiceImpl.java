@@ -20,4 +20,13 @@ public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, SchoolDO> imple
     @Resource
     private SchoolMapper schoolMapper;
 
+    @Override
+    public SchoolDO getByEducationalCode(String educationalCode) {
+        if(StringUtils.isEmpty(educationalCode)) return null;
+
+        LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SchoolDO::getEducationalCode, educationalCode);
+        return schoolMapper.selectOne(queryWrapper);
+    }
+
 }

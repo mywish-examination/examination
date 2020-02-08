@@ -14,6 +14,13 @@ public class MajorDO extends BaseEntity {
      */
     String name;
     /**
+     * 学科名称
+     */
+    String subjectType;
+    public String getSubjectTypeName() {
+        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.subjectType);
+    }
+    /**
      * 门类
      */
     String categoryType;

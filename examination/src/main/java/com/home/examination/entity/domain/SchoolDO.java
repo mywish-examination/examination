@@ -122,6 +122,7 @@ public class SchoolDO extends BaseEntity {
     private String provinceName;
 
     public String getProvinceName() {
+        if(this.provinceId == null) return "";
         return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
     }
 
@@ -130,6 +131,11 @@ public class SchoolDO extends BaseEntity {
      * 评价星级
      */
     private String starRating;
+
+    /**
+     * 院校代码
+     */
+    private String educationalCode;
 
     /**
      * 专业列表

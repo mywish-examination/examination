@@ -14,7 +14,7 @@ public interface VolunteerMapper extends BaseMapper<VolunteerDO> {
 
     @Select("select t.*, s.name as schoolName, u.true_name as userName, m.name as majorName " +
             "from volunteer t " +
-            "inner join school s on t.school_id = s.id " +
+            "inner join school s on t.educational_code = s.educational_code " +
             "inner join major m on t.major_id = m.id " +
             "inner join user u on t.user_id = u.id " +
             "${ew.customSqlSegment}")
@@ -22,7 +22,7 @@ public interface VolunteerMapper extends BaseMapper<VolunteerDO> {
 
     @Select("select count(t.id) " +
             "from volunteer t " +
-            "inner join school s on t.school_id = s.id " +
+            "inner join school s on t.educational_code = s.educational_code " +
             "inner join major m on t.major_id = m.id " +
             "inner join user u on t.user_id = u.id " +
             "${ew.customSqlSegment}")

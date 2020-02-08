@@ -21,9 +21,9 @@ public class MyCollectionDO extends BaseEntity {
     private Long majorId;
 
     /**
-     * 学校Id
+     * 院校代码
      */
-    private Long schoolId;
+    private String educationalCode;
 
     /**
      * 专业名称

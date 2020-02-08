@@ -3,6 +3,7 @@ package com.home.examination.entity.domain;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
 import java.net.ContentHandler;
@@ -32,6 +33,11 @@ public class UserDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String provinceName;
+
+    public String getProvinceName() {
+        if(this.provinceId == null) return "";
+        return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
+    }
     /**
      * 民族
      */

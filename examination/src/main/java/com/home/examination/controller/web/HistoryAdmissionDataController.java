@@ -73,9 +73,6 @@ public class HistoryAdmissionDataController {
         HistoryAdmissionDataDO historyAdmissionDataDO = new HistoryAdmissionDataDO();
         if(id != null) {
             historyAdmissionDataDO = historyAdmissionDataService.getById(id);
-
-            SchoolDO schoolDO = schoolService.getById(historyAdmissionDataDO.getSchoolId());
-            historyAdmissionDataDO.setSchoolName(schoolDO.getName());
         }
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/modify");
         model.addAttribute("historyAdmissionData", historyAdmissionDataDO);
@@ -111,20 +108,18 @@ public class HistoryAdmissionDataController {
         Sheet sheetAt = book.getSheetAt(0);
 
         int lastRowNum = sheetAt.getLastRowNum();
-        List<String> schoolNameList = new ArrayList<>(lastRowNum);
         List<String> majorNameList = new ArrayList<>(lastRowNum);
         List<HistoryAdmissionDataDO> list = new ArrayList<>();
         HistoryAdmissionDataDO historyAdmissionData;
-        for (int i = 1; i <= lastRowNum; i++) {
+        for (int i = 1; i < lastRowNum; i++) {
             historyAdmissionData = new HistoryAdmissionDataDO();
             Row row = sheetAt.getRow(i);
 
-            // 学校名称
+            // 院校代码
             Cell cell = row.getCell(0);
-            String schoolName = cell.getStringCellValue();
-            if(StringUtils.isEmpty(schoolName)) continue;
-            schoolNameList.add(schoolName);
-            historyAdmissionData.setSchoolName(schoolName);
+            String educationalCode = cell.getStringCellValue();
+            if(StringUtils.isEmpty(educationalCode)) continue;
+            historyAdmissionData.setEducationalCode(educationalCode);
 
             // 专业名称
             Cell cell1 = row.getCell(1);
@@ -181,20 +176,13 @@ public class HistoryAdmissionDataController {
             list.add(historyAdmissionData);
         }
 
-        LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
-        schoolQueryWrapper.select(SchoolDO::getId, SchoolDO::getName).in(SchoolDO::getName, schoolNameList);
-        List<SchoolDO> schoolList = schoolService.list(schoolQueryWrapper);
-
         LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
         majorQueryWrapper.select(MajorDO::getId, MajorDO::getName).in(MajorDO::getName, majorNameList);
         List<MajorDO> majorList = majorService.list(majorQueryWrapper);
 
-        Map<String, Long> schoolMap = schoolList.stream().collect(Collectors.toMap(SchoolDO::getName, SchoolDO::getId));
         Map<String, Long> majorMap = majorList.stream().collect(Collectors.toMap(MajorDO::getName, MajorDO::getId));
 
         for (HistoryAdmissionDataDO historyAdmissionDataDO : list) {
-            if (schoolMap.containsKey(historyAdmissionDataDO.getSchoolName()))
-                historyAdmissionDataDO.setSchoolId(schoolMap.get(historyAdmissionDataDO.getSchoolName()));
             if (majorMap.containsKey(historyAdmissionDataDO.getMajorName()))
                 historyAdmissionDataDO.setMajorId(majorMap.get(historyAdmissionDataDO.getMajorName()));
         }

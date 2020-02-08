@@ -78,9 +78,10 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
+            colNames: ['', '院校代码', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
+                {name: 'educationalCode', index: 'educationalCode', width: '15%', sortable: false},
                 {name: 'name', index: 'name', width: '15%', sortable: false},
                 {name: 'mainTypeName', index: 'mainTypeName', width: '10%', sortable: false},
                 {name: 'childrenTypeName', index: 'childrenTypeName', width: '10%', sortable: false},

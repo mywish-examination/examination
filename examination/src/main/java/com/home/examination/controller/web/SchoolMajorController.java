@@ -37,7 +37,6 @@ public class SchoolMajorController {
     @ResponseBody
     public SchoolMajorPager listPage(SchoolMajorPager pager) {
         LambdaQueryWrapper<SchoolMajorDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(pager.getRequestParam().getSchoolId() != null, SchoolMajorDO::getSchoolId, pager.getRequestParam().getSchoolId());
         int total = schoolMajorService.countByQueryWrapper(queryWrapper);
         List<SchoolMajorDO> list = Collections.emptyList();
         if (total > 0) {
@@ -64,8 +63,6 @@ public class SchoolMajorController {
         SchoolMajorDO schoolMajorDO = new SchoolMajorDO();
         if (major.getId() != null) {
             schoolMajorDO = schoolMajorService.getById(major.getId());
-            SchoolDO schoolDO = schoolService.getById(schoolMajorDO.getSchoolId());
-            schoolMajorDO.setSchoolName(schoolDO.getName());
 
             MajorDO majorDO = majorService.getById(schoolMajorDO.getMajorId());
             schoolMajorDO.setMajorName(majorDO.getName());

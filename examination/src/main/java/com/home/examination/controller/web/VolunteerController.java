@@ -69,9 +69,6 @@ public class VolunteerController {
         if (id != null) {
             volunteerDO = volunteerService.getById(id);
 
-            SchoolDO schoolDO = schoolService.getById(volunteerDO.getSchoolId());
-            volunteerDO.setSchoolName(schoolDO.getName());
-
             MajorDO majorDO = majorService.getById(volunteerDO.getMajorId());
             volunteerDO.setMajorName(majorDO.getName());
 

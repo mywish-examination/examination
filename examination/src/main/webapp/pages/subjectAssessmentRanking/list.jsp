@@ -13,6 +13,9 @@
 
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
 
 </head>
 
@@ -22,12 +25,12 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>意见反馈 / 列表</h5>
+                    <h5>学科评估排名 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
                     <div class="jqGrid_wrapper">
-                        <table id="feedbackList"></table>
+                        <table id="subjectAssessmentRankingList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -41,12 +44,18 @@
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
 
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
+
 <!-- Peity -->
 <script src="${basePath}js/plugins/peity/jquery.peity.min.js"></script>
 
 <!-- jqGrid -->
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
+
+<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
 
 <!-- Page-Level Scripts -->
 <script>
@@ -55,8 +64,8 @@
         $.jgrid.defaults.styleUI = 'Bootstrap';
 
         // Configuration for jqGrid Example 1
-        $("#feedbackList").jqGrid({
-            url: "${basePath}web/feedback/listPage",
+        $("#subjectAssessmentRankingList").jqGrid({
+            url: "${basePath}web/subjectAssessmentRanking/listPage",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -69,12 +78,15 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '意见反馈内容', '用户名称', '提交时间', '操作'],
+            colNames: ['', '学科门类', '学科', '院校名称', '全国排名', '等级', '档次', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'content', index: 'content', width: '65%', sortable: false},
-                {name: 'userName', index: 'userName', width: '10%', sortable: false},
-                {name: 'createTimeStr', index: 'createTimeStr', width: '10%', sortable: false},
+                {name: 'categoryName', index: 'categoryName', width: '15%', sortable: false},
+                {name: 'subjectName', index: 'subjectName', width: '15%', sortable: false},
+                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
+                {name: 'nationalRankings', index: 'nationalRankings', width: '10%', sortable: false},
+                {name: 'level', index: 'level', width: '10%', sortable: false},
+                {name: 'grade', index: 'grade', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
@@ -87,72 +99,61 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学院列表",
+            caption: "学科评估排名列表",
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#feedbackList").jqGrid('getDataIDs');
+                var ids = jQuery("#subjectAssessmentRankingList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
-                    // 修改
-                    content += "<a href='javascript:void(0);' title='修改' id='" + id + "' class='btn btn-link shortcut_modify' title='修改'>";
-                    content += "<i class='fa fa-pencil-square-o'></i>修改";
-                    content += "</a>";
                     // 删除
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#feedbackList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#subjectAssessmentRankingList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
-            },
-            loadComplete: function(){
-                //删除
-                $(".shortcut_delete").click(function(){
-                    var rowid = $(this).attr("id");
-                    var prompt = "确定要删除所选择的记录吗？";
-                    var url = "${basePath}web/feedback/delete?id=" + rowid;
-                    index = top.layer.confirm(prompt, {
-                        btn: ["确认", "取消"] //按钮
-                    }, function(){
-                        $.ajax({
-                            url:url,
-                            type:'POST',
-                            timeout:'60000',
-                            dataType:'json',
-                            success:function(jsonData){
-                                if(jsonData.status == 'success') {
-                                    top.layer.close(index);
-                                    $("#feedbackList").trigger("reloadGrid");
-                                }
-                            }
-                        });
-                    }, function(){
-                    });
-                });
-                //修改
-                $(".shortcut_modify").click(function() {
-                    var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/feedback/detail?id=" + rowid;
-                });
             }
         });
 
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#feedbackList').setGridWidth(width);
+            $('#subjectAssessmentRankingList').setGridWidth(width);
         });
 
-        var $content = $("<a></a>").attr("href","javascript:void(0)")
-            .attr("id","create")
+        var $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","import")
             .attr("class","btn btn-sm btn-primary")
-            .append("创建");
-        $("#t_feedbackList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_feedbackList").click(function(){
-            window.location.href = "${basePath}web/feedback/detail";
+            .attr("data-target", "#myModal")
+            .attr("data-toggle", "modal")
+            .append("导入");
+        $("#t_subjectAssessmentRankingList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#import","#t_subjectAssessmentRankingList").click(function(){
+            showUploadDialog();
         });
 
     });
+
+    function showUploadDialog(){
+        picUpload({
+            server: '${basePath}web/subjectAssessmentRanking/uploadFileExcel;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'xls,xlsx',//允许的文件后缀
+                mimeTypes: "*.xls;*.xlsx;" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                $("#subjectAssessmentRankingList").trigger("reloadGrid");
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
 </script>
 
 </body>
