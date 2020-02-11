@@ -1,10 +1,10 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.common.runner.MyStartupRunner;
-import com.home.examination.entity.domain.DataDictionaryDO;
-import com.home.examination.entity.page.DataDictionaryPager;
-import com.home.examination.service.DataDictionaryService;
+import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.entity.domain.FeatureDO;
+import com.home.examination.entity.page.FeaturePager;
+import com.home.examination.service.FeatureService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,53 +30,46 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/web/dataDictionary")
-public class DataDictionaryController {
+@RequestMapping("/web/feature")
+public class FeatureController {
 
     @Resource
-    private DataDictionaryService dataDictionaryService;
+    private FeatureService featureService;
 
     @PostMapping("/listPage")
     @ResponseBody
-    public DataDictionaryPager listPage(DataDictionaryPager pager) {
-        LambdaQueryWrapper<DataDictionaryDO> queryWrapper = new LambdaQueryWrapper<>();
-        dataDictionaryService.page(pager.getPager(), queryWrapper);
+    public FeaturePager listPage(FeaturePager pager) {
+        LambdaQueryWrapper<FeatureDO> queryWrapper = new LambdaQueryWrapper<>();
+        featureService.page(pager.getPager(), queryWrapper);
         return pager;
     }
 
     @PostMapping("/delete")
     @ResponseBody
     public Map<String, String> delete(Long id) {
-        boolean result = dataDictionaryService.removeById(id);
+        boolean result = featureService.removeById(id);
         Map<String, String> map = new HashMap<>();
         map.put("status", result ? "success" : "error");
 
-        // 重新初始化数据字典到redis
-        MyStartupRunner.map.clear();
-        MyStartupRunner.map.putAll(dataDictionaryService.initList());
         return map;
     }
 
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
-        DataDictionaryDO dataDictionaryDO = new DataDictionaryDO();
+        FeatureDO featureDO = new FeatureDO();
         if (id != null) {
-            dataDictionaryDO = dataDictionaryService.getById(id);
+            featureDO = featureService.getById(id);
         }
 
-        ModelAndView mav = new ModelAndView("/pages/dataDictionary/modify");
-        model.addAttribute("dataDictionary", dataDictionaryDO);
+        ModelAndView mav = new ModelAndView("/pages/feature/modify");
+        model.addAttribute("featureDO", featureDO);
         return mav;
     }
 
     @PostMapping("/saveOrUpdate")
-    public ModelAndView saveOrUpdate(DataDictionaryDO param, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("/pages/dataDictionary/list");
-        dataDictionaryService.saveOrUpdate(param);
-
-        // 重新初始化数据字典到redis
-        MyStartupRunner.map.clear();
-        MyStartupRunner.map.putAll(dataDictionaryService.initList());
+    public ModelAndView saveOrUpdate(FeatureDO param) {
+        ModelAndView mav = new ModelAndView("/pages/feature/list");
+        featureService.saveOrUpdate(param);
 
         return mav;
     }
@@ -102,36 +95,31 @@ public class DataDictionaryController {
         Sheet sheetAt = book.getSheetAt(0);
 
         int lastRowNum = sheetAt.getLastRowNum() + 1;
-        List<DataDictionaryDO> list = new ArrayList<>();
-        DataDictionaryDO dataDictionaryDO;
+        List<FeatureDO> list = new ArrayList<>();
+        FeatureDO featureDO;
         for (int i = 1; i < lastRowNum; i++) {
-            dataDictionaryDO = new DataDictionaryDO();
+            featureDO = new FeatureDO();
             Row row = sheetAt.getRow(i);
 
-            // 字典编号
+            // 特征名称
             Cell cell = row.getCell(0);
-            String dictCode = cell.getStringCellValue();
-            dataDictionaryDO.setDictCode(dictCode);
+            String featureName = cell.getStringCellValue();
+            featureDO.setFeatureName(featureName);
 
-            // 字典名称
+            // 特征类型
             Cell cell1 = row.getCell(1);
-            String dictName = cell1.getStringCellValue();
-            dataDictionaryDO.setDictName(dictName);
+            String featureType = cell1.getStringCellValue();
+            featureDO.setFeatureType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_FEATURE_TYPE.getCode(), featureType));
 
-            // 字典值
+            // 特征选项
             Cell cell2 = row.getCell(2);
-            String dictValue = cell2.getStringCellValue();
-            dataDictionaryDO.setDictValue(dictValue);
+            String featureOption = cell2.getStringCellValue();
+            featureDO.setFeatureOption(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_FEATURE_OPTION.getCode(), featureOption));
 
-            // 字典数值
-            Cell cell3 = row.getCell(3);
-            String dictNum = cell3.getStringCellValue();
-            dataDictionaryDO.setDictNum(dictNum);
-
-            list.add(dataDictionaryDO);
+            list.add(featureDO);
         }
 
-        boolean result = dataDictionaryService.saveBatch(list);
+        boolean result = featureService.saveBatch(list);
         return result ? "success" : "error";
     }
 

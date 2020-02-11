@@ -4,7 +4,8 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.enumerate.DictCodeEnum;
 import com.home.examination.common.runner.MyStartupRunner;
-import com.home.examination.entity.domain.*;
+import com.home.examination.entity.domain.CityDO;
+import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.page.SchoolPager;
 import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.SchoolService;
@@ -30,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/web/school")
@@ -132,7 +131,7 @@ public class SchoolController {
 
         Sheet sheetAt = book.getSheetAt(0);
 
-        int lastRowNum = sheetAt.getLastRowNum();
+        int lastRowNum = sheetAt.getLastRowNum() + 1;
         List<SchoolDO> list = new ArrayList<>();
         SchoolDO schoolDO;
         for (int i = 1; i < lastRowNum; i++) {

@@ -101,4 +101,9 @@ public class TargetCollegesVO {
      */
     private List<SchoolDO> schoolList;
 
+    /**
+     * 录取预估参考
+     */
+    private AdmissionEstimateReferenceDO admissionEstimateReference;
+
 }

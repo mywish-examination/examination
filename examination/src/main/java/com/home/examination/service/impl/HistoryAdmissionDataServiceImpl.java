@@ -3,6 +3,8 @@ package com.home.examination.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
+import com.home.examination.entity.domain.RankParagraphDO;
+import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 import com.home.examination.mapper.HistoryAdmissionDataMapper;
 import com.home.examination.service.HistoryAdmissionDataService;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,15 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
     @Override
     public int countByQueryWrapper(Wrapper<HistoryAdmissionDataDO> queryWrapper) {
         return historyAdmissionDataMapper.countByQueryWrapper(queryWrapper);
+    }
+
+    @Override
+    public RankParagraphDO getRankParagraphBySchool(String educationalCode, String year) {
+        return historyAdmissionDataMapper.getRankParagraphBySchool(educationalCode, year);
+    }
+
+    @Override
+    public AdmissionEstimateReferenceDO getBySchoolOrMajor(Wrapper<HistoryAdmissionDataDO> queryWrapper) {
+        return historyAdmissionDataMapper.getBySchoolOrMajor(queryWrapper);
     }
 }

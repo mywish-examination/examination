@@ -6,8 +6,6 @@ import com.home.examination.common.enumerate.DictCodeEnum;
 import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
-import java.net.ContentHandler;
-
 @Data
 @TableName("user")
 public class UserDO extends BaseEntity {
@@ -35,16 +33,19 @@ public class UserDO extends BaseEntity {
     private String provinceName;
 
     public String getProvinceName() {
-        if(this.provinceId == null) return "";
+        if (this.provinceId == null) return "";
         return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
     }
+
     /**
      * 民族
      */
     private String nation;
+
     public String getNationName() {
         return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_NATION.getCode(), this.nation);
     }
+
     /**
      * 高考年份
      */
@@ -53,13 +54,16 @@ public class UserDO extends BaseEntity {
      * 科类
      */
     private String subjectType;
+
     public String getSubjectTypeName() {
         return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_SUBJECT_TYPE.getCode(), this.subjectType);
     }
+
     /**
      * 角色类型：0:管理员，1：学生
      */
     private String type;
+
     public String getTypeName() {
         return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_TYPE.getCode(), this.type);
     }
@@ -84,8 +88,15 @@ public class UserDO extends BaseEntity {
      * 男女
      */
     private String sex;
+
     public String getSexName() {
         return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_SEX.getCode(), this.sex);
     }
+
+    /**
+     * 位次
+     */
+    @TableField(exist = false)
+    private String rank;
 
 }

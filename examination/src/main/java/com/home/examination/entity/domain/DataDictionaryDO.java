@@ -18,5 +18,9 @@ public class DataDictionaryDO extends BaseEntity {
      * 字典值
      */
     private String dictValue;
+    /**
+     * 字典数值
+     */
+    private String dictNum;
 
 }

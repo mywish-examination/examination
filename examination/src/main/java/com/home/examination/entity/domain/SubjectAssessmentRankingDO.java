@@ -40,4 +40,9 @@ public class SubjectAssessmentRankingDO extends BaseEntity {
      */
     private String grade;
 
+    /**
+     * 院校代码
+     */
+    private String educationalCode;
+
 }

@@ -39,6 +39,7 @@ public class VolunteerAppController {
 
     /**
      * 志愿档案
+     *
      * @return
      */
     @PostMapping("/list")
@@ -48,7 +49,7 @@ public class VolunteerAppController {
         volunteerQueryWrapper.eq(VolunteerDO::getUserId, userDO.getId());
         List<VolunteerDO> list = volunteerService.list(volunteerQueryWrapper);
 
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             return new ExecuteResult();
         }
 
@@ -62,7 +63,7 @@ public class VolunteerAppController {
         Map<String, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getEducationalCode));
 
         Map<String, List<MajorDO>> volunteerList = new HashMap<>();
-        for(Map.Entry<String, List<VolunteerDO>> entry :collect.entrySet()) {
+        for (Map.Entry<String, List<VolunteerDO>> entry : collect.entrySet()) {
             List<Long> majorIdList = entry.getValue().stream().map(VolunteerDO::getMajorId).collect(Collectors.toList());
             LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
             majorQueryWrapper.in(MajorDO::getId, majorIdList);
@@ -81,7 +82,7 @@ public class VolunteerAppController {
 
         Map<String, List<SchoolDO>> result = schoolList.stream().collect(Collectors.groupingBy(SchoolDO::getBatchCode));
         List<Object> resultList = new ArrayList<>();
-        for (Map.Entry<String, List<SchoolDO>> entry: result.entrySet()) {
+        for (Map.Entry<String, List<SchoolDO>> entry : result.entrySet()) {
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("batchCode", entry.getKey());
             resultMap.put("schoolList", entry.getValue());
@@ -93,6 +94,7 @@ public class VolunteerAppController {
 
     /**
      * 专业主导
+     *
      * @return
      */
     @PostMapping("/listVolunteerLeading")
@@ -102,7 +104,7 @@ public class VolunteerAppController {
         volunteerQueryWrapper.eq(VolunteerDO::getUserId, userDO.getId());
         List<VolunteerDO> list = volunteerService.list(volunteerQueryWrapper);
 
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             return new ExecuteResult();
         }
 
@@ -110,7 +112,7 @@ public class VolunteerAppController {
         Map<String, List<VolunteerDO>> collect = list.stream().collect(Collectors.groupingBy(VolunteerDO::getEducationalCode));
 
         Map<String, List<MajorDO>> volunteerList = new HashMap<>();
-        for(Map.Entry<String, List<VolunteerDO>> entry :collect.entrySet()) {
+        for (Map.Entry<String, List<VolunteerDO>> entry : collect.entrySet()) {
             List<Long> majorIdList = entry.getValue().stream().map(VolunteerDO::getMajorId).collect(Collectors.toList());
             LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
             majorQueryWrapper.in(MajorDO::getId, majorIdList);

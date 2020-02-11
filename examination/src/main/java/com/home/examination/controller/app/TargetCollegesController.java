@@ -5,6 +5,7 @@ import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.SchoolMajorDO;
+import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.TargetCollegesVO;
 import com.home.examination.service.HistoryAdmissionDataService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,14 +66,13 @@ public class TargetCollegesController {
             List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
             List<Long> collect = schoolMajorList.stream().map(SchoolMajorDO::getMajorId).collect(Collectors.toList());
 
-            if(!collect.isEmpty()) {
+            if (!collect.isEmpty()) {
                 LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
                 majorQueryWrapper.in(MajorDO::getId, collect);
                 // 专业列表
                 List<MajorDO> majorList = majorService.list(majorQueryWrapper);
                 targetColleges.setMajorList(majorList);
             }
-
         }
 
         LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
@@ -79,6 +80,12 @@ public class TargetCollegesController {
         // 历史录取数据列表
         List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
         targetColleges.setHistoryAdmissionDataList(historyAdmissionDataList);
+
+        int year = LocalDate.now().minusYears(3).getYear();
+        historyQueryWrapper.eq(majorId != null, HistoryAdmissionDataDO::getMajorId, majorId)
+                .apply("years >= {0}", year);
+        AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+        targetColleges.setAdmissionEstimateReference(admissionEstimateReference);
 
         return new ExecuteResult(targetColleges);
     }

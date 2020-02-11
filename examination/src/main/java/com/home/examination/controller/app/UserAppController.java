@@ -2,8 +2,10 @@ package com.home.examination.controller.app;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.home.examination.entity.domain.SubsectionDO;
 import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.vo.ExecuteResult;
+import com.home.examination.service.SubsectionService;
 import com.home.examination.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +25,8 @@ public class UserAppController {
     private UserService userService;
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private SubsectionService subsectionService;
 
     /**
      * 登录
@@ -39,6 +43,16 @@ public class UserAppController {
 
         UserDO one = userService.getOne(queryWrapper);
         if (one != null) {
+            String currScore = one.getCollegeScore();
+            if (StringUtils.isEmpty(currScore)) {
+                currScore = one.getPredictedScore();
+            }
+
+            LambdaQueryWrapper<SubsectionDO> subsectionQueryWrapper = new LambdaQueryWrapper<>();
+            subsectionQueryWrapper.eq(SubsectionDO::getScore, currScore);
+            SubsectionDO subsectionDO = subsectionService.getOne(subsectionQueryWrapper);
+            one.setRank(subsectionDO.getRank());
+
             String uuid = UUID.randomUUID().toString();
 
             redisTemplate.opsForValue().set(uuid, one, 30, TimeUnit.MINUTES);
@@ -156,16 +170,17 @@ public class UserAppController {
 
     /**
      * 设置预估分和高考分数
+     *
      * @param userDO
      * @return
      */
     @PostMapping("/settingScore")
     public ExecuteResult settingScore(UserDO userDO) {
         UserDO currentUser = (UserDO) redisTemplate.opsForValue().get(userDO.getToken());
-        if(StringUtils.isEmpty(userDO.getCollegeScore())) {
+        if (StringUtils.isEmpty(userDO.getCollegeScore())) {
             currentUser.setCollegeScore(userDO.getCollegeScore());
         }
-        if(StringUtils.isEmpty(userDO.getPredictedScore())) {
+        if (StringUtils.isEmpty(userDO.getPredictedScore())) {
             currentUser.setPredictedScore(userDO.getPredictedScore());
         }
 

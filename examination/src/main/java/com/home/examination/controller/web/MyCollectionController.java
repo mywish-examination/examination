@@ -3,7 +3,6 @@ package com.home.examination.controller.web;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.MyCollectionDO;
-import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.MyCollectionPager;
 import com.home.examination.service.MajorService;
@@ -62,7 +61,7 @@ public class MyCollectionController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         MyCollectionDO myCollectionDO = new MyCollectionDO();
-        if(id != null) {
+        if (id != null) {
             myCollectionDO = myCollectionService.getById(id);
 
             UserDO userDO = userService.getById(myCollectionDO.getUserId());

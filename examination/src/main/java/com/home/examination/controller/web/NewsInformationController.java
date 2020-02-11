@@ -1,7 +1,6 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.entity.domain.MyCollectionDO;
 import com.home.examination.entity.domain.NewsInformationDO;
 import com.home.examination.entity.page.NewsInformationPager;
 import com.home.examination.service.NewsInformationService;
@@ -54,7 +53,7 @@ public class NewsInformationController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         NewsInformationDO newsInformationDO = new NewsInformationDO();
-        if(id != null) {
+        if (id != null) {
             newsInformationDO = newsInformationService.getById(id);
         }
         ModelAndView mav = new ModelAndView("/pages/newsInformation/modify");

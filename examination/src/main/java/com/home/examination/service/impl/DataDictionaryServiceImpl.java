@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
-
 @Service
 public class DataDictionaryServiceImpl extends ServiceImpl<DataDictionaryMapper, DataDictionaryDO> implements DataDictionaryService {
 

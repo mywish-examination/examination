@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @TableName("school_major")
 public class SchoolMajorDO extends BaseEntity {
@@ -15,7 +17,7 @@ public class SchoolMajorDO extends BaseEntity {
     /**
      * 录取分数线
      */
-    private Integer admissionScoreLine;
+    private BigDecimal admissionScoreLine;
     /**
      * 评价星级
      */

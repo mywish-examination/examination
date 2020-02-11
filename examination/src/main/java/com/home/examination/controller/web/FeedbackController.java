@@ -1,7 +1,6 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.domain.FeedbackDO;
 import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.FeedbackPager;
@@ -16,7 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/web/feedback")
@@ -33,7 +35,7 @@ public class FeedbackController {
         LambdaQueryWrapper<FeedbackDO> queryWrapper = new LambdaQueryWrapper<>();
         int total = feedbackService.countByQueryWrapper(queryWrapper);
         List<FeedbackDO> list = Collections.emptyList();
-        if(total > 0) {
+        if (total > 0) {
             queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
             list = feedbackService.pageByQueryWrapper(queryWrapper);
         }
@@ -55,7 +57,7 @@ public class FeedbackController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         FeedbackDO feedbackDO = new FeedbackDO();
-        if(id != null) {
+        if (id != null) {
             feedbackDO = feedbackService.getById(id);
             UserDO userDO = userService.getById(feedbackDO.getUserId());
             feedbackDO.setUserName(userDO.getTrueName());

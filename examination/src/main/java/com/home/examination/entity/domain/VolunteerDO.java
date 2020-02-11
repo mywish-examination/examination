@@ -31,6 +31,7 @@ public class VolunteerDO extends BaseEntity {
      * 状态
      */
     private String status;
+
     public String getStatusName() {
         return DictCodeEnum.getValueById(DictCodeEnum.DICT_VOLUNTEER_STATUS.getCode(), this.status);
     }

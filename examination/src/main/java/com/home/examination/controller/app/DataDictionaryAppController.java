@@ -1,12 +1,8 @@
 package com.home.examination.controller.app;
 
-import com.alibaba.druid.util.StringUtils;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.config.ConstantHandler;
-import com.home.examination.entity.domain.CityDO;
 import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.vo.ExecuteResult;
-import com.home.examination.service.CityService;
 import com.home.examination.service.DataDictionaryService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +26,7 @@ public class DataDictionaryAppController {
     @ResponseBody
     public ExecuteResult list(DataDictionaryDO requestParam) {
         List<DataDictionaryDO> list = (List<DataDictionaryDO>) redisTemplate.opsForList().leftPop(ConstantHandler.redis_key_data_dict + requestParam.getDictCode());
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             list = dataDictionaryService.initAndReturnList(requestParam.getDictCode());
         }
         return new ExecuteResult(list);

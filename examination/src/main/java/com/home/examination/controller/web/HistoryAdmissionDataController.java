@@ -4,7 +4,6 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.page.HistoryAdmissionDataPager;
 import com.home.examination.service.HistoryAdmissionDataService;
 import com.home.examination.service.MajorService;
@@ -71,7 +70,7 @@ public class HistoryAdmissionDataController {
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         HistoryAdmissionDataDO historyAdmissionDataDO = new HistoryAdmissionDataDO();
-        if(id != null) {
+        if (id != null) {
             historyAdmissionDataDO = historyAdmissionDataService.getById(id);
         }
         ModelAndView mav = new ModelAndView("/pages/historyAdmissionData/modify");
@@ -107,7 +106,7 @@ public class HistoryAdmissionDataController {
 
         Sheet sheetAt = book.getSheetAt(0);
 
-        int lastRowNum = sheetAt.getLastRowNum();
+        int lastRowNum = sheetAt.getLastRowNum() + 1;
         List<String> majorNameList = new ArrayList<>(lastRowNum);
         List<HistoryAdmissionDataDO> list = new ArrayList<>();
         HistoryAdmissionDataDO historyAdmissionData;
@@ -118,7 +117,7 @@ public class HistoryAdmissionDataController {
             // 院校代码
             Cell cell = row.getCell(0);
             String educationalCode = cell.getStringCellValue();
-            if(StringUtils.isEmpty(educationalCode)) continue;
+            if (StringUtils.isEmpty(educationalCode)) continue;
             historyAdmissionData.setEducationalCode(educationalCode);
 
             // 专业名称

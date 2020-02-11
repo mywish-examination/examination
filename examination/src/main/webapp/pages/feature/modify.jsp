@@ -26,37 +26,40 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>数据字典 / 更新</h5>
+                    <h5>特征管理 / 更新</h5>
                 </div>
                 <div class="ibox-content">
-                    <form:form method="post" action="saveOrUpdate" modelAttribute="dataDictionary" class="form-horizontal">
+                    <form:form method="post" action="saveOrUpdate" modelAttribute="feature" class="form-horizontal">
                         <form:hidden path="id"/>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">字典名称:</label>
+                            <label class="col-sm-2 control-label">特征名称:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="dictName" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:input path="featureName" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">字典编码:</label>
+                            <label class="col-sm-2 control-label">特征类型:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="dictCode" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="featureType" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_feature_type}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">字典值:</label>
+                            <label class="col-sm-2 control-label">学校子类型:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="dictValue" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">字典数值:</label>
-
-                            <div class="col-sm-10">
-                                <form:input path="dictNum" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:select path="featureOption" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict.dict_feature_option}" var="it"  >
+                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                    </c:forEach>
+                                </form:select>
                             </div>
                         </div>
 
@@ -64,7 +67,7 @@
                             <div class="col-sm-4 col-sm-offset-3">
                                 <input type="submit" class="btn btn-primary" value="保存" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/dataDictionary/list.jsp'" value="返回"/>
+                                <input type="button" class="btn btn-white" onclick="window.location.href='${basePath}pages/feature/list.jsp'" value="返回"/>
                             </div>
                         </div>
                     </form:form>

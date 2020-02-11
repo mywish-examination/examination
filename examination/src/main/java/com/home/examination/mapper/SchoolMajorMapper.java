@@ -2,7 +2,6 @@ package com.home.examination.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolMajorDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

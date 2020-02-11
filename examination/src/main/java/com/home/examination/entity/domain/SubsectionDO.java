@@ -31,15 +31,18 @@ public class SubsectionDO extends BaseEntity {
      * 学科类型
      */
     private String subjectType;
+
     public String getSubjectTypeName() {
         return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.subjectType);
     }
+
     /**
      * 省份id
      */
     private Long provinceId;
+
     public String getProvinceName() {
-        if(this.provinceId == null) return "";
+        if (this.provinceId == null) return "";
         return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
     }
 

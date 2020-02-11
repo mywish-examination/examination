@@ -6,8 +6,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 @Data
@@ -24,7 +22,7 @@ public class BaseEntity implements Serializable {
     private Date createTime;
 
     public String getCreateTimeStr() {
-        if(this.createTime == null) return "";
+        if (this.createTime == null) return "";
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(this.createTime);
     }
 }

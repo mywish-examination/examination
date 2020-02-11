@@ -91,7 +91,7 @@ public class SubjectAssessmentRankingController {
 
         Sheet sheetAt = book.getSheetAt(0);
 
-        int lastRowNum = sheetAt.getLastRowNum();
+        int lastRowNum = sheetAt.getLastRowNum() + 1;
         List<SubjectAssessmentRankingDO> list = new ArrayList<>();
         SubjectAssessmentRankingDO subjectAssessmentRankingDO;
         for (int i = 1; i < lastRowNum; i++) {

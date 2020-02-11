@@ -94,7 +94,7 @@ public class SubsectionController {
 
         Sheet sheetAt = book.getSheetAt(0);
 
-        int lastRowNum = sheetAt.getLastRowNum();
+        int lastRowNum = sheetAt.getLastRowNum() + 1;
         List<SubsectionDO> list = new ArrayList<>();
         SubsectionDO subsectionDO;
         for (int i = 1; i < lastRowNum; i++) {

@@ -1,7 +1,7 @@
 package com.home.examination.entity.page;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.home.examination.entity.domain.BusinessCooperationDO;
+import com.home.examination.entity.domain.FeatureDO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -10,16 +10,15 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@Deprecated
-public class BusinessCooperationPager {
+public class FeaturePager {
 
     /**
      * 分页信息
      */
-    private Page<BusinessCooperationDO> pager;
+    private Page<FeatureDO> pager;
     /**
      * 查询参数
      */
-    private BusinessCooperationDO requestParam;
+    private FeatureDO requestParam;
 
 }

@@ -26,10 +26,14 @@ public enum DictCodeEnum {
     DICT_MAJOR_MAJOR_TYPE("dict_major_major_type", "专业类"),
     DICT_MAJOR_EDUCATION("dict_major_education", "学历"),
     DICT_MAJOR_ACADEMIC_DEGREE("dict_major_academic_degree", "学位"),
-    DICT_SUBJECT_TYPE("dict_subject_type", "学科"),
 
     // 志愿档案Code
     DICT_VOLUNTEER_STATUS("dict_volunteer_status", "状态"),
+
+    //public
+    DICT_SUBJECT_TYPE("dict_subject_type", "学科"),
+    DICT_FEATURE_TYPE("dict_feature_type", "特征类型"),
+    DICT_FEATURE_OPTION("dict_feature_option", "特征选项"),
     ;
 
     private String code;

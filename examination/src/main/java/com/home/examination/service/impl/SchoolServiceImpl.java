@@ -9,10 +9,6 @@ import com.home.examination.service.SchoolService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, SchoolDO> implements SchoolService {
@@ -22,7 +18,7 @@ public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, SchoolDO> imple
 
     @Override
     public SchoolDO getByEducationalCode(String educationalCode) {
-        if(StringUtils.isEmpty(educationalCode)) return null;
+        if (StringUtils.isEmpty(educationalCode)) return null;
 
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SchoolDO::getEducationalCode, educationalCode);

@@ -122,7 +122,7 @@ public class SchoolDO extends BaseEntity {
     private String provinceName;
 
     public String getProvinceName() {
-        if(this.provinceId == null) return "";
+        if (this.provinceId == null) return "";
         return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
     }
 
@@ -145,5 +145,11 @@ public class SchoolDO extends BaseEntity {
 
     @TableField(exist = false)
     private String batchCode;
+
+    /**
+     * 位次段落类
+     */
+    @TableField(exist = false)
+    private RankParagraphDO rankParagraph;
 
 }

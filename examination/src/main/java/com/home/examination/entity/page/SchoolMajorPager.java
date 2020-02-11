@@ -1,7 +1,6 @@
 package com.home.examination.entity.page;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolMajorDO;
 import lombok.Data;
 import org.springframework.stereotype.Component;

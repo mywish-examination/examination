@@ -101,6 +101,11 @@
                         <span class="nav-label">数据字典</span>
                         <span class="fa "></span>
                     </a>
+                    <a class="J_menuItem" href="${basePath}pages/feature/list.jsp">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">特征管理</span>
+                        <span class="fa "></span>
+                    </a>
                 </li>
 
             </ul>

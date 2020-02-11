@@ -2,7 +2,6 @@ package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.SchoolMajorDO;
 import com.home.examination.entity.page.SchoolMajorPager;
 import com.home.examination.service.MajorService;
