@@ -60,7 +60,7 @@
                                 <form:select path="mainType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_main_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -72,7 +72,7 @@
                                 <form:select path="childrenType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_children_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -98,7 +98,7 @@
                                 <form:select path="mainManagerDepartment" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_main_manager_department}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -110,7 +110,7 @@
                                 <form:select path="educationalInstitutionsSubjection" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_educational_institutions_subjection}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -122,7 +122,7 @@
                                 <form:select path="educationLevel" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_education_level}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -142,7 +142,7 @@
                                 <form:select path="educationalInstitutionsAttribute" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_educational_institutions_attribute}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -200,7 +200,7 @@
                                 <form:select path="schoolRunningLevel" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_school_school_running_level}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>

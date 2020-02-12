@@ -1,9 +1,12 @@
 package com.home.examination.controller.web;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.entity.domain.DataDictionaryDO;
 import com.home.examination.entity.domain.FeatureDO;
 import com.home.examination.entity.page.FeaturePager;
+import com.home.examination.service.DataDictionaryService;
 import com.home.examination.service.FeatureService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,6 +38,8 @@ public class FeatureController {
 
     @Resource
     private FeatureService featureService;
+    @Resource
+    private DataDictionaryService dataDictionaryService;
 
     @PostMapping("/listPage")
     @ResponseBody
@@ -59,10 +64,18 @@ public class FeatureController {
         FeatureDO featureDO = new FeatureDO();
         if (id != null) {
             featureDO = featureService.getById(id);
+
+            if (!StringUtils.isEmpty(featureDO.getFeatureCode())) {
+                LambdaQueryWrapper<DataDictionaryDO> queryWrapper = new LambdaQueryWrapper<>();
+                queryWrapper.eq(DataDictionaryDO::getDictCode, featureDO.getFeatureCode());
+
+                List<DataDictionaryDO> list = dataDictionaryService.list(queryWrapper);
+                model.addAttribute("featureOptionList", list);
+            }
         }
 
         ModelAndView mav = new ModelAndView("/pages/feature/modify");
-        model.addAttribute("featureDO", featureDO);
+        model.addAttribute("feature", featureDO);
         return mav;
     }
 
@@ -109,12 +122,17 @@ public class FeatureController {
             // 特征类型
             Cell cell1 = row.getCell(1);
             String featureType = cell1.getStringCellValue();
-            featureDO.setFeatureType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_FEATURE_TYPE.getCode(), featureType));
+            featureDO.setFeatureType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_FEATURE_TYPE.getCode(), featureType));
 
             // 特征选项
             Cell cell2 = row.getCell(2);
-            String featureOption = cell2.getStringCellValue();
-            featureDO.setFeatureOption(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_FEATURE_OPTION.getCode(), featureOption));
+            String featureCode = cell2.getStringCellValue();
+            featureDO.setFeatureCode(featureCode);
+
+            // 特征选项
+            Cell cell3 = row.getCell(3);
+            String featureOption = cell3.getStringCellValue();
+            featureDO.setFeatureOption(DictCodeEnum.getNumByValue(featureCode, featureOption));
 
             list.add(featureDO);
         }

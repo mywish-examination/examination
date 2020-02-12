@@ -1,9 +1,12 @@
 package com.home.examination.controller.web;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.runner.MyStartupRunner;
 import com.home.examination.entity.domain.DataDictionaryDO;
+import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.page.DataDictionaryPager;
+import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.DataDictionaryService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,6 +38,16 @@ public class DataDictionaryController {
 
     @Resource
     private DataDictionaryService dataDictionaryService;
+
+    @GetMapping("/listByCode")
+    @ResponseBody
+    public List<DataDictionaryDO> listByCode(String code) {
+        LambdaQueryWrapper<DataDictionaryDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(!StringUtils.isEmpty(code), DataDictionaryDO::getDictCode, code);
+        List<DataDictionaryDO> list = dataDictionaryService.list(queryWrapper);
+
+        return list;
+    }
 
     @PostMapping("/listPage")
     @ResponseBody

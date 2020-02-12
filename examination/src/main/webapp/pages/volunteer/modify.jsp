@@ -88,7 +88,7 @@
                                 <form:select path="status" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_volunteer_status}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>

@@ -126,27 +126,27 @@ public class MajorController {
             // 学科
             Cell cell1 = row.getCell(1);
             String subjectType = cell1.getStringCellValue();
-            major.setSubjectType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SUBJECT_TYPE.getCode(), subjectType));
+            major.setSubjectType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SUBJECT_TYPE.getCode(), subjectType));
 
             // 门类
             Cell cell2 = row.getCell(2);
             String categoryType = cell2.getStringCellValue();
-            major.setCategoryType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), categoryType));
+            major.setCategoryType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), categoryType));
 
             // 专业类
             Cell cell3 = row.getCell(3);
             String majorType = cell3.getStringCellValue();
-            major.setMajorType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_MAJOR_MAJOR_TYPE.getCode(), majorType));
+            major.setMajorType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_MAJOR_MAJOR_TYPE.getCode(), majorType));
 
             // 学历
             Cell cell4 = row.getCell(4);
             String education = cell4.getStringCellValue();
-            major.setEducation(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_MAJOR_EDUCATION.getCode(), education));
+            major.setEducation(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_MAJOR_EDUCATION.getCode(), education));
 
             // 学位
             Cell cell5 = row.getCell(5);
             String academicDegree = cell5.getStringCellValue();
-            major.setAcademicDegree(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_MAJOR_ACADEMIC_DEGREE.getCode(), academicDegree));
+            major.setAcademicDegree(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_MAJOR_ACADEMIC_DEGREE.getCode(), academicDegree));
 
             // 就业率
             Cell cell6 = row.getCell(6);

@@ -22,7 +22,7 @@ public class SchoolDO extends BaseEntity {
     private String mainType;
 
     public String getMainTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), this.mainType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), this.mainType);
     }
 
     /**
@@ -31,7 +31,7 @@ public class SchoolDO extends BaseEntity {
     private String childrenType;
 
     public String getChildrenTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), this.childrenType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), this.childrenType);
     }
 
     /**
@@ -48,7 +48,7 @@ public class SchoolDO extends BaseEntity {
     private String mainManagerDepartment;
 
     public String getMainManagerDepartmentName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), this.mainManagerDepartment);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), this.mainManagerDepartment);
     }
 
     /**
@@ -57,7 +57,7 @@ public class SchoolDO extends BaseEntity {
     private String educationalInstitutionsSubjection;
 
     public String getEducationalInstitutionsSubjectionName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), this.educationalInstitutionsSubjection);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), this.educationalInstitutionsSubjection);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SchoolDO extends BaseEntity {
     private String educationLevel;
 
     public String getEducationLevelName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), this.educationLevel);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), this.educationLevel);
     }
 
     /**
@@ -79,7 +79,7 @@ public class SchoolDO extends BaseEntity {
     private String educationalInstitutionsAttribute;
 
     public String getEducationalInstitutionsAttributeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), this.educationalInstitutionsAttribute);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), this.educationalInstitutionsAttribute);
     }
 
     /**
@@ -108,7 +108,7 @@ public class SchoolDO extends BaseEntity {
     private String schoolRunningLevel;
 
     public String getSchoolRunningLevelName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), this.schoolRunningLevel);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), this.schoolRunningLevel);
     }
 
     /**

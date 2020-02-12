@@ -45,7 +45,7 @@
                                 <form:select path="subjectType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_subject_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -57,7 +57,7 @@
                                 <form:select path="categoryType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_major_category_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -69,7 +69,7 @@
                                 <form:select path="majorType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_major_major_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -81,7 +81,7 @@
                                 <form:select path="education" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_major_education}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -93,7 +93,7 @@
                                 <form:select path="academicDegree" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_major_academic_degree}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -112,7 +112,7 @@
                                 <form:select path="years" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_major_years}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>

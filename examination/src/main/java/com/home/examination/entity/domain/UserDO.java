@@ -43,7 +43,7 @@ public class UserDO extends BaseEntity {
     private String nation;
 
     public String getNationName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_NATION.getCode(), this.nation);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_USER_NATION.getCode(), this.nation);
     }
 
     /**
@@ -56,7 +56,7 @@ public class UserDO extends BaseEntity {
     private String subjectType;
 
     public String getSubjectTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_SUBJECT_TYPE.getCode(), this.subjectType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_USER_SUBJECT_TYPE.getCode(), this.subjectType);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UserDO extends BaseEntity {
     private String type;
 
     public String getTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_TYPE.getCode(), this.type);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_USER_TYPE.getCode(), this.type);
     }
     // 新增字段
     /**
@@ -90,7 +90,7 @@ public class UserDO extends BaseEntity {
     private String sex;
 
     public String getSexName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_USER_SEX.getCode(), this.sex);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_USER_SEX.getCode(), this.sex);
     }
 
     /**

@@ -33,7 +33,7 @@ public class VolunteerDO extends BaseEntity {
     private String status;
 
     public String getStatusName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_VOLUNTEER_STATUS.getCode(), this.status);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_VOLUNTEER_STATUS.getCode(), this.status);
     }
 
     /**

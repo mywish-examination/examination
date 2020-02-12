@@ -19,7 +19,7 @@ public class MajorDO extends BaseEntity {
     private String subjectType;
 
     public String getSubjectTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.subjectType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.subjectType);
     }
 
     /**
@@ -28,7 +28,7 @@ public class MajorDO extends BaseEntity {
     private String categoryType;
 
     public String getCategoryTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.categoryType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.categoryType);
     }
 
     /**
@@ -37,7 +37,7 @@ public class MajorDO extends BaseEntity {
     private String majorType;
 
     public String getMajorTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_MAJOR_TYPE.getCode(), this.majorType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_MAJOR_MAJOR_TYPE.getCode(), this.majorType);
     }
 
     /**
@@ -46,7 +46,7 @@ public class MajorDO extends BaseEntity {
     private String education;
 
     public String getEducationName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_EDUCATION.getCode(), this.education);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_MAJOR_EDUCATION.getCode(), this.education);
     }
 
     /**
@@ -55,7 +55,7 @@ public class MajorDO extends BaseEntity {
     private String academicDegree;
 
     public String getAcademicDegreeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_ACADEMIC_DEGREE.getCode(), this.academicDegree);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_MAJOR_ACADEMIC_DEGREE.getCode(), this.academicDegree);
     }
 
     /**

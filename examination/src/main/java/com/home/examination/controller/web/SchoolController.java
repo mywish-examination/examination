@@ -153,12 +153,12 @@ public class SchoolController {
             // 学校主类型
             Cell cell1 = row.getCell(2);
             String mainType = cell1.getStringCellValue();
-            schoolDO.setMainType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), mainType));
+            schoolDO.setMainType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), mainType));
 
             // 学校子类型
             Cell cell2 = row.getCell(3);
             String childrenType = cell2.getStringCellValue();
-            schoolDO.setChildrenType(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), childrenType));
+            schoolDO.setChildrenType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), childrenType));
 
             // 曾用名
             Cell cell3 = row.getCell(4);
@@ -173,17 +173,17 @@ public class SchoolController {
             // 主管部门
             Cell cell5 = row.getCell(6);
             String mainManagerDepartment = cell5.getStringCellValue();
-            schoolDO.setMainManagerDepartment(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), mainManagerDepartment));
+            schoolDO.setMainManagerDepartment(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), mainManagerDepartment));
 
             // 院校隶属
             Cell cell6 = row.getCell(7);
             String educationalInstitutionsSubjection = cell6.getStringCellValue();
-            schoolDO.setEducationalInstitutionsSubjection(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), educationalInstitutionsSubjection));
+            schoolDO.setEducationalInstitutionsSubjection(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), educationalInstitutionsSubjection));
 
             // 学历层次
             Cell cell7 = row.getCell(8);
             String educationLevel = cell7.getStringCellValue();
-            schoolDO.setEducationLevel(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), educationLevel));
+            schoolDO.setEducationLevel(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), educationLevel));
 
             // 院校官网链接
             Cell cell8 = row.getCell(9);
@@ -193,7 +193,7 @@ public class SchoolController {
             // 院校属性
             Cell cell9 = row.getCell(10);
             String educationalInstitutionsAttribute = cell9.getStringCellValue();
-            schoolDO.setEducationalInstitutionsAttribute(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), educationalInstitutionsAttribute));
+            schoolDO.setEducationalInstitutionsAttribute(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), educationalInstitutionsAttribute));
 
             // 基本信息
             Cell cell10 = row.getCell(11);
@@ -223,7 +223,7 @@ public class SchoolController {
             // 办学层次
             Cell cell15 = row.getCell(16);
             String schoolRunningLevel = cell15.getStringCellValue();
-            schoolDO.setSchoolRunningLevel(DictCodeEnum.getIdByValue(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), schoolRunningLevel));
+            schoolDO.setSchoolRunningLevel(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), schoolRunningLevel));
 
             // 省份
             Cell cell16 = row.getCell(17);

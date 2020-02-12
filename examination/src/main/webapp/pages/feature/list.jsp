@@ -76,11 +76,12 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '特征名称', '特征类型' , '特征选项', '操作'],
+            colNames: ['', '特征名称', '特征类型' , '特征编号', '特征选项', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'featureName', index: 'featureName', width: '30%', sortable: false},
                 {name: 'featureTypeName', index: 'featureTypeName', width: '25%', sortable: false},
+                {name: 'featureCodeName', index: 'featureCodeName', width: '25%', sortable: false},
                 {name: 'featureOptionName', index: 'featureOptionName', width: '30%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],

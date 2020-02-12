@@ -77,7 +77,7 @@
                                 <form:select path="nation" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_user_nation}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -96,7 +96,7 @@
                                 <form:select path="subjectType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_user_subject_Type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -108,7 +108,7 @@
                                 <form:select path="sex" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_user_sex}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
@@ -120,7 +120,7 @@
                                 <form:select path="type" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_user_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>

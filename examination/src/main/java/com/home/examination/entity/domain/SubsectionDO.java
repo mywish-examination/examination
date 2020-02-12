@@ -33,7 +33,7 @@ public class SubsectionDO extends BaseEntity {
     private String subjectType;
 
     public String getSubjectTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.subjectType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_MAJOR_CATEGORY_TYPE.getCode(), this.subjectType);
     }
 
     /**

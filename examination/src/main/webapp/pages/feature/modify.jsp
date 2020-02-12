@@ -45,20 +45,39 @@
                                 <form:select path="featureType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
                                     <c:forEach items="${sys_dict.dict_feature_type}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
+                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">学校子类型:</label>
+                            <label class="col-sm-2 control-label">特征编号:</label>
+
+                            <div class="col-sm-10">
+                                <form:select path="featureCode" class="form-control valid-control">
+                                    <form:option value="">请选择</form:option>
+                                    <c:forEach items="${sys_dict_name}" var="it"  >
+                                        <form:option value="${it.key }">${it.value }</form:option>
+                                    </c:forEach>
+                                </form:select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">特征选项:</label>
 
                             <div class="col-sm-10">
                                 <form:select path="featureOption" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_feature_option}" var="it"  >
-                                        <form:option value="${it.id }">${it.dictValue }</form:option>
-                                    </c:forEach>
+                                    <c:if test="${ not empty feature.featureCode }">
+                                        <c:forEach items="${featureOptionList}" var="it"  >
+                                            <c:if test="${it.dictNum == feature.featureOption}">
+                                                <form:option value="${it.dictNum }" selected="selected">${it.dictValue }</form:option>
+                                            </c:if>
+                                            <c:if test="${it.dictNum != feature.featureOption}">
+                                                <form:option value="${it.dictNum }">${it.dictValue }</form:option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
                                 </form:select>
                             </div>
                         </div>
@@ -88,6 +107,33 @@
 <script src="${basePath}js/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
+        $("#featureCode").change(function(){
+            var value = $(this).val();
+            $.ajax({
+                //请求方式
+                type : "GET",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url : "${basePath}web/dataDictionary/listByCode?code=" + value,
+                //请求成功
+                success : function(result) {
+                    var content = "<option =value=''>请选择</option>";
+                    var dict;
+                    for(dict in result) {
+                        content += "<option value='"+result[dict].dictNum+"'>"+result[dict].dictValue+"</option>";
+                    }
+                    $("#featureOption").html("");
+                    $("#featureOption").append(content);
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        });
+
     });
 </script>
 

@@ -33,7 +33,6 @@ public enum DictCodeEnum {
     //public
     DICT_SUBJECT_TYPE("dict_subject_type", "学科"),
     DICT_FEATURE_TYPE("dict_feature_type", "特征类型"),
-    DICT_FEATURE_OPTION("dict_feature_option", "特征选项"),
     ;
 
     private String code;
@@ -56,12 +55,12 @@ public enum DictCodeEnum {
      * 通过数据字典Code和字典id获取字典值
      *
      * @param code
-     * @param id
+     * @param num
      * @return
      */
-    public static String getValueById(String code, String id) {
-        if (StringUtils.isEmpty(id)) return "";
-        return MyStartupRunner.map.get(code).stream().filter(dataDictionaryDO -> dataDictionaryDO.getId().toString().equals(id)).map(DataDictionaryDO::getDictValue).findFirst().orElse("");
+    public static String getValueByNum(String code, String num) {
+        if (StringUtils.isEmpty(num)) return "";
+        return MyStartupRunner.map.get(code).stream().filter(dataDictionaryDO -> dataDictionaryDO.getDictNum().equals(num)).map(DataDictionaryDO::getDictValue).findFirst().orElse("");
     }
 
     /**
@@ -71,9 +70,9 @@ public enum DictCodeEnum {
      * @param value
      * @return
      */
-    public static String getIdByValue(String code, String value) {
+    public static String getNumByValue(String code, String value) {
         if (StringUtils.isEmpty(value)) return "";
-        return MyStartupRunner.map.get(code).stream().filter(dataDictionaryDO -> dataDictionaryDO.getDictValue().equals(value)).map(DataDictionaryDO::getId).findFirst().get().toString();
+        return MyStartupRunner.map.get(code).stream().filter(dataDictionaryDO -> dataDictionaryDO.getDictValue().equals(value)).map(DataDictionaryDO::getDictNum).findFirst().get();
     }
 
 }

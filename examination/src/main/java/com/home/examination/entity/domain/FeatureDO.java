@@ -2,6 +2,7 @@ package com.home.examination.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
 @Data
@@ -17,7 +18,13 @@ public class FeatureDO extends BaseEntity {
     private String featureType;
 
     public String getFeatureTypeName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_FEATURE_TYPE.getCode(), this.featureType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_FEATURE_TYPE.getCode(), this.featureType);
+    }
+
+    private String featureCode;
+
+    public String getFeatureCodeName() {
+        return MyStartupRunner.dictNameMap.get(this.featureCode);
     }
 
     /**
@@ -26,7 +33,7 @@ public class FeatureDO extends BaseEntity {
     private String featureOption;
 
     public String getFeatureOptionName() {
-        return DictCodeEnum.getValueById(DictCodeEnum.DICT_FEATURE_OPTION.getCode(), this.featureOption);
+        return DictCodeEnum.getValueByNum(this.featureCode, this.featureOption);
     }
 
 }
