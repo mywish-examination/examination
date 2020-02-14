@@ -20,4 +20,9 @@ public class AdmissionEstimateReferenceDO {
      */
     private String probabilityFiling;
 
+    /**
+     * 评估星级
+     */
+    private String starRating;
+
 }

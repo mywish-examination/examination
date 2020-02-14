@@ -89,4 +89,10 @@ public class MajorDO extends BaseEntity {
     @TableField(exist = false)
     String collectionStatus;
 
+    /**
+     * 评价星级
+     */
+    @TableField(exist = false)
+    private String starRating;
+
 }

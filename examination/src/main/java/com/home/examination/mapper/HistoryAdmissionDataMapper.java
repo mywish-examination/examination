@@ -38,8 +38,8 @@ public interface HistoryAdmissionDataMapper extends BaseMapper<HistoryAdmissionD
     RankParagraphDO getRankParagraphBySchool(@Param("educationalCode") String educationalCode, @Param("year") String year);
 
     @Select("select " +
-            "CONCAT(min(t.avg_rank), '-', max(t.avg_rank)) as rankParagraph, " +
-            "CONCAT(min(t.average), '-', max(t.highest_score)) as scoreParagraph " +
+            "CONCAT(min(t.minimum_rank), '-', max(t.highest_rank)) as rankParagraph, " +
+            "CONCAT(min(t.minimum_score), '-', max(t.highest_score)) as scoreParagraph " +
             "from history_admission_data t " +
             "${ew.customSqlSegment}")
     AdmissionEstimateReferenceDO getBySchoolOrMajor(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);

@@ -1,7 +1,9 @@
 package com.home.examination.controller.app;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.home.examination.common.utils.ExUtils;
 import com.home.examination.entity.domain.*;
+import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.VolunteerVO;
 import com.home.examination.service.HistoryAdmissionDataService;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @RestController
@@ -49,6 +53,7 @@ public class VolunteerAppController {
         volunteerQueryWrapper.eq(VolunteerDO::getUserId, userDO.getId());
         List<VolunteerDO> list = volunteerService.list(volunteerQueryWrapper);
 
+        int year = LocalDate.now().minusYears(3).getYear();
         if (list.isEmpty()) {
             return new ExecuteResult();
         }
@@ -83,6 +88,22 @@ public class VolunteerAppController {
         Map<String, List<SchoolDO>> result = schoolList.stream().collect(Collectors.groupingBy(SchoolDO::getBatchCode));
         List<Object> resultList = new ArrayList<>();
         for (Map.Entry<String, List<SchoolDO>> entry : result.entrySet()) {
+            for (SchoolDO schoolInside : entry.getValue()) {
+                for (MajorDO majorDO : schoolInside.getMajorList()) {
+                    LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
+                    historyQueryWrapper.eq(HistoryAdmissionDataDO::getEducationalCode, schoolInside.getEducationalCode()).eq(HistoryAdmissionDataDO::getMajorId, majorDO.getId());
+                    // 历史录取数据列表
+                    List<HistoryAdmissionDataDO> historyAdmissionDataInsideList = historyAdmissionDataService.list(historyQueryWrapper);
+
+                    historyQueryWrapper.apply("years >= {0}", year);
+                    AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+
+                    BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataInsideList, userDO);
+                    Supplier<Boolean> supplier = () -> new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+                    majorDO.setStarRating(ExUtils.starRatingHandler(resultInside, supplier));
+                }
+            }
+
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("batchCode", entry.getKey());
             resultMap.put("schoolList", entry.getValue());
@@ -100,6 +121,7 @@ public class VolunteerAppController {
     @PostMapping("/listVolunteerLeading")
     public ExecuteResult listVolunteerLeading(String token) {
         UserDO userDO = (UserDO) redisTemplate.opsForValue().get(token);
+        int year = LocalDate.now().minusYears(3).getYear();
         LambdaQueryWrapper<VolunteerDO> volunteerQueryWrapper = new LambdaQueryWrapper<>();
         volunteerQueryWrapper.eq(VolunteerDO::getUserId, userDO.getId());
         List<VolunteerDO> list = volunteerService.list(volunteerQueryWrapper);
@@ -124,7 +146,23 @@ public class VolunteerAppController {
         schoolQueryWrapper.in(SchoolDO::getId, schoolIdList);
         List<SchoolDO> schoolList = schoolService.list(schoolQueryWrapper);
 
-        schoolList.forEach(schoolDO -> schoolDO.setMajorList(volunteerList.get(schoolDO.getId())));
+        schoolList.forEach(schoolDO -> {
+            List<MajorDO> majorList = volunteerList.get(schoolDO.getId());
+            for (MajorDO majorDO : majorList) {
+                LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
+                historyQueryWrapper.eq(HistoryAdmissionDataDO::getEducationalCode, schoolDO.getEducationalCode()).eq(HistoryAdmissionDataDO::getMajorId, majorDO.getId());
+                // 历史录取数据列表
+                List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
+
+                historyQueryWrapper.apply("years >= {0}", year);
+                AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+
+                BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
+                Supplier<Boolean> supplier = () -> new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+                majorDO.setStarRating(ExUtils.starRatingHandler(resultInside, supplier));
+            }
+            schoolDO.setMajorList(majorList);
+        });
 
         VolunteerVO volunteerVO = new VolunteerVO();
         volunteerVO.setSchoolList(schoolList);

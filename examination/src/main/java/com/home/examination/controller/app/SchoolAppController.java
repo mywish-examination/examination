@@ -3,10 +3,13 @@ package com.home.examination.controller.app;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.home.examination.common.utils.ExUtils;
+import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.RankParagraphDO;
 import com.home.examination.entity.domain.SchoolDO;
 import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.SchoolPager;
+import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.service.HistoryAdmissionDataService;
 import com.home.examination.service.SchoolService;
@@ -16,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Supplier;
 
 @RestController
 @RequestMapping("/app/school")
@@ -61,14 +67,21 @@ public class SchoolAppController {
             }
 
             schoolDO.setRankParagraph(rankParagraph);
+
+            LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
+            historyQueryWrapper.eq(HistoryAdmissionDataDO::getEducationalCode, schoolDO.getEducationalCode());
+            // 历史录取数据列表
+            List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
+
+            historyQueryWrapper.apply("years >= {0}", year);
+            AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+
+            BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
+            Supplier<Boolean> supplier = () -> new BigDecimal(user.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+            schoolDO.setStarRating(ExUtils.starRatingHandler(result, supplier));
         }
 
         return new ExecuteResult(page);
-    }
-
-    @PostMapping("/detail")
-    public ExecuteResult detail(Long id) {
-        return new ExecuteResult(schoolService.getById(id));
     }
 
 }

@@ -19,10 +19,6 @@ public class SchoolMajorDO extends BaseEntity {
      */
     private BigDecimal admissionScoreLine;
     /**
-     * 评价星级
-     */
-    private String starRating;
-    /**
      * 学校Id
      */
     private String educationalCode;
