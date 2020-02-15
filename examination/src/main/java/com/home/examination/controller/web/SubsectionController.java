@@ -113,7 +113,7 @@ public class SubsectionController {
 
             // 位次
             Cell cell1 = row.getCell(2);
-            String rank = cell1.getStringCellValue();
+            String rank = String.valueOf((int) cell1.getNumericCellValue());
             subsectionDO.setRank(rank);
 
             // 年份
@@ -123,14 +123,14 @@ public class SubsectionController {
 
             // 科类
             Cell cell3 = row.getCell(4);
-            String subjectType = cell3.getStringCellValue();
+            String subjectType = String.valueOf((int) cell3.getNumericCellValue());
             subsectionDO.setSubjectType(subjectType);
 
-            // 省份
-            Cell cell16 = row.getCell(5);
-            String province = cell16.getStringCellValue();
-            Long provinceId = MyStartupRunner.list.stream().filter(city -> city.getCityName().equals(province)).map(CityDO::getId).findFirst().get();
-            subsectionDO.setProvinceId(provinceId);
+//            // 省份
+//            Cell cell16 = row.getCell(5);
+//            String province = cell16.getStringCellValue();
+//            Long provinceId = MyStartupRunner.list.stream().filter(city -> city.getCityName().equals(province)).map(CityDO::getId).findFirst().get();
+//            subsectionDO.setProvinceId(provinceId);
 
             list.add(subsectionDO);
         }

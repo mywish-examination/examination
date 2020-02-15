@@ -100,7 +100,7 @@ public class SubjectAssessmentRankingController {
 
             // id
             Cell cell = row.getCell(0);
-            Long id = Long.valueOf(cell.getStringCellValue());
+            Long id = Long.valueOf((int) cell.getNumericCellValue());
             subjectAssessmentRankingDO.setId(id);
 
             // 学科门类
@@ -133,15 +133,17 @@ public class SubjectAssessmentRankingController {
             String schoolName = cell5.getStringCellValue();
             subjectAssessmentRankingDO.setSchoolName(schoolName);
 
-            // 院校隶属
+            // 全国排名
             Cell cell6 = row.getCell(7);
-            String natonalRankings = cell6.getStringCellValue();
-            subjectAssessmentRankingDO.setNationalRankings(natonalRankings);
+            String nationalRankings = cell6.getStringCellValue();
+            subjectAssessmentRankingDO.setNationalRankings(nationalRankings);
 
-            // 学历层次
+            // 档次
             Cell cell7 = row.getCell(8);
             String grade = cell7.getStringCellValue();
             subjectAssessmentRankingDO.setGrade(grade);
+
+            subjectAssessmentRankingDO.setEducationalCode(String.valueOf(i));
 
             list.add(subjectAssessmentRankingDO);
         }

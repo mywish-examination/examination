@@ -65,7 +65,7 @@
 
         // Configuration for jqGrid Example 1
         $("#subsectionList").jqGrid({
-            url: "${basePath}web/subsection/listPage",
+                url: "${basePath}web/subsection/listPage",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -78,7 +78,7 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '分数', '人数', '位次', '年份', '科类', '省份', '操作'],
+            colNames: ['', '分数', '人数', '位次', '年份', '科类', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
                 {name: 'score', index: 'score', width: '15%', sortable: false},
@@ -86,7 +86,6 @@
                 {name: 'rank', index: 'rank', width: '10%', sortable: false},
                 {name: 'year', index: 'year', width: '10%', sortable: false},
                 {name: 'subjectTypeName', index: 'subjectTypeName', width: '10%', sortable: false},
-                {name: 'provinceName', index: 'provinceName', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
@@ -99,7 +98,7 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "学科评估排名列表",
+            caption: "分段列表",
             toolbar: [true,"top"],
             gridComplete: function() {
                 var ids = jQuery("#subsectionList").jqGrid('getDataIDs');

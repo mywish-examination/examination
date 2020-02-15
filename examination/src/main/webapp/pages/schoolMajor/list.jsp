@@ -71,14 +71,13 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '学校名称', '专业名称', '学科', '评估星级', '招生人数', '录取分数线', '操作'],
+            colNames: ['', '学校名称', '专业名称', '招生人数', '录取分数线', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false, hidden: false},
-                {name: 'majorName', index: 'majorName', width: '15%', sortable: false, hidden: false},
-                {name: 'starRating', index: 'starRating', width: '10%', sortable: false},
-                {name: 'recruitNum', index: 'recruitNum', width: '10%', sortable: false},
-                {name: 'admissionScoreLine', index: 'admissionScoreLine', width: '10%', sortable: false},
+                {name: 'schoolName', index: 'schoolName', width: '30%', sortable: false, hidden: false},
+                {name: 'majorName', index: 'majorName', width: '25%', sortable: false, hidden: false},
+                {name: 'recruitNum', index: 'recruitNum', width: '15%', sortable: false},
+                {name: 'admissionScoreLine', index: 'admissionScoreLine', width: '15%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
