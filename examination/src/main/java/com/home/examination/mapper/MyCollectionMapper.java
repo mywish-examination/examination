@@ -14,7 +14,7 @@ public interface MyCollectionMapper extends BaseMapper<MyCollectionDO> {
 
     @Select("select t.*, m.name as majorName, s.name as schoolName, u.true_name as userName " +
             "from my_collection t " +
-            "inner join major m on t.major_id = m.id " +
+            "left join major m on t.major_id = m.id " +
             "inner join school s on t.educational_code = s.educational_code " +
             "inner join user u on t.user_id = u.id " +
             "${ew.customSqlSegment}")
@@ -22,7 +22,7 @@ public interface MyCollectionMapper extends BaseMapper<MyCollectionDO> {
 
     @Select("select count(t.id) " +
             "from my_collection t " +
-            "inner join major m on t.major_id = m.id " +
+            "left join major m on t.major_id = m.id " +
             "inner join school s on t.educational_code = s.educational_code " +
             "inner join user u on t.user_id = u.id " +
             "${ew.customSqlSegment}")

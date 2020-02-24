@@ -6,10 +6,7 @@ import com.home.examination.entity.domain.*;
 import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.TargetCollegesVO;
-import com.home.examination.service.HistoryAdmissionDataService;
-import com.home.examination.service.MajorService;
-import com.home.examination.service.SchoolMajorService;
-import com.home.examination.service.SchoolService;
+import com.home.examination.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Supplier;
@@ -35,6 +33,8 @@ public class TargetCollegesController {
     private HistoryAdmissionDataService historyAdmissionDataService;
     @Resource
     private SchoolMajorService schoolMajorService;
+    @Resource
+    private MyCollectionService myCollectionService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -58,6 +58,15 @@ public class TargetCollegesController {
             schoolQueryWrapper.in(SchoolDO::getEducationalCode, collect);
             List<SchoolDO> list = schoolService.list(schoolQueryWrapper);
 
+            LambdaQueryWrapper<MyCollectionDO> myCollectionQueryWrapper = new LambdaQueryWrapper<>();
+            List<String> educationalCodeList = list.stream().map(SchoolDO::getEducationalCode).collect(Collectors.toList());
+            myCollectionQueryWrapper.eq(MyCollectionDO::getMajorId, majorId).in(MyCollectionDO::getEducationalCode, educationalCodeList).eq(MyCollectionDO::getUserId, userDO.getId());
+            List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
+            List<String> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getEducationalCode).collect(Collectors.toList());
+            for(SchoolDO schoolDO: list) {
+                if(existMyCollectionCollect.contains(schoolDO.getEducationalCode())) schoolDO.setCollectionStatus("1");
+            }
+
             targetColleges.setSchoolList(list);
 
             targetColleges.setSchoolName(school.getName());
@@ -77,8 +86,17 @@ public class TargetCollegesController {
                 majorQueryWrapper.in(MajorDO::getId, collect);
                 // 专业列表
                 List<MajorDO> majorList = majorService.list(majorQueryWrapper);
+
+                LambdaQueryWrapper<MyCollectionDO> myCollectionQueryWrapper = new LambdaQueryWrapper<>();
+                List<Long> majorIdList = majorList.stream().map(MajorDO::getId).collect(Collectors.toList());
+                myCollectionQueryWrapper.in(MyCollectionDO::getMajorId, majorIdList).eq(MyCollectionDO::getEducationalCode, educationalCode).eq(MyCollectionDO::getUserId, userDO.getId());
+                List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
+                List<Long> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getMajorId).collect(Collectors.toList());
+
                 for (MajorDO major:
                         majorList) {
+                    if(existMyCollectionCollect.contains(major.getId())) major.setCollectionStatus("1");
+
                     LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
                     historyQueryWrapper.eq(HistoryAdmissionDataDO::getEducationalCode, educationalCode).eq(HistoryAdmissionDataDO::getMajorId, major.getId());
                     // 历史录取数据列表
@@ -88,7 +106,10 @@ public class TargetCollegesController {
                     AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
                     BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
-                    Supplier<Boolean> supplier = () -> new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+                    Supplier<Boolean> supplier = () -> {
+                        String minScore = admissionEstimateReference.getScoreParagraph().split("-")[0];
+                        return new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
+                    };
                     major.setStarRating(ExUtils.starRatingHandler(result, supplier));
                 }
                 targetColleges.setMajorList(majorList);
@@ -108,7 +129,10 @@ public class TargetCollegesController {
         String probabilityFiling = result.multiply(new BigDecimal(100)).toString() + "%";
         admissionEstimateReference.setProbabilityFiling(probabilityFiling);
 
-        Supplier<Boolean> supplier = () -> new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+        Supplier<Boolean> supplier = () -> {
+            String minScore = admissionEstimateReference.getScoreParagraph().split("-")[0];
+            return new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
+        };
         admissionEstimateReference.setStarRating(ExUtils.starRatingHandler(result, supplier));
 
         targetColleges.setAdmissionEstimateReference(admissionEstimateReference);

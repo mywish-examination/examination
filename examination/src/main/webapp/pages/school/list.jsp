@@ -78,18 +78,19 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '院校代码', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校隶属', '学历层次', '操作'],
+            colNames: ['', '院校代码', '学校名称', '学校主类型', '学校子类型', '曾用名', '备注', '主管部门', '院校属性', '学历层次', '特色教育', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'educationalCode', index: 'educationalCode', width: '15%', sortable: false},
-                {name: 'name', index: 'name', width: '15%', sortable: false},
+                {name: 'educationalCode', index: 'educationalCode', width: '10%', sortable: false},
+                {name: 'name', index: 'name', width: '10%', sortable: false},
                 {name: 'mainTypeName', index: 'mainTypeName', width: '10%', sortable: false},
                 {name: 'childrenTypeName', index: 'childrenTypeName', width: '10%', sortable: false},
                 {name: 'onceName', index: 'onceName', width: '10%', sortable: false},
                 {name: 'remark', index: 'remark', width: '10%', sortable: false},
                 {name: 'mainManagerDepartmentName', index: 'mainManagerDepartmentName', width: '10%', sortable: false},
-                {name: 'educationalInstitutionsSubjectionName', index: 'educationalInstitutionsSubjectionName', width: '10%', sortable: false},
+                {name: 'educationalInstitutionsAttributeName', index: 'educationalInstitutionsAttributeName', width: '10%', sortable: false},
                 {name: 'educationLevelName', index: 'educationLevelName', width: '10%', sortable: false},
+                {name: 'featureEducationalName', index: 'featureEducationalName', width: '10%', sortable: false},
                 {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {

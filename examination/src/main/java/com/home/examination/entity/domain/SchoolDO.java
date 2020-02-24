@@ -1,12 +1,15 @@
 package com.home.examination.entity.domain;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.home.examination.common.enumerate.DictCodeEnum;
 import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @TableName("school")
@@ -22,16 +25,51 @@ public class SchoolDO extends BaseEntity {
     private String mainType;
 
     public String getMainTypeName() {
-        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), this.mainType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_TYPE.getCode(), this.mainType);
     }
 
     /**
      * 学校子类型
      */
     private String childrenType;
+    @TableField(exist = false)
+    private String[] childrenTypeArray;
+
+    public String[] getChildrenTypeArray() {
+        if (StringUtils.isEmpty(this.childrenType)) return null;
+        return this.childrenType.split(",");
+    }
 
     public String getChildrenTypeName() {
-        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), this.childrenType);
+        if (StringUtils.isEmpty(this.childrenType)) return "";
+        String[] split = this.childrenType.split(",");
+        List<String> list = Arrays.asList(split);
+        String result = list.stream().map(str ->
+                DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_TYPE.getCode(), str)
+        ).collect(Collectors.joining(","));
+        return result;
+    }
+
+    /**
+     * 特色教育
+     */
+    private String featureEducational;
+    @TableField(exist = false)
+    private String[] featureEducationalArray;
+
+    public String[] getFeatureEducationalArray() {
+        if (StringUtils.isEmpty(this.featureEducational)) return null;
+        return this.featureEducational.split(",");
+    }
+
+    public String getFeatureEducationalName() {
+        if (StringUtils.isEmpty(this.featureEducational)) return "";
+        String[] split = this.featureEducational.split(",");
+        List<String> list = Arrays.asList(split);
+        String result = list.stream().map(str ->
+                DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_FEATURE_EDUCATIONAL.getCode(), str)
+        ).collect(Collectors.joining(","));
+        return result;
     }
 
     /**
@@ -77,9 +115,22 @@ public class SchoolDO extends BaseEntity {
      * 院校属性
      */
     private String educationalInstitutionsAttribute;
+    @TableField(exist = false)
+    private String[] educationalInstitutionsAttributeArray;
+
+    public String[] getEducationalInstitutionsAttributeArray() {
+        if (StringUtils.isEmpty(this.educationalInstitutionsAttribute)) return null;
+        return this.educationalInstitutionsAttribute.split(",");
+    }
 
     public String getEducationalInstitutionsAttributeName() {
-        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), this.educationalInstitutionsAttribute);
+        if (StringUtils.isEmpty(this.educationalInstitutionsAttribute)) return "";
+        String[] split = this.educationalInstitutionsAttribute.split(",");
+        List<String> list = Arrays.asList(split);
+        String result = list.stream().map(str ->
+                DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), str)
+        ).collect(Collectors.joining(","));
+        return result;
     }
 
     /**
@@ -98,6 +149,24 @@ public class SchoolDO extends BaseEntity {
      * 双一流学科
      */
     private String doubleFirstClassSubject;
+    @TableField(exist = false)
+    private String[] doubleFirstClassSubjectArray;
+
+    public String[] getDoubleFirstClassSubjectArray() {
+        if (StringUtils.isEmpty(this.doubleFirstClassSubject)) return null;
+        return this.doubleFirstClassSubject.split(",");
+    }
+
+    public String getDoubleFirstClassSubjectName() {
+        if (StringUtils.isEmpty(this.doubleFirstClassSubject)) return "";
+        String[] split = this.doubleFirstClassSubject.split(",");
+        List<String> list = Arrays.asList(split);
+        String result = list.stream().map(str ->
+                DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SCHOOL_DOUBLE_FIRST_CLASS_SUBJECT.getCode(), str)
+        ).collect(Collectors.joining(","));
+        return result;
+    }
+
     /**
      * 院校图标
      */
@@ -123,7 +192,8 @@ public class SchoolDO extends BaseEntity {
 
     public String getProvinceName() {
         if (this.provinceId == null) return "";
-        return MyStartupRunner.list.stream().filter(city -> city.getId() == this.provinceId).map(CityDO::getCityName).findFirst().get();
+        List<CityDO> collect = MyStartupRunner.list.stream().filter(city -> city.getId().longValue() == this.provinceId.longValue()).collect(Collectors.toList());
+        return collect.stream().map(CityDO::getCityName).findFirst().get();
     }
 
     // 新增字段
@@ -152,5 +222,11 @@ public class SchoolDO extends BaseEntity {
      */
     @TableField(exist = false)
     private RankParagraphDO rankParagraph;
+
+    /**
+     * 收藏状态，1=收藏，0=不收藏
+     */
+    @TableField(exist = false)
+    String collectionStatus;
 
 }

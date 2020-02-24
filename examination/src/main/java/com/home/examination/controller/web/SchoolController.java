@@ -10,10 +10,7 @@ import com.home.examination.entity.page.SchoolPager;
 import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.SchoolService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/web/school")
@@ -46,6 +44,7 @@ public class SchoolController {
     @ResponseBody
     public SchoolPager listPage(SchoolPager pager) {
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(SchoolDO::getEducationalCode);
         schoolService.page(pager.getPager(), queryWrapper);
         return pager;
     }
@@ -84,6 +83,31 @@ public class SchoolController {
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(SchoolDO param) {
         ModelAndView mav = new ModelAndView("/pages/school/list");
+
+        String[] childrenTypeArray = param.getChildrenTypeArray();
+        if (childrenTypeArray != null && childrenTypeArray.length > 0) {
+            String collect = Arrays.asList(childrenTypeArray).stream().collect(Collectors.joining(","));
+            param.setChildrenType(collect);
+        }
+
+        String[] featureEducationalArray = param.getFeatureEducationalArray();
+        if (featureEducationalArray != null && featureEducationalArray.length > 0) {
+            String collect = Arrays.asList(featureEducationalArray).stream().collect(Collectors.joining(","));
+            param.setFeatureEducational(collect);
+        }
+
+        String[] educationalInstitutionsAttributeArray = param.getEducationalInstitutionsAttributeArray();
+        if (educationalInstitutionsAttributeArray != null && educationalInstitutionsAttributeArray.length > 0) {
+            String collect = Arrays.asList(educationalInstitutionsAttributeArray).stream().collect(Collectors.joining(","));
+            param.setEducationalInstitutionsAttribute(collect);
+        }
+
+        String[] doubleFirstClassSubjectArray = param.getDoubleFirstClassSubjectArray();
+        if (doubleFirstClassSubjectArray != null && doubleFirstClassSubjectArray.length > 0) {
+            String collect = Arrays.asList(doubleFirstClassSubjectArray).stream().collect(Collectors.joining(","));
+            param.setDoubleFirstClassSubject(collect);
+        }
+
         schoolService.saveOrUpdate(param);
         return mav;
     }
@@ -139,97 +163,187 @@ public class SchoolController {
             Row row = sheetAt.getRow(i);
 
             // 院校代码
-            Cell cell = row.getCell(0);
-            String educationalCode = cell.getStringCellValue();
-            if (StringUtils.isEmpty(educationalCode)) continue;
+            Cell cell0 = row.getCell(0);
+            String educationalCode = "";
+            if (cell0.getCellType().equals(CellType.NUMERIC)) {
+                educationalCode = String.valueOf((int) cell0.getNumericCellValue());
+            } else if (cell0.getCellType().equals(CellType.STRING)) {
+                educationalCode = cell0.getStringCellValue();
+            }
             schoolDO.setEducationalCode(educationalCode);
 
             // 学校名称
-            Cell cell0 = row.getCell(1);
-            String name = cell0.getStringCellValue();
+            Cell cell1 = row.getCell(1);
+            String name = cell1.getStringCellValue();
             if (StringUtils.isEmpty(name)) continue;
             schoolDO.setName(name);
 
             // 学校主类型
-            Cell cell1 = row.getCell(2);
-            String mainType = cell1.getStringCellValue();
-            schoolDO.setMainType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_MAIN_TYPE.getCode(), mainType));
+            Cell cell2 = row.getCell(2);
+            if (cell2 != null) {
+                String mainType = cell2.getStringCellValue();
+                String mainTypeValue = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_TYPE.getCode(), mainType);
+                schoolDO.setMainType(StringUtils.isEmpty(mainTypeValue) ? mainType : mainTypeValue);
+            }
 
             // 学校子类型
-            Cell cell2 = row.getCell(3);
-            String childrenType = cell2.getStringCellValue();
-            schoolDO.setChildrenType(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_CHILDREN_TYPE.getCode(), childrenType));
+            Cell cell3 = row.getCell(3);
+            if (cell3 != null) {
+                String childrenType = cell3.getStringCellValue();
+                if (!StringUtils.isEmpty(childrenType)) {
+                    String[] split = childrenType.split(",");
+                    String childrenTypeValue = "";
+                    for (String str :
+                            split) {
+                        if (StringUtils.isEmpty(str)) continue;
+
+                        String assembly = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_TYPE.getCode(), str);
+                        if(StringUtils.isEmpty(assembly)) continue;
+
+                        childrenTypeValue += assembly + ",";
+                    }
+                    schoolDO.setChildrenType(StringUtils.isEmpty(childrenTypeValue) ? childrenType : childrenTypeValue.substring(0, childrenTypeValue.length() - 1));
+                }
+            }
 
             // 曾用名
-            Cell cell3 = row.getCell(4);
-            String onceName = cell3.getStringCellValue();
-            schoolDO.setOnceName(onceName);
+            Cell cell4 = row.getCell(4);
+            if (cell4 != null) {
+                String onceName = cell4.getStringCellValue();
+                schoolDO.setOnceName(onceName);
+            }
 
             // 备注
-            Cell cell4 = row.getCell(5);
-            String remark = cell4.getStringCellValue();
-            schoolDO.setRemark(remark);
+            Cell cell5 = row.getCell(5);
+            if (cell5 != null) {
+                String remark = cell5.getStringCellValue();
+                schoolDO.setRemark(remark);
+            }
 
             // 主管部门
-            Cell cell5 = row.getCell(6);
-            String mainManagerDepartment = cell5.getStringCellValue();
-            schoolDO.setMainManagerDepartment(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), mainManagerDepartment));
-
-            // 院校隶属
-            Cell cell6 = row.getCell(7);
-            String educationalInstitutionsSubjection = cell6.getStringCellValue();
-            schoolDO.setEducationalInstitutionsSubjection(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION.getCode(), educationalInstitutionsSubjection));
-
-            // 学历层次
-            Cell cell7 = row.getCell(8);
-            String educationLevel = cell7.getStringCellValue();
-            schoolDO.setEducationLevel(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), educationLevel));
-
-            // 院校官网链接
-            Cell cell8 = row.getCell(9);
-            String educationalInstitutionsWebsite = cell8.getStringCellValue();
-            schoolDO.setEducationalInstitutionsWebsite(educationalInstitutionsWebsite);
+            Cell cell6 = row.getCell(6);
+            if (cell6 != null) {
+                String mainManagerDepartment = cell6.getStringCellValue();
+                String mainManagerDepartmentValue = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT.getCode(), mainManagerDepartment);
+                schoolDO.setMainManagerDepartment(StringUtils.isEmpty(mainManagerDepartmentValue) ? mainManagerDepartment : mainManagerDepartmentValue);
+            }
 
             // 院校属性
-            Cell cell9 = row.getCell(10);
-            String educationalInstitutionsAttribute = cell9.getStringCellValue();
-            schoolDO.setEducationalInstitutionsAttribute(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), educationalInstitutionsAttribute));
+            Cell cell7 = row.getCell(7);
+            if (cell7 != null) {
+                String educationalInstitutionsAttribute = cell7.getStringCellValue();
+                if (!StringUtils.isEmpty(educationalInstitutionsAttribute)) {
+                    String[] split = educationalInstitutionsAttribute.split(",");
+                    String educationalInstitutionsAttributeValue = "";
+                    for (String str :
+                            split) {
+                        if (StringUtils.isEmpty(str)) continue;
+
+                        String assembly = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE.getCode(), str);
+                        if(StringUtils.isEmpty(assembly)) continue;
+
+                        educationalInstitutionsAttributeValue += assembly + ",";
+                    }
+                    schoolDO.setEducationalInstitutionsAttribute(StringUtils.isEmpty(educationalInstitutionsAttributeValue) ? educationalInstitutionsAttribute : educationalInstitutionsAttributeValue.substring(0, educationalInstitutionsAttributeValue.length() - 1));
+                }
+            }
+
+            // 学历层次
+            Cell cell8 = row.getCell(8);
+            if (cell8 != null) {
+                String educationLevel = cell8.getStringCellValue();
+                String educationLevelValue = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_EDUCATION_LEVEL.getCode(), educationLevel);
+                schoolDO.setEducationLevel(StringUtils.isEmpty(educationLevelValue) ? educationLevel : educationLevelValue);
+            }
 
             // 基本信息
-            Cell cell10 = row.getCell(11);
-            String baseInfo = cell10.getStringCellValue();
-            schoolDO.setBaseInfo(baseInfo);
+            Cell cell9 = row.getCell(9);
+            if (cell9 != null) {
+                String baseInfo = cell9.getStringCellValue();
+                schoolDO.setBaseInfo(baseInfo);
+            }
 
-            // 院校招办链接
-            Cell cell11 = row.getCell(12);
-            String educationalInstitutionsRecruitUrl = cell11.getStringCellValue();
-            schoolDO.setEducationalInstitutionsRecruitUrl(educationalInstitutionsRecruitUrl);
+            // 特色教育
+            Cell cell10 = row.getCell(10);
+            if (cell10 != null) {
+                String featureEducational = cell10.getStringCellValue();
+                if (!StringUtils.isEmpty(featureEducational)) {
+                    String[] split = featureEducational.split(",");
+                    String featureEducationalValue = "";
+                    for (String str :
+                            split) {
+                        if (StringUtils.isEmpty(str)) continue;
 
-            // 招生章程链接
-            Cell cell12 = row.getCell(13);
-            String recruitConstitutionUrl = cell12.getStringCellValue();
-            schoolDO.setRecruitConstitutionUrl(recruitConstitutionUrl);
+                        String assembly = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_FEATURE_EDUCATIONAL.getCode(), str);
+                        if(StringUtils.isEmpty(assembly)) continue;
+                        featureEducationalValue += assembly + ",";
+                    }
+                    schoolDO.setFeatureEducational(StringUtils.isEmpty(featureEducationalValue) ? featureEducational : featureEducationalValue.substring(0, featureEducationalValue.length() - 1));
+                }
+            }
 
             // 双一流学科
-            Cell cell13 = row.getCell(14);
-            String doubleFirstClassSubject = cell13.getStringCellValue();
-            schoolDO.setDoubleFirstClassSubject(doubleFirstClassSubject);
+            Cell cell11 = row.getCell(11);
+            if (cell11 != null) {
+                String doubleFirstClassSubject = cell11.getStringCellValue();
+                if (!StringUtils.isEmpty(doubleFirstClassSubject)) {
+                    String[] split = doubleFirstClassSubject.split(",");
+                    String doubleFirstClassSubjectValue = "";
+                    for (String str :
+                            split) {
+                        if (StringUtils.isEmpty(str)) continue;
+
+                        String assembly = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_DOUBLE_FIRST_CLASS_SUBJECT.getCode(), str);
+                        if(StringUtils.isEmpty(assembly)) continue;
+                        doubleFirstClassSubjectValue += assembly + ",";
+                    }
+                    schoolDO.setDoubleFirstClassSubject(StringUtils.isEmpty(doubleFirstClassSubjectValue) ? doubleFirstClassSubject : doubleFirstClassSubjectValue.substring(0, doubleFirstClassSubjectValue.length() - 1));
+                }
+            }
 
             // 院校图标
-            Cell cell14 = row.getCell(15);
-            String educationalInstitutionsIconUrl = cell14.getStringCellValue();
-            schoolDO.setEducationalInstitutionsIconUrl(educationalInstitutionsIconUrl);
-
-            // 办学层次
-            Cell cell15 = row.getCell(16);
-            String schoolRunningLevel = cell15.getStringCellValue();
-            schoolDO.setSchoolRunningLevel(DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), schoolRunningLevel));
+            Cell cell12 = row.getCell(12);
+            if (cell12 != null) {
+                String educationalInstitutionsIconUrl = cell12.getStringCellValue();
+                schoolDO.setEducationalInstitutionsIconUrl(educationalInstitutionsIconUrl);
+            }
 
             // 省份
-            Cell cell16 = row.getCell(17);
-            String province = cell16.getStringCellValue();
-            Long provinceId = MyStartupRunner.list.stream().filter(city -> city.getCityName().equals(province)).map(CityDO::getId).findFirst().get();
-            schoolDO.setProvinceId(provinceId);
+            Cell cell13 = row.getCell(13);
+            if (cell13 != null) {
+                String province = cell13.getStringCellValue();
+                Long provinceId = MyStartupRunner.list.stream().filter(city -> city.getCityName().equals(province)).map(CityDO::getId).findFirst().orElseGet(() -> MyStartupRunner.list.stream().filter(city -> city.getCityName().indexOf(province) > -1).map(CityDO::getId).findFirst().orElse(null));
+                schoolDO.setProvinceId(provinceId);
+            }
+
+            // 院校官网链接
+            Cell cell14 = row.getCell(14);
+            if (cell14 != null) {
+                String educationalInstitutionsWebsite = cell14.getStringCellValue();
+                schoolDO.setEducationalInstitutionsWebsite(educationalInstitutionsWebsite);
+            }
+
+            // 院校招办链接
+            Cell cell15 = row.getCell(15);
+            if (cell15 != null) {
+                String educationalInstitutionsRecruitUrl = cell15.getStringCellValue();
+                schoolDO.setEducationalInstitutionsRecruitUrl(educationalInstitutionsRecruitUrl);
+            }
+
+            // 招生章程链接
+            Cell cell16 = row.getCell(16);
+            if (cell16 != null) {
+                String recruitConstitutionUrl = cell16.getStringCellValue();
+                schoolDO.setRecruitConstitutionUrl(recruitConstitutionUrl);
+            }
+
+            // 办学层次
+            Cell cell17 = row.getCell(17);
+            if (cell17 != null) {
+                String schoolRunningLevel = cell17.getStringCellValue();
+                String schoolRunningLevelValue = DictCodeEnum.getNumByValue(DictCodeEnum.DICT_SCHOOL_RUNNING_LEVEL.getCode(), schoolRunningLevel);
+                schoolDO.setSchoolRunningLevel(StringUtils.isEmpty(schoolRunningLevelValue) ? schoolRunningLevel : schoolRunningLevelValue);
+            }
 
             list.add(schoolDO);
         }

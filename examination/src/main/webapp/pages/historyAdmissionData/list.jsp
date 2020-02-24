@@ -194,6 +194,8 @@
                 extensions: 'xls,xlsx',//允许的文件后缀
                 mimeTypes: "*.xls;*.xlsx;" //文件类型
             },
+            fileSizeLimit: 1024 * 1024 * 10,//限制上传所有文件大小 10M
+            fileSingleSizeLimit: 1024 * 1024 * 10,//限制上传单个文件大小 10M
             formData:{},//文件上传请求的参数
             queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
             uploadBeforeSend:function(){//发送前触发

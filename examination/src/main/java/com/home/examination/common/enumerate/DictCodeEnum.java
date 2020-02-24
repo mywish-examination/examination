@@ -4,16 +4,19 @@ import com.alibaba.druid.util.StringUtils;
 import com.home.examination.common.runner.MyStartupRunner;
 import com.home.examination.entity.domain.DataDictionaryDO;
 
+import java.util.List;
+
 public enum DictCodeEnum {
 
     // 学校字典Code
-    DICT_SCHOOL_MAIN_TYPE("dict_school_main_type", "学校主类型"),
-    DICT_SCHOOL_CHILDREN_TYPE("dict_school_children_type", "学校子类型"),
+    DICT_SCHOOL_TYPE("dict_school_type", "学校类型"),
     DICT_SCHOOL_EDUCATION_LEVEL("dict_school_education_level", "学历层次"),
     DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_ATTRIBUTE("dict_school_educational_institutions_attribute", "院校属性"),
     DICT_SCHOOL_MAIN_MANAGER_DEPARTMENT("dict_school_main_manager_department", "主管部门"),
     DICT_SCHOOL_EDUCATIONAL_INSTITUTIONS_SUBJECTION("dict_school_educational_institutions_subjection", "院校隶属"),
     DICT_SCHOOL_RUNNING_LEVEL("dict_school_school_running_level", "办学层次"),
+    DICT_SCHOOL_FEATURE_EDUCATIONAL("dict_school_feature_educational", "特色教育"),
+    DICT_SCHOOL_DOUBLE_FIRST_CLASS_SUBJECT("dict_school_double_first_class_subject", "双一流学科"),
 
     // 用户字典Code
     DICT_USER_NATION("dict_user_nation", "民族"),
@@ -72,7 +75,13 @@ public enum DictCodeEnum {
      */
     public static String getNumByValue(String code, String value) {
         if (StringUtils.isEmpty(value)) return "";
-        return MyStartupRunner.map.get(code).stream().filter(dataDictionaryDO -> dataDictionaryDO.getDictValue().equals(value)).map(DataDictionaryDO::getDictNum).findFirst().get();
+        List<DataDictionaryDO> dataDictionaryList = MyStartupRunner.map.get(code);
+        if(dataDictionaryList == null || dataDictionaryList.isEmpty()) return "";
+        String result = dataDictionaryList.stream().filter(dataDictionaryDO -> dataDictionaryDO.getDictValue().equals(value)).map(DataDictionaryDO::getDictNum).findFirst().orElse("");
+        if(StringUtils.isEmpty(result)) {
+            result = dataDictionaryList.stream().filter(dataDictionaryDO -> dataDictionaryDO.getDictValue().indexOf(value) > -1).map(DataDictionaryDO::getDictNum).findFirst().orElse("");
+        }
+        return result;
     }
 
 }

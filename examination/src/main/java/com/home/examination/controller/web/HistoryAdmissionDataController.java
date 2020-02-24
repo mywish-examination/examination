@@ -7,12 +7,9 @@ import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.page.HistoryAdmissionDataPager;
 import com.home.examination.service.HistoryAdmissionDataService;
 import com.home.examination.service.MajorService;
-import com.home.examination.service.SchoolService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +25,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,8 +35,6 @@ public class HistoryAdmissionDataController {
 
     @Resource
     private HistoryAdmissionDataService historyAdmissionDataService;
-    @Resource
-    private SchoolService schoolService;
     @Resource
     private MajorService majorService;
 
@@ -93,6 +89,7 @@ public class HistoryAdmissionDataController {
         String tempFileName = request.getParameter("Filename");
         String fileExtensionName = tempFileName.substring(tempFileName.lastIndexOf("."));
 
+        ZipSecureFile.setMinInflateRatio(-1.0d);
         Workbook book = null;
         try {
             if (fileExtensionName.equals(".xls")) {
@@ -116,61 +113,87 @@ public class HistoryAdmissionDataController {
 
             // 院校代码
             Cell cell = row.getCell(0);
+            if (cell == null) continue;
             String educationalCode = cell.getStringCellValue();
             if (StringUtils.isEmpty(educationalCode)) continue;
             historyAdmissionData.setEducationalCode(educationalCode);
 
             // 专业名称
             Cell cell1 = row.getCell(1);
-            String majorName = cell1.getStringCellValue();
-            majorNameList.add(majorName);
-            historyAdmissionData.setMajorName(majorName);
+            if (cell1 != null) {
+                String majorName = cell1.getStringCellValue();
+                majorNameList.add(majorName);
+                historyAdmissionData.setMajorName(majorName);
+            }
 
             // 年份
             Cell cell2 = row.getCell(2);
-            historyAdmissionData.setYears((int) cell2.getNumericCellValue());
+            if (cell2 != null) {
+                int years = 0;
+                if(cell2.getCellType().equals(CellType.NUMERIC)) {
+                    years = (int) cell2.getNumericCellValue();
+                } else if(cell2.getCellType().equals(CellType.STRING)) {
+                    years = Integer.valueOf(cell2.getStringCellValue());
+                }
+                historyAdmissionData.setYears(years);
+            }
 
             // 最高分
             Cell cell3 = row.getCell(3);
-            BigDecimal highestScore = new BigDecimal(cell3.getNumericCellValue());
-            historyAdmissionData.setHighestScore(highestScore);
+            if (cell3 != null) {
+                BigDecimal highestScore = new BigDecimal(cell3.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);;
+                historyAdmissionData.setHighestScore(highestScore);
+            }
 
             // 最低分
             Cell cell4 = row.getCell(4);
-            BigDecimal minimumScore = new BigDecimal(cell4.getNumericCellValue());
-            historyAdmissionData.setMinimumScore(minimumScore);
+            if (cell4 != null) {
+                BigDecimal minimumScore = new BigDecimal(cell4.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);;
+                historyAdmissionData.setMinimumScore(minimumScore);
+            }
 
             // 平均分
             Cell cell5 = row.getCell(5);
-            BigDecimal average = new BigDecimal(cell5.getNumericCellValue());
-            historyAdmissionData.setAverage(average);
+            if (cell5 != null) {
+                BigDecimal average = new BigDecimal(cell5.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);;
+                historyAdmissionData.setAverage(average);
+            }
 
             // 控制线
             Cell cell6 = row.getCell(6);
-            BigDecimal controlLine = new BigDecimal(cell6.getNumericCellValue());
-            historyAdmissionData.setControlLine(controlLine);
+            if (cell6 != null) {
+                BigDecimal controlLine = new BigDecimal(cell6.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
+                historyAdmissionData.setControlLine(controlLine);
+            }
 
             // 批次代码
             Cell cell7 = row.getCell(7);
-            historyAdmissionData.setBatchCode(cell7.getStringCellValue());
+            if (cell7 != null)
+                historyAdmissionData.setBatchCode(String.valueOf(cell7.getNumericCellValue()));
             // 科类代码
             Cell cell8 = row.getCell(8);
-            historyAdmissionData.setSubjectCode(cell8.getStringCellValue());
+            if (cell8 != null)
+                historyAdmissionData.setSubjectCode(String.valueOf(cell8.getNumericCellValue()));
             // 最高位次
             Cell cell9 = row.getCell(9);
-            historyAdmissionData.setHighestRank(cell9.getStringCellValue());
+            if (cell9 != null)
+                historyAdmissionData.setHighestRank(String.valueOf(cell9.getNumericCellValue()));
             // 最低位次
             Cell cell10 = row.getCell(10);
-            historyAdmissionData.setMinimumRank(cell10.getStringCellValue());
+            if (cell10 != null)
+                historyAdmissionData.setMinimumRank(String.valueOf(cell10.getNumericCellValue()));
             // 平均位次
             Cell cell11 = row.getCell(11);
-            historyAdmissionData.setAvgRank(cell11.getStringCellValue());
+            if (cell11 != null)
+                historyAdmissionData.setAvgRank(String.valueOf(cell11.getNumericCellValue()));
             // 录取人数
             Cell cell12 = row.getCell(12);
-            historyAdmissionData.setEnrolment(cell12.getStringCellValue());
+            if (cell12 != null)
+                historyAdmissionData.setEnrolment(String.valueOf(cell12.getNumericCellValue()));
             // 备注
             Cell cell13 = row.getCell(13);
-            historyAdmissionData.setRemark(cell13.getStringCellValue());
+            if (cell13 != null)
+                historyAdmissionData.setRemark(cell13.getStringCellValue());
 
             list.add(historyAdmissionData);
         }

@@ -48,10 +48,12 @@ public class UserAppController {
                 currScore = one.getPredictedScore();
             }
 
-            LambdaQueryWrapper<SubsectionDO> subsectionQueryWrapper = new LambdaQueryWrapper<>();
-            subsectionQueryWrapper.eq(SubsectionDO::getScore, currScore);
-            SubsectionDO subsectionDO = subsectionService.getOne(subsectionQueryWrapper);
-            one.setRank(subsectionDO.getRank());
+            if(!StringUtils.isEmpty(currScore)) {
+                LambdaQueryWrapper<SubsectionDO> subsectionQueryWrapper = new LambdaQueryWrapper<>();
+                subsectionQueryWrapper.eq(SubsectionDO::getScore, currScore);
+                SubsectionDO subsectionDO = subsectionService.getOne(subsectionQueryWrapper);
+                one.setRank(subsectionDO.getRank());
+            }
 
             String uuid = UUID.randomUUID().toString();
 

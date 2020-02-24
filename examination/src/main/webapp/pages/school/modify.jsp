@@ -59,7 +59,7 @@
                             <div class="col-sm-10">
                                 <form:select path="mainType" class="form-control valid-control">
                                     <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_school_main_type}" var="it"  >
+                                    <c:forEach items="${sys_dict.dict_school_type}" var="it"  >
                                         <form:option value="${it.dictNum }">${it.dictValue }</form:option>
                                     </c:forEach>
                                 </form:select>
@@ -69,12 +69,14 @@
                             <label class="col-sm-2 control-label">学校子类型:</label>
 
                             <div class="col-sm-10">
-                                <form:select path="childrenType" class="form-control valid-control">
-                                    <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_school_children_type}" var="it"  >
-                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
-                                    </c:forEach>
-                                </form:select>
+                                <form:checkboxes path="childrenTypeArray" items="${sys_dict.dict_school_type}" itemLabel="dictValue" itemValue="dictNum"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">特色教育:</label>
+
+                            <div class="col-sm-10">
+                                <form:checkboxes path="featureEducationalArray" items="${sys_dict.dict_school_feature_educational}" itemLabel="dictValue" itemValue="dictNum"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -138,13 +140,7 @@
                             <label class="col-sm-2 control-label">院校属性:</label>
 
                             <div class="col-sm-10">
-                                <form:checkboxes path="educationalInstitutionsAttribute" items="${sys_dict.dict_school_educational_institutions_attribute}" itemValue="${dictValue}" />
-                                <form:select path="educationalInstitutionsAttribute" class="form-control valid-control">
-                                    <form:option value="">请选择</form:option>
-                                    <c:forEach items="${sys_dict.dict_school_educational_institutions_attribute}" var="it"  >
-                                        <form:option value="${it.dictNum }">${it.dictValue }</form:option>
-                                    </c:forEach>
-                                </form:select>
+                                <form:checkboxes path="educationalInstitutionsAttributeArray" items="${sys_dict.dict_school_educational_institutions_attribute}" itemLabel="dictValue" itemValue="dictNum"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -172,7 +168,7 @@
                             <label class="col-sm-2 control-label">双一流学科:</label>
 
                             <div class="col-sm-10">
-                                <form:input path="doubleFirstClassSubject" class="form-control" maxlength="250" onchange="this.value=$.trim(this.value)"/>
+                                <form:checkboxes path="doubleFirstClassSubjectArray" items="${sys_dict.dict_school_double_first_class_subject}" itemLabel="dictValue" itemValue="dictNum"/>
                             </div>
                         </div>
                         <div class="form-group">
