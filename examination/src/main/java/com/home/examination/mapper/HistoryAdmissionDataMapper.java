@@ -29,12 +29,12 @@ public interface HistoryAdmissionDataMapper extends BaseMapper<HistoryAdmissionD
     int countByQueryWrapper(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
     @Select("select " +
-            "concat(min(t.minimum_rank), '-', max(t.minimum_rank)) as minimumRankParagraph," +
-            "concat(min(t.avg_rank), '-', max(t.avg_rank)) as avgRankParagraph," +
-            "concat(min(t.highest_rank), '-', max(t.highest_rank)) as highestRankParagraph" +
+            "concat(min(t.minimum_rank), '-', max(t.minimum_rank)) as minimumRankParagraph, " +
+            "concat(min(t.avg_rank), '-', max(t.avg_rank)) as avgRankParagraph, " +
+            "concat(min(t.highest_rank), '-', max(t.highest_rank)) as highestRankParagraph " +
             "from history_admission_data t " +
             "where t.educational_code = #{educationalCode} " +
-            "and t.years >= #{year} GROUP BY t.years")
+            "and t.years >= #{year}")
     RankParagraphDO getRankParagraphBySchool(@Param("educationalCode") String educationalCode, @Param("year") String year);
 
     @Select("select " +

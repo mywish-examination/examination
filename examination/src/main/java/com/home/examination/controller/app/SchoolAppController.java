@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Supplier;
@@ -49,19 +50,22 @@ public class SchoolAppController {
 
         int year = LocalDate.now().minusYears(3).getYear();
         for (SchoolDO schoolDO : page.getRecords()) {
-            RankParagraphDO rankParagraph = historyAdmissionDataService.getRankParagraphBySchool(school.getEducationalCode(), String.valueOf(year));
-            Integer minimumMin = Integer.valueOf(rankParagraph.getMinimumRankParagraph().split("-")[0]);
-            Integer minimumMax = Integer.valueOf(rankParagraph.getMinimumRankParagraph().split("-")[1]);
+            RankParagraphDO rankParagraph = historyAdmissionDataService.getRankParagraphBySchool(schoolDO.getEducationalCode(), String.valueOf(year));
+            if (rankParagraph == null) continue;
+
+
+            Integer minimumMin = Integer.valueOf(Double.valueOf(rankParagraph.getMinimumRankParagraph().split("-")[0]).intValue());
+            Integer minimumMax = Integer.valueOf(Double.valueOf(rankParagraph.getMinimumRankParagraph().split("-")[1]).intValue());
             if (minimumMin >= rank && rank <= minimumMax) {
                 rankParagraph.setType("0");
             }
-            Integer avgMin = Integer.valueOf(rankParagraph.getAvgRankParagraph().split("-")[0]);
-            Integer avgMax = Integer.valueOf(rankParagraph.getAvgRankParagraph().split("-")[1]);
+            Integer avgMin = Integer.valueOf(Double.valueOf(rankParagraph.getAvgRankParagraph().split("-")[0]).intValue());
+            Integer avgMax = Integer.valueOf(Double.valueOf(rankParagraph.getAvgRankParagraph().split("-")[1]).intValue());
             if (avgMin >= rank && rank <= avgMax) {
                 rankParagraph.setType("1");
             }
-            Integer highestMin = Integer.valueOf(rankParagraph.getHighestRankParagraph().split("-")[0]);
-            Integer highestMax = Integer.valueOf(rankParagraph.getHighestRankParagraph().split("-")[1]);
+            Integer highestMin = Integer.valueOf(Double.valueOf(rankParagraph.getHighestRankParagraph().split("-")[0]).intValue());
+            Integer highestMax = Integer.valueOf(Double.valueOf(rankParagraph.getHighestRankParagraph().split("-")[1]).intValue());
             if (highestMin >= rank && rank <= highestMax) {
                 rankParagraph.setType("2");
             }
@@ -77,7 +81,8 @@ public class SchoolAppController {
             AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
             BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
-            Supplier<Boolean> supplier = () -> new BigDecimal(user.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+            Supplier<Boolean> supplier = () -> new BigDecimal(user.getCollegeScore())
+                    .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
             schoolDO.setStarRating(ExUtils.starRatingHandler(result, supplier));
         }
 

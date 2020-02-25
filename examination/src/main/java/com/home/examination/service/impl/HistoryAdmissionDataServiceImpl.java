@@ -1,7 +1,6 @@
 package com.home.examination.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.RankParagraphDO;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,7 +60,7 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
                     else return new BigDecimal(0);
                 }).collect(Collectors.toList());
 
-        BigDecimal result = new BigDecimal(collect.size()).divide(collect.stream().reduce(zero, (a, b) -> a.add(b)));
+        BigDecimal result = new BigDecimal(collect.size()).divide(collect.stream().reduce(zero, (a, b) -> a.add(b)), 2, RoundingMode.HALF_UP);
 
         return result;
     }

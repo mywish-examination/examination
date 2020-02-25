@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -58,9 +59,9 @@ public class MajorAppController {
         myCollectionQueryWrapper.in(MyCollectionDO::getMajorId, majorIdList).eq(MyCollectionDO::getUserId, user.getId());
         List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
         List<Long> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getMajorId).collect(Collectors.toList());
-        for (MajorDO major:
-             list) {
-            if(existMyCollectionCollect.contains(major.getId())) major.setCollectionStatus("1");
+        for (MajorDO major :
+                list) {
+            if (existMyCollectionCollect.contains(major.getId())) major.setCollectionStatus("1");
 
             LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
             historyQueryWrapper.eq(major.getId() != null, HistoryAdmissionDataDO::getMajorId, major.getId());
@@ -71,7 +72,8 @@ public class MajorAppController {
             AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
             BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
-            Supplier<Boolean> supplier = () -> new BigDecimal(user.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+            Supplier<Boolean> supplier = () -> new BigDecimal(user.getCollegeScore())
+                    .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
             major.setStarRating(ExUtils.starRatingHandler(result, supplier));
 
             String collectionStatus = "";
