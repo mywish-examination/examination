@@ -43,17 +43,7 @@ public class UserAppController {
 
         UserDO one = userService.getOne(queryWrapper);
         if (one != null) {
-            String currScore = one.getCollegeScore();
-            if (StringUtils.isEmpty(currScore)) {
-                currScore = one.getPredictedScore();
-            }
-
-            if(!StringUtils.isEmpty(currScore)) {
-                LambdaQueryWrapper<SubsectionDO> subsectionQueryWrapper = new LambdaQueryWrapper<>();
-                subsectionQueryWrapper.eq(SubsectionDO::getScore, currScore);
-                SubsectionDO subsectionDO = subsectionService.getOne(subsectionQueryWrapper);
-                one.setRank(subsectionDO.getRank());
-            }
+            updateRank(one);
 
             String uuid = UUID.randomUUID().toString();
 
@@ -67,6 +57,20 @@ public class UserAppController {
         map.put("user", one);
 
         return map;
+    }
+
+    private void updateRank(UserDO one) {
+        String currScore = one.getCollegeScore();
+        if (StringUtils.isEmpty(currScore)) {
+            currScore = one.getPredictedScore();
+        }
+
+        if(!StringUtils.isEmpty(currScore)) {
+            LambdaQueryWrapper<SubsectionDO> subsectionQueryWrapper = new LambdaQueryWrapper<>();
+            subsectionQueryWrapper.eq(SubsectionDO::getScore, currScore).eq(SubsectionDO::getSubjectType, one.getSubjectType());
+            SubsectionDO subsectionDO = subsectionService.getOne(subsectionQueryWrapper);
+            if(subsectionDO != null) one.setRank(subsectionDO.getRank());
+        }
     }
 
     /**
@@ -178,15 +182,28 @@ public class UserAppController {
      */
     @PostMapping("/settingScore")
     public ExecuteResult settingScore(UserDO userDO) {
+        System.out.println("高考分数：" + userDO.getCollegeScore() + "，预估分数：" + userDO.getPredictedScore());
         UserDO currentUser = (UserDO) redisTemplate.opsForValue().get(userDO.getToken());
-        if (StringUtils.isEmpty(userDO.getCollegeScore())) {
+        if (!StringUtils.isEmpty(userDO.getCollegeScore())) {
             currentUser.setCollegeScore(userDO.getCollegeScore());
         }
-        if (StringUtils.isEmpty(userDO.getPredictedScore())) {
+        if (!StringUtils.isEmpty(userDO.getPredictedScore())) {
             currentUser.setPredictedScore(userDO.getPredictedScore());
         }
 
+        updateRank(currentUser);
+        redisTemplate.opsForValue().set(userDO.getToken(), currentUser);
         return new ExecuteResult(userService.saveOrUpdate(currentUser));
+    }
+
+    /**
+     * 获取个人信息
+     * @param token
+     * @return
+     */
+    public ExecuteResult detail(String token) {
+        UserDO currentUser = (UserDO) redisTemplate.opsForValue().get(token);
+        return new ExecuteResult(currentUser);
     }
 
 }

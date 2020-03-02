@@ -29,7 +29,7 @@ public class RangeAppController {
         LambdaQueryWrapper<FeatureDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FeatureDO::getFeatureType, type);
         List<FeatureDO> list = featureService.list(queryWrapper);
-        Map<String, List<FeatureDO>> collect = list.stream().collect(Collectors.groupingBy(featureDO -> featureDO.getFeatureCode() + "-" + featureDO.getFeatureCodeName()));
+        Map<String, List<FeatureDO>> collect = list.stream().collect(Collectors.groupingBy(featureDO -> featureDO.getFeatureCode() + "-" + featureDO.getFeatureName()));
 
         List<FeatureVO> resultList = new ArrayList<>();
         for (Map.Entry<String, List<FeatureDO>> entry : collect.entrySet()) {

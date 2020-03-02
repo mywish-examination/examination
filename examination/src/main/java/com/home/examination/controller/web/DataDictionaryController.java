@@ -25,10 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/web/dataDictionary")
@@ -78,6 +75,24 @@ public class DataDictionaryController {
         ModelAndView mav = new ModelAndView("/pages/dataDictionary/modify");
         model.addAttribute("dataDictionary", dataDictionaryDO);
         return mav;
+    }
+
+    @PostMapping("/deleteBatch")
+    @ResponseBody
+    public Map<String, String> deleteBatch(Long[] ids) {
+        boolean result = dataDictionaryService.removeByIds(Arrays.asList(ids));
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteAll")
+    @ResponseBody
+    public Map<String, String> deleteBatch() {
+        boolean result = dataDictionaryService.remove(new LambdaQueryWrapper<>());
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
     }
 
     @PostMapping("/saveOrUpdate")

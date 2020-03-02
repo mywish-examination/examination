@@ -63,6 +63,24 @@ public class HistoryAdmissionDataController {
         return map;
     }
 
+    @PostMapping("/deleteBatch")
+    @ResponseBody
+    public Map<String, String> deleteBatch(Long[] ids) {
+        boolean result = historyAdmissionDataService.removeByIds(Arrays.asList(ids));
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteAll")
+    @ResponseBody
+    public Map<String, String> deleteBatch() {
+        boolean result = historyAdmissionDataService.remove(new LambdaQueryWrapper<>());
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
     @GetMapping("/detail")
     public ModelAndView detail(Long id, Model model) {
         HistoryAdmissionDataDO historyAdmissionDataDO = new HistoryAdmissionDataDO();

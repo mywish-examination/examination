@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/web/volunteer")
@@ -57,6 +54,24 @@ public class VolunteerController {
     @ResponseBody
     public Map<String, String> delete(Long id) {
         boolean result = volunteerService.removeById(id);
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteBatch")
+    @ResponseBody
+    public Map<String, String> deleteBatch(Long[] ids) {
+        boolean result = volunteerService.removeByIds(Arrays.asList(ids));
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteAll")
+    @ResponseBody
+    public Map<String, String> deleteBatch() {
+        boolean result = volunteerService.remove(new LambdaQueryWrapper<>());
         Map<String, String> map = new HashMap<>();
         map.put("status", result ? "success" : "error");
         return map;

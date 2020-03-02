@@ -73,6 +73,24 @@ public class MajorController {
         return map;
     }
 
+    @PostMapping("/deleteBatch")
+    @ResponseBody
+    public Map<String, String> deleteBatch(Long[] ids) {
+        boolean result = majorService.removeByIds(Arrays.asList(ids));
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteAll")
+    @ResponseBody
+    public Map<String, String> deleteBatch() {
+        boolean result = majorService.remove(new LambdaQueryWrapper<>());
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
     @GetMapping("/detail")
     public ModelAndView detail(MajorDO major, Model model) {
         MajorDO majorDO = new MajorDO();

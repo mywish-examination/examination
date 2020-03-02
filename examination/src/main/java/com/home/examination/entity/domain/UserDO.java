@@ -56,7 +56,7 @@ public class UserDO extends BaseEntity {
     private String subjectType;
 
     public String getSubjectTypeName() {
-        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_USER_SUBJECT_TYPE.getCode(), this.subjectType);
+        return DictCodeEnum.getValueByNum(DictCodeEnum.DICT_SUBJECT_TYPE.getCode(), this.subjectType);
     }
 
     /**

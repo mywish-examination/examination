@@ -26,10 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/web/subsection")
@@ -50,6 +47,24 @@ public class SubsectionController {
     @ResponseBody
     public Map<String, String> delete(Long id) {
         boolean result = subsectionService.removeById(id);
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteBatch")
+    @ResponseBody
+    public Map<String, String> deleteBatch(Long[] ids) {
+        boolean result = subsectionService.removeByIds(Arrays.asList(ids));
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteAll")
+    @ResponseBody
+    public Map<String, String> deleteBatch() {
+        boolean result = subsectionService.remove(new LambdaQueryWrapper<>());
         Map<String, String> map = new HashMap<>();
         map.put("status", result ? "success" : "error");
         return map;

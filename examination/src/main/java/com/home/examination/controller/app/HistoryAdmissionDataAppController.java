@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,8 +52,9 @@ public class HistoryAdmissionDataAppController {
             studentSourceRankingVO.setRank(sumRank);
             list.add(studentSourceRankingVO);
         }
+        list.sort(Comparator.comparing(StudentSourceRankingVO::getRank));
 
-        return new ExecuteResult();
+        return new ExecuteResult(list);
     }
 
 }

@@ -20,7 +20,6 @@ public enum DictCodeEnum {
 
     // 用户字典Code
     DICT_USER_NATION("dict_user_nation", "民族"),
-    DICT_USER_SUBJECT_TYPE("dict_user_subject_type", "科类"),
     DICT_USER_TYPE("dict_user_type", "类型"),
     DICT_USER_SEX("dict_user_sex", "性别"),
 

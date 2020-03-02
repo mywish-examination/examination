@@ -60,6 +60,8 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
                     else return new BigDecimal(0);
                 }).collect(Collectors.toList());
 
+        if(collect.isEmpty()) return zero;
+
         BigDecimal result = new BigDecimal(collect.size()).divide(collect.stream().reduce(zero, (a, b) -> a.add(b)), 2, RoundingMode.HALF_UP);
 
         return result;

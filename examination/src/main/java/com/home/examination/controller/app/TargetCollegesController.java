@@ -67,7 +67,7 @@ public class TargetCollegesController {
                 if(existMyCollectionCollect.contains(schoolDO.getEducationalCode())) schoolDO.setCollectionStatus("1");
             }
 
-            targetColleges.setSchoolList(list);
+            targetColleges.setSchoolList(list.subList(0, list.size() >= 10 ? 10 : list.size()));
 
             targetColleges.setSchoolName(school.getName());
             targetColleges.setMajorName(one.getName());
@@ -104,6 +104,7 @@ public class TargetCollegesController {
 
                     historyQueryWrapper.apply("years >= {0}", year);
                     AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+                    if(admissionEstimateReference == null) continue;
 
                     BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
                     Supplier<Boolean> supplier = () -> {
@@ -112,7 +113,7 @@ public class TargetCollegesController {
                     };
                     major.setStarRating(ExUtils.starRatingHandler(result, supplier));
                 }
-                targetColleges.setMajorList(majorList);
+                targetColleges.setMajorList(majorList.subList(0, majorList.size() >= 10 ? 10 : majorList.size()));
             }
         }
 
@@ -124,6 +125,7 @@ public class TargetCollegesController {
 
         historyQueryWrapper.apply("years >= {0}", year);
         AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+        if(admissionEstimateReference == null) return new ExecuteResult(targetColleges);
 
         BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
         String probabilityFiling = result.multiply(new BigDecimal(100)).toString() + "%";

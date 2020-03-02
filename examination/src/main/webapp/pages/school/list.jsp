@@ -100,6 +100,7 @@
                 records: "pager.size",
                 repeatitems: false
             },
+            multiselect: true,//复选框
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
@@ -166,6 +167,64 @@
         $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_schoolList").click(function(){
             window.location.href = "${basePath}web/school/detail";
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteBatch")
+            .attr("class","btn btn-sm btn-primary")
+            .append("删除");
+        $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_schoolList").click(function(){
+            //获取多选到的id集合
+            var ids = $("#schoolList").jqGrid("getGridParam", "selarrrow");
+            if(ids == null || ids == "") return;
+
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/school/deleteBatch?ids=" + ids;
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#schoolList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteAll")
+            .attr("class","btn btn-sm btn-primary")
+            .append("清空全部");
+        $("#t_schoolList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_schoolList").click(function(){
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/school/deleteAll";
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#schoolList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
         });
 
         $content = $("<a></a>").attr("href","javascript:void(0);")

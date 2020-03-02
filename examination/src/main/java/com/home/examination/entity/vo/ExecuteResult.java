@@ -25,7 +25,8 @@ public class ExecuteResult implements Serializable {
 
     public ExecuteResult(boolean result) {
         this.status = result ? this.SUCCESS : this.ERROR;
-        this.msg = "系统异常";
+        if(result == false) this.msg = "系统异常";
+        if(result == true) this.msg = "success";
     }
 
 }
