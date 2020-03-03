@@ -27,10 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/web/feature")
@@ -56,6 +53,24 @@ public class FeatureController {
         Map<String, String> map = new HashMap<>();
         map.put("status", result ? "success" : "error");
 
+        return map;
+    }
+
+    @PostMapping("/deleteBatch")
+    @ResponseBody
+    public Map<String, String> deleteBatch(Long[] ids) {
+        boolean result = featureService.removeByIds(Arrays.asList(ids));
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
+        return map;
+    }
+
+    @PostMapping("/deleteAll")
+    @ResponseBody
+    public Map<String, String> deleteBatch() {
+        boolean result = featureService.remove(new LambdaQueryWrapper<>());
+        Map<String, String> map = new HashMap<>();
+        map.put("status", result ? "success" : "error");
         return map;
     }
 

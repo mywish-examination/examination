@@ -6,6 +6,8 @@ import com.home.examination.common.enumerate.DictCodeEnum;
 import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @TableName("user")
 public class UserDO extends BaseEntity {
@@ -71,12 +73,12 @@ public class UserDO extends BaseEntity {
     /**
      * 高考分数
      */
-    private String collegeScore;
+    private BigDecimal collegeScore;
 
     /**
      * 预估分数
      */
-    private String predictedScore;
+    private BigDecimal predictedScore;
 
     /**
      * token
@@ -98,5 +100,14 @@ public class UserDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String rank;
+
+    /**
+     * 序列号
+     */
+    private String serialNumber;
+    /**
+     * 授权码
+     */
+    private String authorizationCode;
 
 }

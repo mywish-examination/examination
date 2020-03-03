@@ -12,8 +12,9 @@ import java.util.List;
 @Mapper
 public interface MajorMapper extends BaseMapper<MajorDO> {
 
-    @Select("select t.*" +
-            "from major t " +
+    @Select("select s.name as schoolName, t.*" +
+            "from major t left join school_major sm on t.id = sm.major_id " +
+            "left join school s on sm.educational_code = s.educational_code " +
             "${ew.customSqlSegment}")
     List<MajorDO> pageByQueryWrapper(@Param("ew") Wrapper<MajorDO> queryWrapper);
 

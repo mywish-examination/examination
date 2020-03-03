@@ -13,6 +13,9 @@
 
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
 
 </head>
 
@@ -40,6 +43,10 @@
 <!-- 全局js -->
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
 
 <!-- Peity -->
 <script src="${basePath}js/plugins/peity/jquery.peity.min.js"></script>
@@ -155,7 +162,97 @@
             window.location.href = "${basePath}web/newsInformation/detail";
         });
 
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteBatch")
+            .attr("class","btn btn-sm btn-primary")
+            .append("删除");
+        $("#t_newsInformationList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_newsInformationList").click(function(){
+            //获取多选到的id集合
+            var ids = $("#newsInformationList").jqGrid("getGridParam", "selarrrow");
+            if(ids == null || ids == "") return;
+
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/newsInformation/deleteBatch?ids=" + ids;
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#newsInformationList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteAll")
+            .attr("class","btn btn-sm btn-primary")
+            .append("清空全部");
+        $("#t_newsInformationList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_newsInformationList").click(function(){
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/newsInformation/deleteAll";
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#newsInformationList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","import")
+            .attr("class","btn btn-sm btn-primary")
+            .attr("data-target", "#myModal")
+            .attr("data-toggle", "modal")
+            .append("导入");
+        $("#t_newsInformationList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#import","#t_newsInformationList").click(function(){
+            showUploadDialog();
+        });
+
     });
+
+    function showUploadDialog(){
+        picUpload({
+            server: '${basePath}web/newsInformation/uploadFileExcel;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'xls,xlsx',//允许的文件后缀
+                mimeTypes: "*.xls;*.xlsx;" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                $("#newsInformationList").trigger("reloadGrid");
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
 </script>
 
 </body>

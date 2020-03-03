@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -60,12 +61,12 @@ public class UserAppController {
     }
 
     private void updateRank(UserDO one) {
-        String currScore = one.getCollegeScore();
-        if (StringUtils.isEmpty(currScore)) {
+        BigDecimal currScore = one.getCollegeScore();
+        if (currScore == null) {
             currScore = one.getPredictedScore();
         }
 
-        if(!StringUtils.isEmpty(currScore)) {
+        if(currScore != null) {
             LambdaQueryWrapper<SubsectionDO> subsectionQueryWrapper = new LambdaQueryWrapper<>();
             subsectionQueryWrapper.eq(SubsectionDO::getScore, currScore).eq(SubsectionDO::getSubjectType, one.getSubjectType());
             SubsectionDO subsectionDO = subsectionService.getOne(subsectionQueryWrapper);
@@ -137,7 +138,6 @@ public class UserAppController {
         BeanUtils.copyProperties(userDO, user);
 
         boolean result = userService.saveOrUpdate(user);
-        ;
         if (result) {
             map.put("status", "success");
         } else {
@@ -184,10 +184,10 @@ public class UserAppController {
     public ExecuteResult settingScore(UserDO userDO) {
         System.out.println("高考分数：" + userDO.getCollegeScore() + "，预估分数：" + userDO.getPredictedScore());
         UserDO currentUser = (UserDO) redisTemplate.opsForValue().get(userDO.getToken());
-        if (!StringUtils.isEmpty(userDO.getCollegeScore())) {
+        if (userDO.getCollegeScore() != null) {
             currentUser.setCollegeScore(userDO.getCollegeScore());
         }
-        if (!StringUtils.isEmpty(userDO.getPredictedScore())) {
+        if (userDO.getPredictedScore() != null) {
             currentUser.setPredictedScore(userDO.getPredictedScore());
         }
 

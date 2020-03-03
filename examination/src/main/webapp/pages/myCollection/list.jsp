@@ -13,6 +13,9 @@
 
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
 
 </head>
 
@@ -72,7 +75,7 @@
             colNames: ['', '学校名称', '专业名称', '用户名称', '创建时间', '操作'],
             colModel: [
                 {name: 'id', index: 'id', hidden: true},
-                {name: 'schoolName', index: 'schoolName', width: '10%', sortable: false},
+                {name: 'myCollectionName', index: 'myCollectionName', width: '10%', sortable: false},
                 {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
                 {name: 'userName', index: 'userName', width: '10%', sortable: false},
                 {name: 'creteTime', index: 'creteTime', width: '10%', sortable: false},
@@ -151,6 +154,64 @@
         $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
         $("#create","#t_myCollectionList").click(function(){
             window.location.href = "${basePath}web/myCollection/detail";
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteBatch")
+            .attr("class","btn btn-sm btn-primary")
+            .append("删除");
+        $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_myCollectionList").click(function(){
+            //获取多选到的id集合
+            var ids = $("#myCollectionList").jqGrid("getGridParam", "selarrrow");
+            if(ids == null || ids == "") return;
+
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/myCollection/deleteBatch?ids=" + ids;
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#myCollectionList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteAll")
+            .attr("class","btn btn-sm btn-primary")
+            .append("清空全部");
+        $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_myCollectionList").click(function(){
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/myCollection/deleteAll";
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#myCollectionList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
         });
 
     });

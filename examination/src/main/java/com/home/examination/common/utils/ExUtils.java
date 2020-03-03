@@ -1,10 +1,6 @@
 package com.home.examination.common.utils;
 
-import com.home.examination.entity.domain.HistoryAdmissionDataDO;
-
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ExUtils {

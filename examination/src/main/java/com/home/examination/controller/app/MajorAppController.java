@@ -2,16 +2,11 @@ package com.home.examination.controller.app;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.utils.ExUtils;
-import com.home.examination.entity.domain.HistoryAdmissionDataDO;
-import com.home.examination.entity.domain.MajorDO;
-import com.home.examination.entity.domain.MyCollectionDO;
-import com.home.examination.entity.domain.UserDO;
+import com.home.examination.entity.domain.*;
 import com.home.examination.entity.page.MajorPager;
 import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 import com.home.examination.entity.vo.ExecuteResult;
-import com.home.examination.service.HistoryAdmissionDataService;
-import com.home.examination.service.MajorService;
-import com.home.examination.service.MyCollectionService;
+import com.home.examination.service.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,11 +34,37 @@ public class MajorAppController {
     private RedisTemplate redisTemplate;
     @Resource
     private MyCollectionService myCollectionService;
+    @Resource
+    private SchoolMajorService schoolMajorService;
+    @Resource
+    private SchoolService schoolService;
 
     @RequestMapping("/listPage")
     @ResponseBody
     public ExecuteResult listPage(MajorPager pager) {
+        RangeDO rangeDO = pager.getRequestParam();
         LambdaQueryWrapper<MajorDO> queryWrapper = new LambdaQueryWrapper<>();
+
+        LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
+        schoolQueryWrapper.in(!rangeDO.getProvinceIdList().isEmpty(), SchoolDO::getProvinceId, rangeDO.getProvinceIdList())
+                .in(!rangeDO.getMainTypeList().isEmpty(), SchoolDO::getMainType, rangeDO.getMainTypeList())
+                .in(!rangeDO.getChildrenType().isEmpty(), SchoolDO::getChildrenType, rangeDO.getChildrenTypeList())
+                .in(!rangeDO.getEducationalInstitutionsAttributeList().isEmpty(), SchoolDO::getEducationalInstitutionsAttribute, rangeDO.getEducationalInstitutionsAttributeList()).
+                select(SchoolDO::getEducationalCode);
+        List<SchoolDO> schoolList = schoolService.list(schoolQueryWrapper);
+        if(!schoolList.isEmpty()) {
+            List<String> educationalCodeList = schoolList.stream().map(SchoolDO::getEducationalCode).collect(Collectors.toList());
+
+            LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
+            schoolMajorQueryWrapper.select(SchoolMajorDO::getMajorId).in(!educationalCodeList.isEmpty(), SchoolMajorDO::getEducationalCode, educationalCodeList);
+            List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
+            List<Long> majorIdList = schoolMajorList.stream().map(SchoolMajorDO::getMajorId).collect(Collectors.toList());
+            queryWrapper.in(!majorIdList.isEmpty(), MajorDO::getId, majorIdList);
+        }
+
+        queryWrapper.in(!rangeDO.getMajorNameList().isEmpty(), MajorDO::getName, rangeDO.getMajorNameList())
+                .in(!rangeDO.getSubjectTypeList().isEmpty(), MajorDO::getSubjectType, rangeDO.getSubjectTypeList());
+
         int total = majorService.countByQueryWrapper(queryWrapper);
         List<MajorDO> list = Collections.emptyList();
         if (total > 0) {
@@ -72,8 +93,19 @@ public class MajorAppController {
             AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
             BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
-            Supplier<Boolean> supplier = () -> new BigDecimal(user.getCollegeScore())
-                    .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
+            BigDecimal zero = new BigDecimal(0);
+            Supplier<Boolean> supplier = () -> {
+                BigDecimal score;
+                if (user.getCollegeScore() == null) {
+                    score = user.getPredictedScore();
+                } else {
+                    score = zero;
+                }
+
+                BigDecimal insideResult = score
+                        .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
+                return insideResult.compareTo(new BigDecimal(15)) < 0;
+            };
             major.setStarRating(ExUtils.starRatingHandler(result, supplier));
 
             String collectionStatus = "";

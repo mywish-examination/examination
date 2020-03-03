@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +100,19 @@ public class VolunteerAppController {
                     AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
                     BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataInsideList, userDO);
-                    Supplier<Boolean> supplier = () -> new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+                    BigDecimal zero = new BigDecimal(0);
+                    Supplier<Boolean> supplier = () -> {
+                        BigDecimal score;
+                        if (userDO.getCollegeScore() == null) {
+                            score = userDO.getPredictedScore();
+                        } else {
+                            score = zero;
+                        }
+
+                        BigDecimal insideResult = score
+                                .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
+                        return insideResult.compareTo(new BigDecimal(15)) < 0;
+                    };
                     majorDO.setStarRating(ExUtils.starRatingHandler(resultInside, supplier));
                 }
             }
@@ -158,7 +171,19 @@ public class VolunteerAppController {
                 AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
                 BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
-                Supplier<Boolean> supplier = () -> new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0])).compareTo(new BigDecimal(15)) < 0;
+                BigDecimal zero = new BigDecimal(0);
+                Supplier<Boolean> supplier = () -> {
+                    BigDecimal score;
+                    if (userDO.getCollegeScore() == null) {
+                        score = userDO.getPredictedScore();
+                    } else {
+                        score = zero;
+                    }
+
+                    BigDecimal insideResult = score
+                            .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
+                    return insideResult.compareTo(new BigDecimal(15)) < 0;
+                };
                 majorDO.setStarRating(ExUtils.starRatingHandler(resultInside, supplier));
             }
             schoolDO.setMajorList(majorList);

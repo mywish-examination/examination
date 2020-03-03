@@ -43,6 +43,8 @@ public class TargetCollegesController {
     public ExecuteResult detail(String educationalCode, Long majorId, String token) {
         TargetCollegesVO targetColleges = new TargetCollegesVO();
 
+        BigDecimal zero = new BigDecimal(0);
+
         SchoolDO school = schoolService.getByEducationalCode(educationalCode);
         UserDO userDO = (UserDO) redisTemplate.opsForValue().get(token);
         int year = LocalDate.now().minusYears(3).getYear();
@@ -109,7 +111,16 @@ public class TargetCollegesController {
                     BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
                     Supplier<Boolean> supplier = () -> {
                         String minScore = admissionEstimateReference.getScoreParagraph().split("-")[0];
-                        return new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
+                        BigDecimal score;
+                        if (userDO.getCollegeScore() == null) {
+                            score = userDO.getPredictedScore();
+                        } else {
+                            score = zero;
+                        }
+
+                        BigDecimal insideResult = score
+                                .divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP);
+                        return insideResult.compareTo(new BigDecimal(15)) < 0;
                     };
                     major.setStarRating(ExUtils.starRatingHandler(result, supplier));
                 }
@@ -133,7 +144,16 @@ public class TargetCollegesController {
 
         Supplier<Boolean> supplier = () -> {
             String minScore = admissionEstimateReference.getScoreParagraph().split("-")[0];
-            return new BigDecimal(userDO.getCollegeScore()).divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP).compareTo(new BigDecimal(15)) < 0;
+            BigDecimal score;
+            if (userDO.getCollegeScore() == null) {
+                score = userDO.getPredictedScore();
+            } else {
+                score = zero;
+            }
+
+            BigDecimal insideResult = score
+                    .divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP);
+            return insideResult.compareTo(new BigDecimal(15)) < 0;
         };
         admissionEstimateReference.setStarRating(ExUtils.starRatingHandler(result, supplier));
 

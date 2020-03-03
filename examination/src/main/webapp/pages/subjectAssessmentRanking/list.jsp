@@ -55,8 +55,6 @@
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
 
-<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
-
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
@@ -122,6 +120,64 @@
         });
 
         var $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteBatch")
+            .attr("class","btn btn-sm btn-primary")
+            .append("删除");
+        $("#t_subjectAssessmentRankingList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_subjectAssessmentRankingList").click(function(){
+            //获取多选到的id集合
+            var ids = $("#subjectAssessmentRankingList").jqGrid("getGridParam", "selarrrow");
+            if(ids == null || ids == "") return;
+
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/subjectAssessmentRanking/deleteBatch?ids=" + ids;
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#subjectAssessmentRankingList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteAll")
+            .attr("class","btn btn-sm btn-primary")
+            .append("清空全部");
+        $("#t_subjectAssessmentRankingList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_subjectAssessmentRankingList").click(function(){
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/subjectAssessmentRanking/deleteAll";
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#subjectAssessmentRankingList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
             .attr("id","import")
             .attr("class","btn btn-sm btn-primary")
             .attr("data-target", "#myModal")

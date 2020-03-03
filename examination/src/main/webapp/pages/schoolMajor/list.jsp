@@ -13,6 +13,9 @@
 
     <link href="${basePath}css/animate.css" rel="stylesheet">
     <link href="${basePath}css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- webuploader-->
+    <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
 
 </head>
 
@@ -29,7 +32,7 @@
                 <div class="ibox-content">
 
                     <div class="jqGrid_wrapper">
-                        <table id="majorList"></table>
+                        <table id="schoolMajorList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -42,6 +45,10 @@
 <!-- 全局js -->
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
 
 <!-- Peity -->
 <script src="${basePath}js/plugins/peity/jquery.peity.min.js"></script>
@@ -57,7 +64,7 @@
         $.jgrid.defaults.styleUI = 'Bootstrap';
 
         // Configuration for jqGrid Example 1
-        $("#majorList").jqGrid({
+        $("#schoolMajorList").jqGrid({
             url: "${basePath}web/schoolMajor/listPage?requestParam.schoolId=${param.schoolId}",
             ExpandColumn: 'name',
             ExpandColClick: true,
@@ -87,13 +94,14 @@
                 records: "pager.size",
                 repeatitems: false
             },
+            multiselect: true,//复选框
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
             caption: "专业列表",
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#majorList").jqGrid('getDataIDs');
+                var ids = jQuery("#schoolMajorList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
@@ -105,7 +113,7 @@
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#majorList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#schoolMajorList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
             },
             loadComplete: function(){
@@ -125,7 +133,7 @@
                             success:function(jsonData){
                                 if(jsonData.status == 'success') {
                                     top.layer.close(index);
-                                    $("#majorList").trigger("reloadGrid");
+                                    $("#schoolMajorList").trigger("reloadGrid");
                                 }
                             }
                         });
@@ -143,19 +151,109 @@
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#majorList').setGridWidth(width);
+            $('#schoolMajorList').setGridWidth(width);
         });
 
         var $content = $("<a></a>").attr("href","javascript:void(0)")
             .attr("id","create")
             .attr("class","btn btn-sm btn-primary")
             .append("创建");
-        $("#t_majorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_majorList").click(function(){
+        $("#t_schoolMajorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#create","#t_schoolMajorList").click(function(){
             window.location.href = "${basePath}web/schoolMajor/detail?schoolName=${param.schoolName}&schoolId=${param.schoolId}";
         });
 
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteBatch")
+            .attr("class","btn btn-sm btn-primary")
+            .append("删除");
+        $("#t_schoolMajorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_schoolMajorList").click(function(){
+            //获取多选到的id集合
+            var ids = $("#schoolMajorList").jqGrid("getGridParam", "selarrrow");
+            if(ids == null || ids == "") return;
+
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/schoolMajor/deleteBatch?ids=" + ids;
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#schoolMajorList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteAll")
+            .attr("class","btn btn-sm btn-primary")
+            .append("清空全部");
+        $("#t_schoolMajorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_schoolMajorList").click(function(){
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/schoolMajor/deleteAll";
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#schoolMajorList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","import")
+            .attr("class","btn btn-sm btn-primary")
+            .attr("data-target", "#myModal")
+            .attr("data-toggle", "modal")
+            .append("导入");
+        $("#t_schoolMajorList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#import","#t_schoolMajorList").click(function(){
+            showUploadDialog();
+        });
+
     });
+
+    function showUploadDialog(){
+        picUpload({
+            server: '${basePath}web/schoolMajor/uploadFileExcel;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'xls,xlsx',//允许的文件后缀
+                mimeTypes: "*.xls;*.xlsx;" //文件类型
+            },
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                $("#schoolMajorList").trigger("reloadGrid");
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
 </script>
 
 </body>

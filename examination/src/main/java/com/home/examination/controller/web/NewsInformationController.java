@@ -1,9 +1,17 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.home.examination.common.enumerate.DictCodeEnum;
+import com.home.examination.entity.domain.FeatureDO;
 import com.home.examination.entity.domain.NewsInformationDO;
 import com.home.examination.entity.page.NewsInformationPager;
 import com.home.examination.service.NewsInformationService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/web/newsInformation")
@@ -109,6 +114,50 @@ public class NewsInformationController {
             e.printStackTrace();
         }
         return "error";
+    }
+
+    @RequestMapping("/uploadFileExcel")
+    @ResponseBody
+    public String uploadFileExcel(HttpServletRequest request) {
+        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("Filedata");
+        String tempFileName = request.getParameter("Filename");
+        String fileExtensionName = tempFileName.substring(tempFileName.lastIndexOf("."));
+
+        Workbook book = null;
+        try {
+            if (fileExtensionName.equals(".xls")) {
+                book = new HSSFWorkbook(file.getInputStream());
+            } else {
+                book = new XSSFWorkbook(file.getInputStream());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Sheet sheetAt = book.getSheetAt(0);
+
+        int lastRowNum = sheetAt.getLastRowNum() + 1;
+        List<NewsInformationDO> list = new ArrayList<>();
+        NewsInformationDO newsInformationDO;
+        for (int i = 1; i < lastRowNum; i++) {
+            newsInformationDO = new NewsInformationDO();
+            Row row = sheetAt.getRow(i);
+
+            // 标题
+            Cell cell = row.getCell(0);
+            String title = cell.getStringCellValue();
+            newsInformationDO.setTitle(title);
+
+            // 内容
+            Cell cell1 = row.getCell(1);
+            String content = cell1.getStringCellValue();
+            newsInformationDO.setContent(content);
+
+            list.add(newsInformationDO);
+        }
+
+        boolean result = newsInformationService.saveBatch(list);
+        return result ? "success" : "error";
     }
 
 }

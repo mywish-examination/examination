@@ -2,7 +2,6 @@ package com.home.examination.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.home.examination.common.enumerate.DictCodeEnum;
-import com.home.examination.common.runner.MyStartupRunner;
 import lombok.Data;
 
 import java.math.BigDecimal;

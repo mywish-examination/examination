@@ -2,6 +2,7 @@ package com.home.examination.entity.page;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.home.examination.entity.domain.MajorDO;
+import com.home.examination.entity.domain.RangeDO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class MajorPager {
     /**
      * 查询参数
      */
-    private MajorDO requestParam;
+    private RangeDO requestParam;
 
     /**
      * token

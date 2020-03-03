@@ -42,15 +42,7 @@ public class MajorController {
     @ResponseBody
     public MajorPager listPage(MajorPager pager) {
         LambdaQueryWrapper<MajorDO> queryWrapper = new LambdaQueryWrapper<>();
-        int total = majorService.countByQueryWrapper(queryWrapper);
-        List<MajorDO> list = Collections.emptyList();
-        if (total > 0) {
-            queryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
-            list = majorService.pageByQueryWrapper(queryWrapper);
-        }
-
-        pager.getPager().setTotal(total);
-        pager.getPager().setRecords(list);
+        majorService.page(pager.getPager(), queryWrapper);
         return pager;
     }
 

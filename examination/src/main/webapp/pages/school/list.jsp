@@ -55,8 +55,6 @@
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
 
-<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
-
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {

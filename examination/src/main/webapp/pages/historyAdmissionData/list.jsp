@@ -8,8 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="shortcut icon" href="${basePath}favicon.ico">
-    <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="shortcut icon" href="${basePath}favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${basePath}css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
     <!-- jqgrid-->
@@ -20,11 +19,6 @@
     <!-- webuploader-->
     <link rel="stylesheet" href="${basePath}css/plugins/webuploader/webuploader.css">
     <link rel="stylesheet" href="${basePath}css/demo/webuploader-demo.css">
-    <style>
-        .uploadify ,.ke-container{
-            float:left;
-        }
-    </style>
 
 </head>
 
@@ -63,8 +57,6 @@
 <!-- jqGrid -->
 <script src="${basePath}js/plugins/jqgrid/i18n/grid.locale-cn.js?0820"></script>
 <script src="${basePath}js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
-
-<script src="${basePath}js/plugins/kindeditor/kindeditor.js"></script>
 
 <!-- Page-Level Scripts -->
 <script>
@@ -173,6 +165,65 @@
         $("#create","#t_historyAdmissionDataList").click(function(){
             window.location.href = "${basePath}web/historyAdmissionData/detail";
         });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteBatch")
+            .attr("class","btn btn-sm btn-primary")
+            .append("删除");
+        $("#t_historyAdmissionDataList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_historyAdmissionDataList").click(function(){
+            //获取多选到的id集合
+            var ids = $("#historyAdmissionDataList").jqGrid("getGridParam", "selarrrow");
+            if(ids == null || ids == "") return;
+
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/historyAdmissionData/deleteBatch?ids=" + ids;
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#historyAdmissionDataList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","deleteAll")
+            .attr("class","btn btn-sm btn-primary")
+            .append("清空全部");
+        $("#t_historyAdmissionDataList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_historyAdmissionDataList").click(function(){
+            var prompt = "确定要删除所选择的记录吗？";
+            var url = "${basePath}web/historyAdmissionData/deleteAll";
+            index = top.layer.confirm(prompt, {
+                btn: ["确认", "取消"] //按钮
+            }, function(){
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    timeout:'60000',
+                    dataType:'json',
+                    success:function(jsonData){
+                        if(jsonData.status == 'success') {
+                            top.layer.close(index);
+                            $("#historyAdmissionDataList").trigger("reloadGrid");
+                        }
+                    }
+                });
+            }, function(){
+            });
+        });
+
         $content = $("<a></a>").attr("href","javascript:void(0);")
             .attr("id","import")
             .attr("class","btn btn-sm btn-primary")
