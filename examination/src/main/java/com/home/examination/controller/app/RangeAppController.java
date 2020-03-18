@@ -38,13 +38,9 @@ public class RangeAppController {
             featureVO.setFeatureName(entry.getKey().split("-")[1]);
             List<FeatureDO> featureList = entry.getValue();
             if(!featureList.isEmpty()) {
-                featureList = featureList.stream().map(featureDO -> {
-                    FeatureDO feature = new FeatureDO();
-                    feature.setFeatureOption(featureDO.getFeatureOption());
-                    return feature;
-                }).collect(Collectors.toList());
+                featureVO.setList(featureList);
             }
-            featureVO.setList(featureList);
+
             resultList.add(featureVO);
         }
         return new ExecuteResult(resultList);

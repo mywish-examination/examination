@@ -111,11 +111,9 @@ public class TargetCollegesController {
                     BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
                     Supplier<Boolean> supplier = () -> {
                         String minScore = admissionEstimateReference.getScoreParagraph().split("-")[0];
-                        BigDecimal score;
+                        BigDecimal score = userDO.getCollegeScore();
                         if (userDO.getCollegeScore() == null) {
                             score = userDO.getPredictedScore();
-                        } else {
-                            score = zero;
                         }
 
                         BigDecimal insideResult = score

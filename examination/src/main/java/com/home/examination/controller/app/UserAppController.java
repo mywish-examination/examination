@@ -201,9 +201,16 @@ public class UserAppController {
      * @param token
      * @return
      */
+    @PostMapping("/detail")
     public ExecuteResult detail(String token) {
         UserDO currentUser = (UserDO) redisTemplate.opsForValue().get(token);
-        return new ExecuteResult(currentUser);
+
+        UserDO one = userService.getById(currentUser.getId());
+        updateRank(one);
+
+        one.setToken(token);
+        redisTemplate.opsForValue().set(token, one);
+        return new ExecuteResult(one);
     }
 
 }

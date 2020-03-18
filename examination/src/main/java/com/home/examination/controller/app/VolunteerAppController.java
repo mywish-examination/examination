@@ -102,11 +102,9 @@ public class VolunteerAppController {
                     BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataInsideList, userDO);
                     BigDecimal zero = new BigDecimal(0);
                     Supplier<Boolean> supplier = () -> {
-                        BigDecimal score;
+                        BigDecimal score = userDO.getCollegeScore();
                         if (userDO.getCollegeScore() == null) {
                             score = userDO.getPredictedScore();
-                        } else {
-                            score = zero;
                         }
 
                         BigDecimal insideResult = score
@@ -156,11 +154,11 @@ public class VolunteerAppController {
         }
 
         LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
-        schoolQueryWrapper.in(SchoolDO::getId, schoolIdList);
+        schoolQueryWrapper.in(SchoolDO::getEducationalCode, schoolIdList);
         List<SchoolDO> schoolList = schoolService.list(schoolQueryWrapper);
 
         schoolList.forEach(schoolDO -> {
-            List<MajorDO> majorList = volunteerList.get(schoolDO.getId());
+            List<MajorDO> majorList = volunteerList.get(schoolDO.getEducationalCode());
             for (MajorDO majorDO : majorList) {
                 LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
                 historyQueryWrapper.eq(HistoryAdmissionDataDO::getEducationalCode, schoolDO.getEducationalCode()).eq(HistoryAdmissionDataDO::getMajorId, majorDO.getId());
@@ -169,15 +167,14 @@ public class VolunteerAppController {
 
                 historyQueryWrapper.apply("years >= {0}", year);
                 AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
+                if(admissionEstimateReference == null) continue;
 
                 BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
                 BigDecimal zero = new BigDecimal(0);
                 Supplier<Boolean> supplier = () -> {
-                    BigDecimal score;
+                    BigDecimal score = userDO.getCollegeScore();
                     if (userDO.getCollegeScore() == null) {
                         score = userDO.getPredictedScore();
-                    } else {
-                        score = zero;
                     }
 
                     BigDecimal insideResult = score

@@ -38,4 +38,16 @@ public class SchoolMajorDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String majorName;
+
+    /**
+     * 收藏状态，1=收藏，0=不收藏
+     */
+    @TableField(exist = false)
+    String collectionStatus;
+
+    /**
+     * 评价星级
+     */
+    @TableField(exist = false)
+    private String starRating;
 }

@@ -54,9 +54,9 @@ public class RangeDO {
     private String mainType;
     public List<String> getMainTypeList() {
         List<String> list = Collections.emptyList();
-        if (StringUtils.isEmpty(this.majorName)) return list;
+        if (StringUtils.isEmpty(this.mainType)) return list;
 
-        String[] array = this.majorName.split(",");
+        String[] array = this.mainType.split(",");
         list = Arrays.asList(array);
         return list;
     }

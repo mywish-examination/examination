@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -103,11 +104,9 @@ public class SchoolAppController {
             BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
             BigDecimal zero = new BigDecimal(0);
             Supplier<Boolean> supplier = () -> {
-                BigDecimal score;
+                BigDecimal score = user.getCollegeScore();
                 if (user.getCollegeScore() == null) {
                     score = user.getPredictedScore();
-                } else {
-                    score = zero;
                 }
 
                 BigDecimal insideResult = score
@@ -131,9 +130,14 @@ public class SchoolAppController {
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.select(SchoolDO::getName, SchoolDO::getEducationalCode).apply(!StringUtils.isEmpty(name), " name like '%" + name + "%'");
         List<SchoolDO> list = schoolService.list(queryWrapper);
-        Map<String, String> collect = list.stream().collect(Collectors.toMap(SchoolDO::getEducationalCode, SchoolDO::getName));
+        List<Map<String, String>> resultList = list.stream().map(schoolDO -> {
+            Map<String, String> collect = new HashMap<>();
+            collect.put("id", schoolDO.getEducationalCode());
+            collect.put("name", schoolDO.getName());
+            return collect;
+        }).collect(Collectors.toList());
 
-        return new ExecuteResult(collect);
+        return new ExecuteResult(resultList);
     }
 
 }
