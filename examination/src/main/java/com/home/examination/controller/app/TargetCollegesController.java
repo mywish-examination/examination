@@ -61,8 +61,7 @@ public class TargetCollegesController {
             List<SchoolDO> list = schoolService.list(schoolQueryWrapper);
 
             LambdaQueryWrapper<MyCollectionDO> myCollectionQueryWrapper = new LambdaQueryWrapper<>();
-            List<String> educationalCodeList = list.stream().map(SchoolDO::getEducationalCode).collect(Collectors.toList());
-            myCollectionQueryWrapper.eq(MyCollectionDO::getMajorId, majorId).in(MyCollectionDO::getEducationalCode, educationalCodeList).eq(MyCollectionDO::getUserId, userDO.getId());
+            myCollectionQueryWrapper.eq(MyCollectionDO::getMajorId, majorId).in(MyCollectionDO::getEducationalCode, collect).eq(MyCollectionDO::getUserId, userDO.getId());
             List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
             List<String> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getEducationalCode).collect(Collectors.toList());
             for(SchoolDO schoolDO: list) {

@@ -135,9 +135,9 @@ public class UserAppController {
             return map;
         }
 
-        BeanUtils.copyProperties(userDO, user);
+        userDO.setId(user.getId());
 
-        boolean result = userService.saveOrUpdate(user);
+        boolean result = userService.saveOrUpdate(userDO);
         if (result) {
             map.put("status", "success");
         } else {

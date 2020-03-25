@@ -1,24 +1,26 @@
 package com.home.examination.controller.app;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.utils.ExUtils;
 import com.home.examination.entity.domain.*;
 import com.home.examination.entity.page.SchoolMajorPager;
 import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
+import com.home.examination.entity.vo.ByNameVO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.service.*;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -43,14 +45,16 @@ public class SchoolMajorAppController {
     @ResponseBody
     public ExecuteResult listPage(SchoolMajorPager pager) {
         RangeDO rangeDO = pager.getRequestParam();
+        if(rangeDO == null) rangeDO = new RangeDO();
+
+        RangeDO finalRangeDO = rangeDO;
         LambdaQueryWrapper<MajorDO> queryWrapper = new LambdaQueryWrapper<>();
 
         LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
         schoolQueryWrapper.in(!rangeDO.getProvinceIdList().isEmpty(), SchoolDO::getProvinceId, rangeDO.getProvinceIdList())
-                .in(!rangeDO.getMainTypeList().isEmpty(), SchoolDO::getMainType, rangeDO.getMainTypeList())
-                .in(!rangeDO.getChildrenTypeList().isEmpty(), SchoolDO::getChildrenType, rangeDO.getChildrenTypeList())
-                .in(!rangeDO.getEducationalInstitutionsAttributeList().isEmpty(), SchoolDO::getEducationalInstitutionsAttribute, rangeDO.getEducationalInstitutionsAttributeList()).
-                select(SchoolDO::getEducationalCode);
+                .and(!finalRangeDO.getMainTypeList().isEmpty() || !finalRangeDO.getChildrenTypeList().isEmpty(),wq -> wq.in(!finalRangeDO.getMainTypeList().isEmpty(), SchoolDO::getMainType, finalRangeDO.getMainTypeList())
+                        .or().in(!finalRangeDO.getChildrenTypeList().isEmpty(), SchoolDO::getChildrenType, finalRangeDO.getChildrenTypeList()))
+                .select(SchoolDO::getEducationalCode);
         List<SchoolDO> schoolList = schoolService.list(schoolQueryWrapper);
 
         queryWrapper.in(!rangeDO.getMajorNameList().isEmpty(), MajorDO::getName, rangeDO.getMajorNameList())
@@ -107,8 +111,7 @@ public class SchoolMajorAppController {
                 };
                 schoolMajor.setStarRating(ExUtils.starRatingHandler(result, supplier));
 
-                String collectionStatus = "";
-                schoolMajor.setCollectionStatus(collectionStatus);
+                if(existMyCollectionCollect.contains(schoolMajor.getEducationalCode())) schoolMajor.setCollectionStatus("1");
             }
         }
 
@@ -121,6 +124,24 @@ public class SchoolMajorAppController {
     @GetMapping("/detail")
     public ExecuteResult detail(Long id) {
         return new ExecuteResult(majorService.getById(id));
+    }
+
+    /**
+     * 通过院校代码和专业名称获取列表
+     *
+     * @param educationCode
+     * @param name
+     * @return
+     */
+    @PostMapping("/lisByName")
+    public ExecuteResult listPage(String educationCode, String name) {
+        if(StringUtils.isEmpty(educationCode)) return  new ExecuteResult(false);
+
+        LambdaQueryWrapper<SchoolMajorDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.apply("t.educational_code = {0}", educationCode).apply(!StringUtils.isEmpty(name), " m.name like '%" + name + "%'");
+        List<ByNameVO> schoolMajorList = schoolMajorService.listByName(queryWrapper);
+
+        return new ExecuteResult(schoolMajorList);
     }
 
 }

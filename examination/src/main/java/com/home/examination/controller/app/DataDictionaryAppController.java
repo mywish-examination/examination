@@ -26,7 +26,7 @@ public class DataDictionaryAppController {
     @ResponseBody
     public ExecuteResult list(DataDictionaryDO requestParam) {
         List<DataDictionaryDO> list = (List<DataDictionaryDO>) redisTemplate.opsForList().leftPop(ConstantHandler.redis_key_data_dict + requestParam.getDictCode());
-        if (list.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             list = dataDictionaryService.initAndReturnList(requestParam.getDictCode());
         }
         return new ExecuteResult(list);

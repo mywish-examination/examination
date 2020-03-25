@@ -58,8 +58,12 @@ public class MyCollectionAppController {
 
         boolean result;
         if (type == 0) {
-            result = myCollectionService.removeById(param.getMajorId());
+            LambdaQueryWrapper<MyCollectionDO> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(MyCollectionDO::getMajorId, param.getMajorId()).eq(MyCollectionDO::getEducationalCode, param.getEducationalCode())
+                    .eq(MyCollectionDO::getUserId, user.getId());
+            result = myCollectionService.remove(queryWrapper);
         } else {
+            param.setUserId(user.getId());
             result = myCollectionService.saveOrUpdate(param);
         }
         return new ExecuteResult(result);

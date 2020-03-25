@@ -7,6 +7,7 @@ import com.home.examination.common.utils.ExUtils;
 import com.home.examination.entity.domain.*;
 import com.home.examination.entity.page.SchoolPager;
 import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
+import com.home.examination.entity.vo.ByNameVO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.service.HistoryAdmissionDataService;
 import com.home.examination.service.MajorService;
@@ -49,9 +50,12 @@ public class SchoolAppController {
         Integer rank = Integer.valueOf(user.getRank());
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
         RangeDO rangeDO = pager.getRequestParam();
+        if(rangeDO == null) rangeDO = new RangeDO();
+
+        RangeDO finalRangeDO = rangeDO;
 
         LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
-        majorQueryWrapper.in(!rangeDO.getMajorNameList().isEmpty(), MajorDO::getName, rangeDO.getMainTypeList())
+        majorQueryWrapper.in(!rangeDO.getMajorNameList().isEmpty(), MajorDO::getName, rangeDO.getMajorNameList())
                 .in(!rangeDO.getSubjectTypeList().isEmpty(), MajorDO::getSubjectType, rangeDO.getSubjectTypeList()).select(MajorDO::getId);
         List<MajorDO> list = majorService.list(majorQueryWrapper);
         if (!list.isEmpty()) {
@@ -60,13 +64,13 @@ public class SchoolAppController {
             LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
             schoolMajorQueryWrapper.select(SchoolMajorDO::getEducationalCode).in(!majorIdList.isEmpty(), SchoolMajorDO::getMajorId, majorIdList);
             List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
-            List<String> educationalCodeList = schoolMajorList.stream().map(SchoolMajorDO::getEducationalCode).collect(Collectors.toList());
+            List<String> educationalCodeList = schoolMajorList.stream().map(SchoolMajorDO::getEducationalCode).distinct().collect(Collectors.toList());
             queryWrapper.in(!educationalCodeList.isEmpty(), SchoolDO::getEducationalCode, educationalCodeList);
         }
 
         queryWrapper.in(!rangeDO.getProvinceIdList().isEmpty(), SchoolDO::getProvinceId, rangeDO.getProvinceIdList())
-                .in(!rangeDO.getMainTypeList().isEmpty(), SchoolDO::getMainType, rangeDO.getMainTypeList())
-                .in(!rangeDO.getChildrenType().isEmpty(), SchoolDO::getChildrenType, rangeDO.getChildrenTypeList())
+                .and(!finalRangeDO.getMainTypeList().isEmpty() || !finalRangeDO.getChildrenTypeList().isEmpty(),wq -> wq.in(!finalRangeDO.getMainTypeList().isEmpty(), SchoolDO::getMainType, finalRangeDO.getMainTypeList())
+                        .or().in(!finalRangeDO.getChildrenTypeList().isEmpty(), SchoolDO::getChildrenType, finalRangeDO.getChildrenTypeList()))
                 .in(!rangeDO.getEducationalInstitutionsAttributeList().isEmpty(), SchoolDO::getEducationalInstitutionsAttribute, rangeDO.getEducationalInstitutionsAttributeList());
         IPage<SchoolDO> page = schoolService.page(pager.getPager(), queryWrapper);
 
@@ -128,16 +132,10 @@ public class SchoolAppController {
     @PostMapping("/lisByName")
     public ExecuteResult listPage(String name) {
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.select(SchoolDO::getName, SchoolDO::getEducationalCode).apply(!StringUtils.isEmpty(name), " name like '%" + name + "%'");
-        List<SchoolDO> list = schoolService.list(queryWrapper);
-        List<Map<String, String>> resultList = list.stream().map(schoolDO -> {
-            Map<String, String> collect = new HashMap<>();
-            collect.put("id", schoolDO.getEducationalCode());
-            collect.put("name", schoolDO.getName());
-            return collect;
-        }).collect(Collectors.toList());
+        queryWrapper.apply(!StringUtils.isEmpty(name), " t.name like '%" + name + "%'");
+        List<ByNameVO> list = schoolService.listByName(queryWrapper);
 
-        return new ExecuteResult(resultList);
+        return new ExecuteResult(list);
     }
 
 }
