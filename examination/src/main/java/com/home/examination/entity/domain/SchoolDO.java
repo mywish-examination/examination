@@ -229,4 +229,10 @@ public class SchoolDO extends BaseEntity {
     @TableField(exist = false)
     String collectionStatus;
 
+    /**
+     * 招生人数
+     */
+    @TableField(exist = false)
+    private String enrolment;
+
 }

@@ -79,4 +79,7 @@ public class HistoryAdmissionDataDO extends BaseEntity {
      */
     private String subjectCode;
 
+    @TableField(exist = false)
+    private String userSubjectType;
+
 }

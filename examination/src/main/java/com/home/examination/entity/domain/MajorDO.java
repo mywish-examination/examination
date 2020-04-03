@@ -95,4 +95,10 @@ public class MajorDO extends BaseEntity {
     @TableField(exist = false)
     private String starRating;
 
+    /**
+     * 招生人数
+     */
+    @TableField(exist = false)
+    private String enrolment;
+
 }

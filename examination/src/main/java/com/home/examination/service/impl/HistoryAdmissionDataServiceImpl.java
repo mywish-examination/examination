@@ -67,4 +67,9 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
         return result;
     }
 
+    @Override
+    public List<HistoryAdmissionDataDO> listHistoryAdmissionDataGroupYears(HistoryAdmissionDataDO historyAdmissionDataDO) {
+        return historyAdmissionDataMapper.listHistoryAdmissionDataGroupYears(historyAdmissionDataDO);
+    }
+
 }

@@ -29,4 +29,9 @@ public class ExecuteResult implements Serializable {
         if(result == true) this.msg = "success";
     }
 
+    public ExecuteResult(boolean result, String msg) {
+        this.status = result ? this.SUCCESS : this.ERROR;
+        this.msg = msg;
+    }
+
 }

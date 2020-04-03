@@ -92,6 +92,7 @@
                 records: "pager.size",
                 repeatitems: false
             },
+            multiselect: true,//复选框
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,

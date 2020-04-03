@@ -5,6 +5,9 @@
 
     <title>${title}</title>
 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="shortcut icon" href="${basePath}favicon.ico"> <link href="${basePath}css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${basePath}css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
@@ -25,12 +28,12 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>我的收藏 / 列表</h5>
+                    <h5>院校计划 / 列表</h5>
                 </div>
                 <div class="ibox-content">
 
                     <div class="jqGrid_wrapper">
-                        <table id="myCollectionList"></table>
+                        <table id="schoolPlanList"></table>
                         <div id="pager"></div>
                     </div>
 
@@ -43,6 +46,10 @@
 <!-- 全局js -->
 <script src="${basePath}js/jquery.min.js?v=2.1.4"></script>
 <script src="${basePath}js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- webuploader -->
+<script src="${basePath}js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${basePath}js/demo/webuploader-demo.js"></script>
 
 <!-- Peity -->
 <script src="${basePath}js/plugins/peity/jquery.peity.min.js"></script>
@@ -58,8 +65,8 @@
         $.jgrid.defaults.styleUI = 'Bootstrap';
 
         // Configuration for jqGrid Example 1
-        $("#myCollectionList").jqGrid({
-            url: "${basePath}web/myCollection/listPage",
+        $("#schoolPlanList").jqGrid({
+            url: "${basePath}web/schoolPlan/listPage",
             ExpandColumn: 'name',
             ExpandColClick: true,
             height: 520,
@@ -72,14 +79,17 @@
                 rows: "pager.size",
             },
             mtype: "POST",
-            colNames: ['', '学校名称', '专业名称', '用户名称', '创建时间', '操作'],
+            colNames: ['', '学校名称', '专业名称', '计划数', '主管部门', '省份', '学制', '收费标准', '操作'],
             colModel: [
-                {name: 'id', index: 'id', hidden: true},
-                {name: 'myCollectionName', index: 'myCollectionName', width: '10%', sortable: false},
-                {name: 'majorName', index: 'majorName', width: '10%', sortable: false},
-                {name: 'userName', index: 'userName', width: '10%', sortable: false},
-                {name: 'creteTime', index: 'creteTime', width: '10%', sortable: false},
-                {name: 'act', index: 'act', width: '10%', sortable: false}
+                {name: 'id', index: 'id',hidden: true},
+                {name: 'schoolName', index: 'schoolName', width: '15%', sortable: false},
+                {name: 'majorName', index: 'majorName', width: '15%', sortable: false},
+                {name: 'planNum', index: 'planNum', width: '15%', sortable: false},
+                {name: 'mainManagerDepartmentName', index: 'mainManagerDepartmentName', width: '10%', sortable: false},
+                {name: 'provinceName', index: 'provinceName', width: '10%', sortable: false},
+                {name: 'educationalSystem', index: 'educationalSystem', width: '10%', sortable: false},
+                {name: 'chargingStandard', index: 'chargingStandard', width: '10%', sortable: false},
+                {name: 'act', index: 'act', width: '15%', sortable: false}
             ],
             jsonReader : {
                 root: "pager.records",
@@ -92,22 +102,22 @@
             pager: "#pager",
             // viewrecords: true,
             // multiselect: true,
-            caption: "我的收藏列表",
+            caption: "院校计划列表",
             toolbar: [true,"top"],
             gridComplete: function() {
-                var ids = jQuery("#myCollectionList").jqGrid('getDataIDs');
+                var ids = jQuery("#schoolPlanList").jqGrid('getDataIDs');
                 for(var i=0;i < ids.length;i++){
                     var id = ids[i];
                     var content = "";
                     // 修改
-                    content += "<a href='javascript:void(0);' title='修改' id='" + id + "' class='btn btn-link shortcut_modify' title='修改'>";
-                    content += "<i class='fa fa-pencil-square-o'></i>修改";
-                    content += "</a>";
+                    // content += "<a href='javascript:void(0);' title='修改' id='" + id + "' class='btn btn-link shortcut_modify' title='修改'>";
+                    // content += "<i class='fa fa-pencil-square-o'></i>修改";
+                    // content += "</a>";
                     // 删除
                     content += "<a href='javascript:void(0);' title='删除' id='" + id + "' class='btn btn-link shortcut_delete' title='删除'>";
                     content += "<i class='fa fa-times'></i>删除";
                     content += "</a>";
-                    jQuery("#myCollectionList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
+                    jQuery("#schoolPlanList").jqGrid('setRowData',ids[i],{act:"<div class='jqgridContainer'>" + content + "</div>"});
                 }
             },
             loadComplete: function(){
@@ -115,7 +125,7 @@
                 $(".shortcut_delete").click(function(){
                     var rowid = $(this).attr("id");
                     var prompt = "确定要删除所选择的记录吗？";
-                    var url = "${basePath}web/myCollection/delete?id=" + rowid;
+                    var url = "${basePath}web/schoolPlan/delete?id=" + rowid;
                     index = top.layer.confirm(prompt, {
                         btn: ["确认", "取消"] //按钮
                     }, function(){
@@ -127,7 +137,7 @@
                             success:function(jsonData){
                                 if(jsonData.status == 'success') {
                                     top.layer.close(index);
-                                    $("#myCollectionList").trigger("reloadGrid");
+                                    $("#schoolPlanList").trigger("reloadGrid");
                                 }
                             }
                         });
@@ -137,7 +147,7 @@
                 //修改
                 $(".shortcut_modify").click(function() {
                     var rowid = $(this).attr("id");
-                    window.location.href = "${basePath}web/myCollection/detail?id=" + rowid;
+                    window.location.href = "${basePath}web/schoolPlan/detail?id=" + rowid;
                 });
             }
         });
@@ -145,30 +155,32 @@
         // Add responsive to jqGrid
         $(window).bind('resize', function () {
             var width = $('.jqGrid_wrapper').width();
-            $('#myCollectionList').setGridWidth(width);
+            $('#schoolPlanList').setGridWidth(width);
         });
 
-        var $content = $("<a></a>").attr("href","javascript:void(0)")
-            .attr("id","create")
-            .attr("class","btn btn-sm btn-primary")
-            .append("创建");
-        $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#create","#t_myCollectionList").click(function(){
-            window.location.href = "${basePath}web/myCollection/detail";
-        });
+        var $content = "";
+
+        <%--$content = $("<a></a>").attr("href","javascript:void(0)")--%>
+        <%--    .attr("id","create")--%>
+        <%--    .attr("class","btn btn-sm btn-primary")--%>
+        <%--    .append("创建");--%>
+        <%--$("#t_schoolPlanList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));--%>
+        <%--$("#create","#t_schoolPlanList").click(function(){--%>
+        <%--    window.location.href = "${basePath}web/schoolPlan/detail";--%>
+        <%--});--%>
 
         $content = $("<a></a>").attr("href","javascript:void(0);")
             .attr("id","deleteBatch")
             .attr("class","btn btn-sm btn-primary")
             .append("删除");
-        $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#deleteBatch","#t_myCollectionList").click(function(){
+        $("#t_schoolPlanList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteBatch","#t_schoolPlanList").click(function(){
             //获取多选到的id集合
-            var ids = $("#myCollectionList").jqGrid("getGridParam", "selarrrow");
+            var ids = $("#schoolPlanList").jqGrid("getGridParam", "selarrrow");
             if(ids == null || ids == "") return;
 
             var prompt = "确定要删除所选择的记录吗？";
-            var url = "${basePath}web/myCollection/deleteBatch?ids=" + ids;
+            var url = "${basePath}web/schoolPlan/deleteBatch?ids=" + ids;
             index = top.layer.confirm(prompt, {
                 btn: ["确认", "取消"] //按钮
             }, function(){
@@ -180,7 +192,7 @@
                     success:function(jsonData){
                         if(jsonData.status == 'success') {
                             top.layer.close(index);
-                            $("#myCollectionList").trigger("reloadGrid");
+                            $("#schoolPlanList").trigger("reloadGrid");
                         }
                     }
                 });
@@ -192,10 +204,10 @@
             .attr("id","deleteAll")
             .attr("class","btn btn-sm btn-primary")
             .append("清空全部");
-        $("#t_myCollectionList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
-        $("#deleteAll","#t_myCollectionList").click(function(){
+        $("#t_schoolPlanList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#deleteAll","#t_schoolPlanList").click(function(){
             var prompt = "确定要删除所选择的记录吗？";
-            var url = "${basePath}web/myCollection/deleteAll";
+            var url = "${basePath}web/schoolPlan/deleteAll";
             index = top.layer.confirm(prompt, {
                 btn: ["确认", "取消"] //按钮
             }, function(){
@@ -207,7 +219,7 @@
                     success:function(jsonData){
                         if(jsonData.status == 'success') {
                             top.layer.close(index);
-                            $("#myCollectionList").trigger("reloadGrid");
+                            $("#schoolPlanList").trigger("reloadGrid");
                         }
                     }
                 });
@@ -215,7 +227,42 @@
             });
         });
 
+        $content = $("<a></a>").attr("href","javascript:void(0);")
+            .attr("id","import")
+            .attr("class","btn btn-sm btn-primary")
+            .attr("data-target", "#myModal")
+            .attr("data-toggle", "modal")
+            .append("导入");
+        $("#t_schoolPlanList").append("&nbsp;&nbsp;").append($("<span></span>").attr("class","jqgridContainer").append($content));
+        $("#import","#t_schoolPlanList").click(function(){
+            showUploadDialog();
+        });
+
     });
+
+    function showUploadDialog(){
+        picUpload({
+            server: '${basePath}web/schoolPlan/uploadFile;jsessionid=<%=session.getId()%>?param=pic',
+            accept: {
+                title: 'Images',//文字描述
+                extensions: 'xls,xlsx',//允许的文件后缀
+                mimeTypes: "*.xls;*.xlsx;" //文件类型
+            },
+            fileSizeLimit: 1024 * 1024 * 10,//限制上传所有文件大小 10M
+            fileSingleSizeLimit: 1024 * 1024 * 10,//限制上传单个文件大小 10M
+            formData:{},//文件上传请求的参数
+            queueSizeLimit:'1',//上传数量限制，1：1张， 2：多张
+            uploadBeforeSend:function(){//发送前触发
+
+            },
+            uploadSuccess:function(files,obj){//上传成功
+                $("#schoolPlanList").trigger("reloadGrid");
+            },
+            uploadError:function(){//文件上传
+            }
+        })
+    }
+
 </script>
 
 </body>

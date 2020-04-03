@@ -44,4 +44,6 @@ public interface HistoryAdmissionDataMapper extends BaseMapper<HistoryAdmissionD
             "${ew.customSqlSegment}")
     AdmissionEstimateReferenceDO getBySchoolOrMajor(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
+    List<HistoryAdmissionDataDO> listHistoryAdmissionDataGroupYears(@Param("entity") HistoryAdmissionDataDO historyAdmissionDataDO);
+
 }

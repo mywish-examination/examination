@@ -22,4 +22,6 @@ public interface HistoryAdmissionDataService extends IService<HistoryAdmissionDa
 
     BigDecimal probabilityFilingHandler(List<HistoryAdmissionDataDO> historyAdmissionDataList, UserDO userDO);
 
+    List<HistoryAdmissionDataDO> listHistoryAdmissionDataGroupYears(HistoryAdmissionDataDO historyAdmissionDataDO);
+
 }
