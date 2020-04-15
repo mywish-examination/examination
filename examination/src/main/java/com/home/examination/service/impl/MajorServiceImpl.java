@@ -26,4 +26,9 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, MajorDO> implemen
         return majorMapper.countByQueryWrapper(queryWrapper);
     }
 
+    @Override
+    public List<MajorDO> listMajor(String educationalCode, Long userId) {
+        return majorMapper.listMajor(educationalCode, userId);
+    }
+
 }

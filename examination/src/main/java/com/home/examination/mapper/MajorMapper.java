@@ -23,4 +23,11 @@ public interface MajorMapper extends BaseMapper<MajorDO> {
             "${ew.customSqlSegment}")
     int countByQueryWrapper(@Param("ew") Wrapper<MajorDO> queryWrapper);
 
+    @Select("select m.*, IFNULL(mc.id, 0) as collectionStatus " +
+            "from school_major sm inner join major m on sm.major_id = m.id " +
+            "left join my_collection mc on sm.major_id = mc.major_id " +
+            "and sm.educational_code = mc.educational_code and mc.user_id = #{userId} " +
+            "where sm.educational_code = #{educationalCode}")
+    List<MajorDO> listMajor(@Param("educationalCode") String educationalCode, @Param("userId") Long userId);
+
 }

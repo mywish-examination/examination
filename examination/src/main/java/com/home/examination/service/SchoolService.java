@@ -13,4 +13,6 @@ public interface SchoolService extends IService<SchoolDO> {
 
     List<ByNameVO> listByName(Wrapper<SchoolDO> queryWrapper);
 
+    List<SchoolDO> listSchool(Long userId, Long majorId);
+
 }

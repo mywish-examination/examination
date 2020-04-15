@@ -93,7 +93,7 @@ public class MajorDO extends BaseEntity {
      * 评价星级
      */
     @TableField(exist = false)
-    private String starRating;
+    private String starRating = "0";
 
     /**
      * 招生人数

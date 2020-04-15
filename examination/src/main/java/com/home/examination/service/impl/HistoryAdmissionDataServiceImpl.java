@@ -52,9 +52,13 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
 
         BigDecimal zero = new BigDecimal(0);
         List<BigDecimal> collect = historyAdmissionDataList.stream()
-                .filter(historyAdmissionDataDO -> Integer.valueOf(historyAdmissionDataDO.getYears()) > year).map(currHistoryAdmissionData -> {
-                    BigDecimal consultRank = (new BigDecimal(currHistoryAdmissionData.getMinimumRank()).multiply(new BigDecimal(0.66)))
-                            .add(new BigDecimal(currHistoryAdmissionData.getAvgRank()).multiply(new BigDecimal(0.33)));
+                .filter(historyAdmissionDataDO -> Integer.valueOf(historyAdmissionDataDO.getYears()) > year).peek(entity -> {
+                    System.out.println(entity);
+                }).map(currHistoryAdmissionData -> {
+                    BigDecimal multiply = new BigDecimal(currHistoryAdmissionData.getAvgRank()).multiply(new BigDecimal(0.33)).setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal multiply1 = new BigDecimal(currHistoryAdmissionData.getMinimumRank()).multiply(new BigDecimal(0.66)).setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal consultRank = multiply1
+                            .add(multiply);
                     String rank = userDO.getRank();
                     if (new BigDecimal(rank).compareTo(consultRank) <= 0) return new BigDecimal(1);
                     else return new BigDecimal(0);
@@ -62,7 +66,10 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
 
         if(collect.isEmpty()) return zero;
 
-        BigDecimal result = new BigDecimal(collect.size()).divide(collect.stream().reduce(zero, (a, b) -> a.add(b)), 2, RoundingMode.HALF_UP);
+        BigDecimal reduce = collect.stream().reduce(zero, (a, b) -> a.add(b));
+        if(reduce.compareTo(zero) < 1) return zero;
+
+        BigDecimal result = new BigDecimal(collect.size()).divide(reduce, 2, RoundingMode.HALF_UP);
 
         return result;
     }

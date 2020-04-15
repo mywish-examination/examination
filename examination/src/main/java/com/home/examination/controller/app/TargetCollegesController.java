@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/app/targetColleges")
@@ -47,7 +46,7 @@ public class TargetCollegesController {
     /**
      * @param historyAdmissionDataDO
      * @param token
-     * @param sortType 1：星级，2：名称
+     * @param sortType               1：星级，2：名称
      * @return
      */
     @PostMapping("/detail")
@@ -60,30 +59,18 @@ public class TargetCollegesController {
         SchoolDO school = schoolService.getByEducationalCode(educationalCode);
         int year = LocalDate.now().minusYears(3).getYear();
         Long majorId = historyAdmissionDataDO.getMajorId();
+        System.out.println(majorId == null);
         if (majorId != null && educationalCode != null) {
             MajorDO one = majorService.getById(majorId);
-
-            LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
-            schoolMajorQueryWrapper.eq(SchoolMajorDO::getMajorId, one.getId());
-            List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
-            List<String> collect = schoolMajorList.stream().map(SchoolMajorDO::getEducationalCode).collect(Collectors.toList());
-
-            LambdaQueryWrapper<SchoolDO> schoolQueryWrapper = new LambdaQueryWrapper<>();
-            schoolQueryWrapper.in(SchoolDO::getEducationalCode, collect);
-            List<SchoolDO> list = schoolService.list(schoolQueryWrapper);
-
-            LambdaQueryWrapper<MyCollectionDO> myCollectionQueryWrapper = new LambdaQueryWrapper<>();
-            myCollectionQueryWrapper.eq(MyCollectionDO::getMajorId, majorId).in(MyCollectionDO::getEducationalCode, collect).eq(MyCollectionDO::getUserId, userDO.getId());
-            List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
-            List<String> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getEducationalCode).collect(Collectors.toList());
-            for(SchoolDO schoolDO: list) {
-                if(existMyCollectionCollect.contains(schoolDO.getEducationalCode())) schoolDO.setCollectionStatus("1");
-
+            List<SchoolDO> schoolList = schoolService.listSchool(majorId, userDO.getId());
+            schoolList = schoolList.subList(0, schoolList.size() >= 10 ? 10 : schoolList.size());
+            for (SchoolDO schoolDO : schoolList) {
                 LambdaQueryWrapper<SchoolPlanDO> schoolPlanQueryWrapper = new LambdaQueryWrapper<>();
-                schoolPlanQueryWrapper.eq(SchoolPlanDO::getEducationalCode, schoolDO.getEducationalCode());
+                schoolPlanQueryWrapper.eq(SchoolPlanDO::getSchoolName, school.getName()).eq(SchoolPlanDO::getMajorName, one.getName());
                 List<SchoolPlanDO> schoolPlanList = schoolPlanService.list(schoolPlanQueryWrapper);
-                if(!CollectionUtils.isEmpty(schoolPlanList)) {
-                    schoolDO.setEnrolment(schoolPlanList.get(0).getPlanNum().toString());
+                if (!CollectionUtils.isEmpty(schoolPlanList)) {
+                    BigDecimal enrolment = schoolPlanList.stream().map(SchoolPlanDO::getPlanNum).reduce((a, b) -> a.add(b)).orElse(zero);
+                    schoolDO.setEnrolment(enrolment.toString());
                 }
 
                 LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
@@ -101,6 +88,9 @@ public class TargetCollegesController {
                         score = userDO.getPredictedScore();
                     }
 
+                    if (admissionEstimateReference == null || StringUtils.isEmpty(admissionEstimateReference.getScoreParagraph()))
+                        return false;
+
                     BigDecimal insideResult = score
                             .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
                     return insideResult.compareTo(new BigDecimal(15)) < 0;
@@ -108,41 +98,25 @@ public class TargetCollegesController {
                 schoolDO.setStarRating(ExUtils.starRatingHandler(result, supplier));
             }
 
-            targetColleges.setSchoolList(list.subList(0, list.size() >= 10 ? 10 : list.size()));
-
+            targetColleges.setSchoolList(schoolList);
             targetColleges.setSchoolName(school.getName());
             targetColleges.setMajorName(one.getName());
-
         } else if (majorId == null && educationalCode != null) {
             BeanUtils.copyProperties(school, targetColleges);
             targetColleges.setSchoolName(school.getName());
 
-            LambdaQueryWrapper<SchoolMajorDO> schoolMajorQueryWrapper = new LambdaQueryWrapper<>();
-            schoolMajorQueryWrapper.eq(SchoolMajorDO::getEducationalCode, educationalCode);
-            List<SchoolMajorDO> schoolMajorList = schoolMajorService.list(schoolMajorQueryWrapper);
-            List<Long> collect = schoolMajorList.stream().map(SchoolMajorDO::getMajorId).collect(Collectors.toList());
-
-            if (!collect.isEmpty()) {
-                LambdaQueryWrapper<MajorDO> majorQueryWrapper = new LambdaQueryWrapper<>();
-                majorQueryWrapper.in(MajorDO::getId, collect);
-                // 专业列表
-                List<MajorDO> majorList = majorService.list(majorQueryWrapper);
-
-                LambdaQueryWrapper<MyCollectionDO> myCollectionQueryWrapper = new LambdaQueryWrapper<>();
-                List<Long> majorIdList = majorList.stream().map(MajorDO::getId).collect(Collectors.toList());
-                myCollectionQueryWrapper.in(MyCollectionDO::getMajorId, majorIdList).eq(MyCollectionDO::getEducationalCode, educationalCode).eq(MyCollectionDO::getUserId, userDO.getId());
-                List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
-                List<Long> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getMajorId).collect(Collectors.toList());
-
-                for (MajorDO major:
+            // 专业列表
+            List<MajorDO> majorList = majorService.listMajor(educationalCode, userDO.getId());
+            majorList = majorList.subList(0, majorList.size() >= 10 ? 10 : majorList.size());
+            if (!CollectionUtils.isEmpty(majorList)) {
+                for (MajorDO major :
                         majorList) {
-                    if(existMyCollectionCollect.contains(major.getId())) major.setCollectionStatus("1");
-
                     LambdaQueryWrapper<SchoolPlanDO> schoolPlanQueryWrapper = new LambdaQueryWrapper<>();
-                    schoolPlanQueryWrapper.eq(SchoolPlanDO::getEducationalCode, educationalCode).eq(SchoolPlanDO::getMajorId, major.getId());
+                    schoolPlanQueryWrapper.eq(SchoolPlanDO::getSchoolName, school.getName()).eq(SchoolPlanDO::getMajorName, major.getName());
                     List<SchoolPlanDO> schoolPlanList = schoolPlanService.list(schoolPlanQueryWrapper);
-                    if(!CollectionUtils.isEmpty(schoolPlanList)) {
-                        major.setEnrolment(schoolPlanList.get(0).getPlanNum().toString());
+                    if (!CollectionUtils.isEmpty(schoolPlanList)) {
+                        BigDecimal enrolment = schoolPlanList.stream().map(SchoolPlanDO::getPlanNum).reduce((a, b) -> a.add(b)).orElse(zero);
+                        major.setEnrolment(enrolment.toString());
                     }
 
                     LambdaQueryWrapper<HistoryAdmissionDataDO> historyQueryWrapper = new LambdaQueryWrapper<>();
@@ -152,7 +126,7 @@ public class TargetCollegesController {
 
                     historyQueryWrapper.apply("years >= {0}", year);
                     AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
-                    if(admissionEstimateReference == null) continue;
+                    if (admissionEstimateReference == null) continue;
 
                     BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
                     Supplier<Boolean> supplier = () -> {
@@ -168,7 +142,7 @@ public class TargetCollegesController {
                     };
                     major.setStarRating(ExUtils.starRatingHandler(result, supplier));
                 }
-                targetColleges.setMajorList(majorList.subList(0, majorList.size() >= 10 ? 10 : majorList.size()));
+                targetColleges.setMajorList(majorList);
             }
         }
 
@@ -184,10 +158,10 @@ public class TargetCollegesController {
 
         historyQueryWrapper.apply("years >= {0}", year);
         AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
-        if(admissionEstimateReference == null) return new ExecuteResult(targetColleges);
+        if (admissionEstimateReference == null) return new ExecuteResult(targetColleges);
 
         BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
-        String probabilityFiling = result.multiply(new BigDecimal(100)).toString() + "%";
+        String probabilityFiling = result.multiply(new BigDecimal(100)).setScale(1) + "%";
         admissionEstimateReference.setProbabilityFiling(probabilityFiling);
 
         Supplier<Boolean> supplier = () -> {
@@ -200,7 +174,7 @@ public class TargetCollegesController {
             }
 
             BigDecimal insideResult = score
-                    .divide(new BigDecimal(minScore), 2, RoundingMode.HALF_UP);
+                    .divide(new BigDecimal(minScore), 1, RoundingMode.HALF_UP);
             return insideResult.compareTo(new BigDecimal(15)) < 0;
         };
         admissionEstimateReference.setStarRating(ExUtils.starRatingHandler(result, supplier));
@@ -208,13 +182,13 @@ public class TargetCollegesController {
         targetColleges.setAdmissionEstimateReference(admissionEstimateReference);
 
         // 处理排序、和计划招生数
-        if(majorId != null) {
-            if(StringUtils.isEmpty(sortType) || sortType.equals("1"))
+        if (majorId != null) {
+            if (StringUtils.isEmpty(sortType) || sortType.equals("1"))
                 targetColleges.getSchoolList().sort(Comparator.comparing(SchoolDO::getStarRating));
             else
                 targetColleges.getSchoolList().sort(Comparator.comparing(SchoolDO::getName));
         } else {
-            if(StringUtils.isEmpty(sortType) || sortType.equals("1"))
+            if (StringUtils.isEmpty(sortType) || sortType.equals("1"))
                 targetColleges.getMajorList().sort(Comparator.comparing(MajorDO::getStarRating));
             else
                 targetColleges.getMajorList().sort(Comparator.comparing(MajorDO::getName));

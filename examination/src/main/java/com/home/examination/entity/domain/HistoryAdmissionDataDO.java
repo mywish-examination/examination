@@ -1,10 +1,12 @@
 package com.home.examination.entity.domain;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Data
 @TableName("history_admission_data")
@@ -18,14 +20,26 @@ public class HistoryAdmissionDataDO extends BaseEntity {
      * 最高分
      */
     private BigDecimal highestScore;
+
+    public BigDecimal getHighestScore() {
+        return highestScore.setScale(1, RoundingMode.HALF_UP);
+    }
+
     /**
      * 最低分
      */
     private BigDecimal minimumScore;
+
+    public BigDecimal getMinimumScore() {
+        return minimumScore.setScale(1, RoundingMode.HALF_UP);
+    }
     /**
      * 平均分
      */
     private BigDecimal average;
+    public BigDecimal getAverage() {
+        return average.setScale(1, RoundingMode.HALF_UP);
+    }
     /**
      * 控制线
      */
@@ -66,6 +80,11 @@ public class HistoryAdmissionDataDO extends BaseEntity {
      * 平均位次
      */
     private String avgRank;
+    public String getAvgRank() {
+        if(StringUtils.isEmpty(avgRank)) return "";
+
+        return new BigDecimal(avgRank).setScale(1, RoundingMode.HALF_UP).toString();
+    }
     /**
      * 最高位次
      */

@@ -7,12 +7,12 @@
         select m.years, m.highestScore, m.minimumScore, m.average,
         m.highestRank, m.avgRank, m.minimumRank,
         case
-        <if test="userSubjectType == '1'">
+        <if test="entity.userSubjectType == '1'.toString()">
             when m.batch_code in('11' ,'10', '1', '2') then hdcl.science_key_line
             when m.batch_code in('12' ,'3', '4') then hdcl.science_undergraduate_line
             when m.batch_code not in('11' ,'10', '1', '2', '12' ,'3', '4') then hdcl.science_specialty_line
         </if>
-        <if test="userSubjectType == '5'">
+        <if test="entity.userSubjectType == '5'.toString()">
             when m.batch_code in('11' ,'10', '1', '2') then hdcl.liberal_arts_key_line
             when m.batch_code in('12' ,'3', '4') then hdcl.liberal_arts_undergraduate_line
             when m.batch_code not in('11' ,'10', '1', '2', '12' ,'3', '4') then hdcl.liberal_arts_specialty_line
@@ -23,18 +23,19 @@
         max(t.highest_rank) as highestRank, avg(t.avg_rank) as avgRank,
         min(t.minimum_rank) as minimumRank, t.batch_code as batch_code
         from history_admission_data t
-        where t.educational_code = #{educationalCode}
-        <if test="majorId != null">
-            and t.major_id = #{majorId}
+        where t.educational_code = #{entity.educationalCode}
+        and t.subject_code = #{entity.userSubjectType}
+        <if test="entity.majorId != null">
+            and t.major_id = #{entity.majorId}
         </if>
-        <if test="remark != null">
-            <bind name="remarkOption" value="'%' + remark +  '%'"/>
+        <if test="entity.remark != null and entity.remark != ''">
+            <bind name="remarkOption" value="'%' + entity.remark +  '%'"/>
             and t.remark like #{remarkOption}
         </if>
-        <if test="batchCode != null">
-            and t.batch_code = #{batchCode}
+        <if test="entity.batchCode != null and entity.batchCode != ''">
+            and t.batch_code = #{entity.batchCode}
         </if>
         group by t.years) m, history_data_control_line hdcl
-        where m.years = hdcl.year
+        where m.years = hdcl.years
     </select>
 </mapper>

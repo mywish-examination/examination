@@ -33,4 +33,9 @@ public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, SchoolDO> imple
         return schoolMapper.listByName(queryWrapper);
     }
 
+    @Override
+    public List<SchoolDO> listSchool(Long userId, Long majorId) {
+        return schoolMapper.listSchool(userId, majorId);
+    }
+
 }
