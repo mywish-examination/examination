@@ -47,7 +47,7 @@ public class HistoryAdmissionDataAppController {
             studentSourceRankingVO = new StudentSourceRankingVO();
             int size = entry.getValue().size();
             Integer sumRank = entry.getValue().stream()
-                    .map(historyAdmissionDataDO -> Integer.parseInt(historyAdmissionDataDO.getAvgRank())).reduce(0, (a, b) -> a + b);
+                    .map(historyAdmissionDataDO -> historyAdmissionDataDO.getAvgRank()).reduce(0, (a, b) -> a + b);
             studentSourceRankingVO.setMajorName(entry.getKey());
             studentSourceRankingVO.setRank(sumRank);
             list.add(studentSourceRankingVO);

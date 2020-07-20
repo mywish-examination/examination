@@ -3,7 +3,6 @@ package com.home.examination.controller.web;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.entity.domain.HistoryDataControlLineDO;
 import com.home.examination.entity.page.HistoryDataControlLinePager;
-import com.home.examination.service.DataDictionaryService;
 import com.home.examination.service.HistoryDataControlLineService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -117,11 +116,11 @@ public class HistoryDataControlLineController {
             // 年份
             Cell cell = row.getCell(0);
             if (cell != null) {
-                String years = "";
+                int years = 0;
                 if (cell.getCellType().equals(CellType.NUMERIC)) {
-                    years = String.valueOf(cell.getNumericCellValue());
+                    years = (int) cell.getNumericCellValue();
                 } else if (cell.getCellType().equals(CellType.STRING)) {
-                    years = cell.getStringCellValue();
+                    years = Integer.valueOf(cell.getStringCellValue());
                 }
                 historyDataControlLineDO.setYears(years);
             }
@@ -130,11 +129,11 @@ public class HistoryDataControlLineController {
             // 文科-重点线
             Cell cell1 = row.getCell(1);
             if (cell1 != null) {
-                String scienceKeyLine = "";
+                int scienceKeyLine = 0;
                 if (cell1.getCellType().equals(CellType.NUMERIC)) {
-                    scienceKeyLine = String.valueOf(cell1.getNumericCellValue());
+                    scienceKeyLine = (int) cell1.getNumericCellValue();
                 } else if (cell1.getCellType().equals(CellType.STRING)) {
-                    scienceKeyLine = cell1.getStringCellValue();
+                    scienceKeyLine = Integer.valueOf(cell1.getStringCellValue());
                 }
                 historyDataControlLineDO.setScienceKeyLine(scienceKeyLine);
             }
@@ -142,11 +141,11 @@ public class HistoryDataControlLineController {
             // 文科-本科线
             Cell cell2 = row.getCell(2);
             if (cell2 != null) {
-                String scienceUndergraduateLine = "";
+                int scienceUndergraduateLine = 0;
                 if (cell2.getCellType().equals(CellType.NUMERIC)) {
-                    scienceUndergraduateLine = String.valueOf(cell2.getNumericCellValue());
+                    scienceUndergraduateLine = (int) cell2.getNumericCellValue();
                 } else if (cell2.getCellType().equals(CellType.STRING)) {
-                    scienceUndergraduateLine = cell2.getStringCellValue();
+                    scienceUndergraduateLine = Integer.valueOf(cell2.getStringCellValue());
                 }
                 historyDataControlLineDO.setScienceUndergraduateLine(scienceUndergraduateLine);
             }
@@ -154,11 +153,11 @@ public class HistoryDataControlLineController {
             // 文科-专科线
             Cell cell3 = row.getCell(3);
             if (cell3 != null) {
-                String scienceSpecialtyLine = "";
+                int scienceSpecialtyLine = 0;
                 if (cell3.getCellType().equals(CellType.NUMERIC)) {
-                    scienceSpecialtyLine = String.valueOf(cell3.getNumericCellValue());
+                    scienceSpecialtyLine = (int) cell3.getNumericCellValue();
                 } else if (cell3.getCellType().equals(CellType.STRING)) {
-                    scienceSpecialtyLine = cell3.getStringCellValue();
+                    scienceSpecialtyLine = Integer.valueOf(cell3.getStringCellValue());
                 }
                 historyDataControlLineDO.setScienceSpecialtyLine(scienceSpecialtyLine);
             }
@@ -166,11 +165,11 @@ public class HistoryDataControlLineController {
             // 理科-重点线
             Cell cell4 = row.getCell(4);
             if (cell4 != null) {
-                String liberalArtsKeyLine = "";
+                int liberalArtsKeyLine = 0;
                 if (cell4.getCellType().equals(CellType.NUMERIC)) {
-                    liberalArtsKeyLine = String.valueOf(cell4.getNumericCellValue());
+                    liberalArtsKeyLine = (int) cell4.getNumericCellValue();
                 } else if (cell4.getCellType().equals(CellType.STRING)) {
-                    liberalArtsKeyLine = cell.getStringCellValue();
+                    liberalArtsKeyLine = Integer.valueOf(cell.getStringCellValue());
                 }
                 historyDataControlLineDO.setLiberalArtsKeyLine(liberalArtsKeyLine);
             }
@@ -178,11 +177,11 @@ public class HistoryDataControlLineController {
             // 理科-本科线
             Cell cell5 = row.getCell(5);
             if (cell5 != null) {
-                String liberalArtsUndergraduateLine = "";
+                int liberalArtsUndergraduateLine = 0;
                 if (cell5.getCellType().equals(CellType.NUMERIC)) {
-                    liberalArtsUndergraduateLine = String.valueOf(cell5.getNumericCellValue());
+                    liberalArtsUndergraduateLine = (int) cell5.getNumericCellValue();
                 } else if (cell5.getCellType().equals(CellType.STRING)) {
-                    liberalArtsUndergraduateLine = cell5.getStringCellValue();
+                    liberalArtsUndergraduateLine = Integer.valueOf(cell5.getStringCellValue());
                 }
                 historyDataControlLineDO.setLiberalArtsUndergraduateLine(liberalArtsUndergraduateLine);
             }
@@ -190,11 +189,11 @@ public class HistoryDataControlLineController {
             // 理科-专科线
             Cell cell6 = row.getCell(6);
             if (cell6 != null) {
-                String liberalArtsSpecialtyLine = "";
+                int liberalArtsSpecialtyLine = 0;
                 if (cell6.getCellType().equals(CellType.NUMERIC)) {
-                    liberalArtsSpecialtyLine = String.valueOf(cell6.getNumericCellValue());
+                    liberalArtsSpecialtyLine = (int) cell6.getNumericCellValue();
                 } else if (cell6.getCellType().equals(CellType.STRING)) {
-                    liberalArtsSpecialtyLine = cell6.getStringCellValue();
+                    liberalArtsSpecialtyLine = Integer.valueOf(cell6.getStringCellValue());
                 }
                 historyDataControlLineDO.setLiberalArtsSpecialtyLine(liberalArtsSpecialtyLine);
             }

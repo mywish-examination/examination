@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.examination.mapper.MajorMapper">
+
+    <select id="listMajor" resultType="com.home.examination.entity.domain.MajorDO">
+        select m.*, IFNULL(mc.id, 0) as collectionStatus
+        from history_admission_data t inner join major m on t.major_id = m.id
+        left join my_collection mc on t.major_id = mc.major_id
+        and t.educational_code = mc.educational_code and mc.user_id = #{userId}
+        where t.educational_code = #{educationalCode}
+        <if test="(batchCode != null and batchCode != '') or (remark != null and remark != '')">
+            <if test="batchCode != null and batchCode != ''">
+                and t.batch_code = #{batchCode}
+            </if>
+            <if test="remark != null and remark != ''">
+                <bind name="likeRemark" value="'%' + remark + '%'"/>
+                and t.remark like #{likeRemark}
+            </if>
+        </if>
+        limit 10;
+    </select>
+</mapper>

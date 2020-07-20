@@ -12,4 +12,6 @@ public interface SchoolPlanService extends IService<SchoolPlanDO> {
 
     int countByQueryWrapper(Wrapper<SchoolPlanDO> queryWrapper);
 
+    int getPlanNum(String schoolName, String majorName);
+
 }

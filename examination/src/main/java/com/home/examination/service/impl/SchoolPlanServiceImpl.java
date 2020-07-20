@@ -27,4 +27,9 @@ public class SchoolPlanServiceImpl extends ServiceImpl<SchoolPlanMapper, SchoolP
         return schoolPlanMapper.countByQueryWrapper(queryWrapper);
     }
 
+    @Override
+    public int getPlanNum(String schoolName, String majorName) {
+        return schoolPlanMapper.getPlanNum(schoolName, majorName);
+    }
+
 }

@@ -41,6 +41,8 @@ public class SchoolMajorAppController {
     @Resource
     private SchoolService schoolService;
 
+    private final static BigDecimal zero = new BigDecimal(0);
+
     @RequestMapping("/listPage")
     @ResponseBody
     public ExecuteResult listPage(SchoolMajorPager pager) {
@@ -76,12 +78,12 @@ public class SchoolMajorAppController {
             schoolMajorQueryWrapper.last(String.format("limit %s, %s", pager.getPager().offset(), pager.getPager().getSize()));
             schoolMajorList = schoolMajorService.pageByQueryWrapper(schoolMajorQueryWrapper);
 
-            UserDO user = (UserDO) redisTemplate.opsForValue().get(pager.getToken());
+            UserDO userDO = (UserDO) redisTemplate.opsForValue().get(pager.getToken());
             int year = LocalDate.now().minusYears(3).getYear();
 
             LambdaQueryWrapper<MyCollectionDO> myCollectionQueryWrapper = new LambdaQueryWrapper<>();
 
-            myCollectionQueryWrapper.in(MyCollectionDO::getMajorId, majorIdList).eq(MyCollectionDO::getUserId, user.getId());
+            myCollectionQueryWrapper.in(MyCollectionDO::getMajorId, majorIdList).eq(MyCollectionDO::getUserId, userDO.getId());
             List<MyCollectionDO> myCollectionList = myCollectionService.list(myCollectionQueryWrapper);
             List<Long> existMyCollectionCollect = myCollectionList.stream().map(MyCollectionDO::getMajorId).collect(Collectors.toList());
             for (SchoolMajorDO schoolMajor :
@@ -93,23 +95,20 @@ public class SchoolMajorAppController {
                 // 历史录取数据列表
                 List<HistoryAdmissionDataDO> historyAdmissionDataList = historyAdmissionDataService.list(historyQueryWrapper);
 
-                historyQueryWrapper.apply("years >= {0}", year);
                 AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
                 if(admissionEstimateReference == null) continue;
 
-                BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
-                BigDecimal zero = new BigDecimal(0);
-                Supplier<Boolean> supplier = () -> {
-                    BigDecimal score = user.getCollegeScore();
-                    if (user.getCollegeScore() == null) {
-                        score = user.getPredictedScore();
+                BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO.getRank());
+                if (result.compareTo(zero) == 0) {
+                    admissionEstimateReference.setStarRating("0");
+                } else {
+                    String starRating = ExUtils.starRatingHandler(result);
+                    if (starRating.equals("0")) {
+                        Supplier<Boolean> supplier = ExUtils.getUserHalfStarSupplier(userDO, admissionEstimateReference.getScoreParagraph());
+                        if (supplier.get()) starRating = "0.5";
                     }
-
-                    BigDecimal insideResult = score
-                            .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
-                    return insideResult.compareTo(new BigDecimal(15)) < 0;
-                };
-                schoolMajor.setStarRating(ExUtils.starRatingHandler(result, supplier));
+                    schoolMajor.setStarRating(starRating);
+                }
 
                 if(existMyCollectionCollect.contains(schoolMajor.getEducationalCode())) schoolMajor.setCollectionStatus("1");
             }

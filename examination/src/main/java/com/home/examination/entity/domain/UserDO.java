@@ -51,7 +51,7 @@ public class UserDO extends BaseEntity {
     /**
      * 高考年份
      */
-    private String collegeYears;
+    private Integer collegeYears;
     /**
      * 科类
      */
@@ -99,7 +99,7 @@ public class UserDO extends BaseEntity {
      * 位次
      */
     @TableField(exist = false)
-    private String rank;
+    private Integer rank;
 
     /**
      * 序列号

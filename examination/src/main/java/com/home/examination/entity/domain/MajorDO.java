@@ -65,7 +65,7 @@ public class MajorDO extends BaseEntity {
     /**
      * 年限
      */
-    private String years;
+    private Integer years;
     /**
      * 专业介绍
      */
@@ -99,6 +99,6 @@ public class MajorDO extends BaseEntity {
      * 招生人数
      */
     @TableField(exist = false)
-    private String enrolment;
+    private Integer enrolment;
 
 }

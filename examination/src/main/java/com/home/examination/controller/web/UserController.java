@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.home.examination.common.enumerate.DictCodeEnum;
 import com.home.examination.common.runner.MyStartupRunner;
 import com.home.examination.entity.domain.CityDO;
-import com.home.examination.entity.domain.FeatureDO;
 import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.page.UserPager;
 import com.home.examination.entity.vo.SuggestVO;
@@ -206,11 +205,11 @@ public class UserController {
             // 高考年份
             Cell cell5 = row.getCell(5);
             if (cell5 != null) {
-                String collegeYears = "";
-                if(cell5.getCellType().equals(CellType.NUMERIC)) {
-                    collegeYears = String.valueOf((int) cell5.getNumericCellValue());
-                } else if(cell5.getCellType().equals(CellType.STRING)) {
-                    collegeYears = cell5.getStringCellValue();
+                int collegeYears = 0;
+                if (cell5.getCellType().equals(CellType.NUMERIC)) {
+                    collegeYears = (int) cell5.getNumericCellValue();
+                } else if (cell5.getCellType().equals(CellType.STRING)) {
+                    collegeYears = Integer.valueOf(cell5.getStringCellValue());
                 }
                 userDO.setCollegeYears(collegeYears);
             }

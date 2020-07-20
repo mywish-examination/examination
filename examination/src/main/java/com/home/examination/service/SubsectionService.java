@@ -5,4 +5,7 @@ import com.home.examination.entity.domain.SubsectionDO;
 
 public interface SubsectionService extends IService<SubsectionDO> {
 
+    int getScore(String subjectType, Integer rank);
+
+
 }

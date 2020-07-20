@@ -152,7 +152,7 @@ public class SchoolPlanController {
             if (cell1 != null) {
                 String majorCode = "";
                 if(cell1.getCellType().equals(CellType.NUMERIC)) {
-                    majorCode = String.valueOf(cell1.getNumericCellValue());
+                    majorCode = String.valueOf((int) cell1.getNumericCellValue());
                 } else if(cell1.getCellType().equals(CellType.STRING)) {
                     majorCode = cell1.getStringCellValue();
                 }
@@ -199,11 +199,11 @@ public class SchoolPlanController {
             // 计划数
             Cell cell6 = row.getCell(7);
             if (cell6 != null) {
-                BigDecimal planNum = new BigDecimal(0);
+                int planNum = 0;
                 if(cell6.getCellType().equals(CellType.NUMERIC)) {
-                    planNum = new BigDecimal(cell6.getNumericCellValue());
+                    planNum = (int) cell6.getNumericCellValue();
                 } else if(cell6.getCellType().equals(CellType.STRING)) {
-                    planNum = new BigDecimal(cell6.getStringCellValue());
+                    planNum = Integer.valueOf(cell6.getStringCellValue());
                 }
                 schoolPlanDO.setPlanNum(planNum);
             }

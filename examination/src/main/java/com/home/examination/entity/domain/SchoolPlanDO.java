@@ -54,7 +54,7 @@ public class SchoolPlanDO extends BaseEntity {
     /**
      * 计划数
      */
-    private BigDecimal planNum;
+    private Integer planNum;
 
     /**
      * 收费标准

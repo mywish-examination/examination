@@ -47,36 +47,33 @@ public class HistoryAdmissionDataServiceImpl extends ServiceImpl<HistoryAdmissio
     }
 
     @Override
-    public BigDecimal probabilityFilingHandler(List<HistoryAdmissionDataDO> historyAdmissionDataList, UserDO userDO) {
-        int year = LocalDate.now().minusYears(3).getYear();
-
+    public BigDecimal probabilityFilingHandler(List<HistoryAdmissionDataDO> historyAdmissionDataList, Integer userRank) {
         BigDecimal zero = new BigDecimal(0);
-        List<BigDecimal> collect = historyAdmissionDataList.stream()
-                .filter(historyAdmissionDataDO -> Integer.valueOf(historyAdmissionDataDO.getYears()) > year).peek(entity -> {
-                    System.out.println(entity);
-                }).map(currHistoryAdmissionData -> {
-                    BigDecimal multiply = new BigDecimal(currHistoryAdmissionData.getAvgRank()).multiply(new BigDecimal(0.33)).setScale(2, RoundingMode.HALF_UP);
-                    BigDecimal multiply1 = new BigDecimal(currHistoryAdmissionData.getMinimumRank()).multiply(new BigDecimal(0.66)).setScale(2, RoundingMode.HALF_UP);
-                    BigDecimal consultRank = multiply1
-                            .add(multiply);
-                    String rank = userDO.getRank();
-                    if (new BigDecimal(rank).compareTo(consultRank) <= 0) return new BigDecimal(1);
-                    else return new BigDecimal(0);
-                }).collect(Collectors.toList());
 
-        if(collect.isEmpty()) return zero;
+        BigDecimal size = new BigDecimal(historyAdmissionDataList.size());
+        Integer collect = historyAdmissionDataList.stream().map(currHistoryAdmissionData -> {
+            BigDecimal avgRankMultiply = new BigDecimal(currHistoryAdmissionData.getAvgRank()).multiply(new BigDecimal(0.33)).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal minRankMultiply = new BigDecimal(currHistoryAdmissionData.getMinimumRank()).multiply(new BigDecimal(0.66)).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal consultRank = minRankMultiply
+                    .add(avgRankMultiply);
 
-        BigDecimal reduce = collect.stream().reduce(zero, (a, b) -> a.add(b));
-        if(reduce.compareTo(zero) < 1) return zero;
+            if (new BigDecimal(userRank).compareTo(consultRank) <= 0) return 1;
+            else return 0;
+        }).reduce(0, (a, b) -> a + b);
 
-        BigDecimal result = new BigDecimal(collect.size()).divide(reduce, 2, RoundingMode.HALF_UP);
-
+        if (collect.intValue() == 0) return zero;
+        BigDecimal result = new BigDecimal(collect).divide(size, 2, RoundingMode.HALF_UP);
         return result;
     }
 
     @Override
     public List<HistoryAdmissionDataDO> listHistoryAdmissionDataGroupYears(HistoryAdmissionDataDO historyAdmissionDataDO) {
         return historyAdmissionDataMapper.listHistoryAdmissionDataGroupYears(historyAdmissionDataDO);
+    }
+
+    @Override
+    public List<HistoryAdmissionDataDO> listBaseDictData(String educationalCode, Long majorId, String userSubjectType) {
+        return historyAdmissionDataMapper.listBaseDictData(educationalCode, majorId, userSubjectType);
     }
 
 }

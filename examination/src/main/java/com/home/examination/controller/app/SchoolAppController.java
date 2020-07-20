@@ -44,10 +44,12 @@ public class SchoolAppController {
     @Resource
     private RedisTemplate redisTemplate;
 
+    private final static BigDecimal zero = new BigDecimal(0);
+
     @PostMapping("/listPage")
     public ExecuteResult listPage(SchoolPager pager) {
-        UserDO user = (UserDO) redisTemplate.opsForValue().get(pager.getToken());
-        Integer rank = Integer.valueOf(user.getRank());
+        UserDO userDO = (UserDO) redisTemplate.opsForValue().get(pager.getToken());
+        Integer rank = Integer.valueOf(userDO.getRank());
         LambdaQueryWrapper<SchoolDO> queryWrapper = new LambdaQueryWrapper<>();
         RangeDO rangeDO = pager.getRequestParam();
         if(rangeDO == null) rangeDO = new RangeDO();
@@ -105,19 +107,17 @@ public class SchoolAppController {
             historyQueryWrapper.apply("years >= {0}", year);
             AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
-            BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, user);
-            BigDecimal zero = new BigDecimal(0);
-            Supplier<Boolean> supplier = () -> {
-                BigDecimal score = user.getCollegeScore();
-                if (user.getCollegeScore() == null) {
-                    score = user.getPredictedScore();
+            BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO.getRank());
+            if (result.compareTo(zero) == 0) {
+                admissionEstimateReference.setStarRating("0");
+            } else {
+                String starRating = ExUtils.starRatingHandler(result);
+                if (starRating.equals("0")) {
+                    Supplier<Boolean> supplier = ExUtils.getUserHalfStarSupplier(userDO, admissionEstimateReference.getScoreParagraph());
+                    if (supplier.get()) starRating = "0.5";
                 }
-
-                BigDecimal insideResult = score
-                        .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
-                return insideResult.compareTo(new BigDecimal(15)) < 0;
-            };
-            schoolDO.setStarRating(ExUtils.starRatingHandler(result, supplier));
+                schoolDO.setStarRating(starRating);
+            }
         }
 
         return new ExecuteResult(page);

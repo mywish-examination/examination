@@ -9,10 +9,7 @@ import com.home.examination.entity.vo.SuggestVO;
 import com.home.examination.service.MajorService;
 import com.home.examination.service.SchoolService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -165,8 +162,15 @@ public class MajorController {
 
             // 年限
             Cell cell7 = row.getCell(7);
-            String years = cell7.getStringCellValue();
-            major.setYears(years);
+            if (cell7 != null) {
+                int years = 0;
+                if (cell7.getCellType().equals(CellType.NUMERIC)) {
+                    years = (int) cell7.getNumericCellValue();
+                } else if (cell7.getCellType().equals(CellType.STRING)) {
+                    years = Integer.valueOf(cell7.getStringCellValue());
+                }
+                major.setYears(years);
+            }
 
             // 专业介绍
             Cell cell8 = row.getCell(8);

@@ -34,8 +34,8 @@ public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, SchoolDO> imple
     }
 
     @Override
-    public List<SchoolDO> listSchool(Long userId, Long majorId) {
-        return schoolMapper.listSchool(userId, majorId);
+    public List<SchoolDO> listSchool(Long userId, Long majorId, String batchCode, String remark) {
+        return schoolMapper.listSchool(userId, majorId, batchCode, remark);
     }
 
 }

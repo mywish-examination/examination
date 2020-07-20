@@ -27,4 +27,7 @@ public interface SchoolPlanMapper extends BaseMapper<SchoolPlanDO> {
             "${ew.customSqlSegment}")
     int countByQueryWrapper(@Param("ew") Wrapper<SchoolPlanDO> queryWrapper);
 
+    @Select("select IFNULL(sum(t.plan_num), 0) from school_plan t where t.school_name = #{schoolName} and t.major_name = #{majorName}")
+    int getPlanNum(@Param("schoolName") String schoolName, @Param("majorName") String majorName);
+
 }

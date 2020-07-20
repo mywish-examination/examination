@@ -148,9 +148,9 @@ public class HistoryAdmissionDataController {
             Cell cell2 = row.getCell(2);
             if (cell2 != null) {
                 int years = 0;
-                if(cell2.getCellType().equals(CellType.NUMERIC)) {
+                if (cell2.getCellType().equals(CellType.NUMERIC)) {
                     years = (int) cell2.getNumericCellValue();
-                } else if(cell2.getCellType().equals(CellType.STRING)) {
+                } else if (cell2.getCellType().equals(CellType.STRING)) {
                     years = Integer.valueOf(cell2.getStringCellValue());
                 }
                 historyAdmissionData.setYears(years);
@@ -159,21 +159,21 @@ public class HistoryAdmissionDataController {
             // 最高分
             Cell cell3 = row.getCell(3);
             if (cell3 != null) {
-                BigDecimal highestScore = new BigDecimal(cell3.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);;
+                BigDecimal highestScore = new BigDecimal(cell3.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                 historyAdmissionData.setHighestScore(highestScore);
             }
 
             // 最低分
             Cell cell4 = row.getCell(4);
             if (cell4 != null) {
-                BigDecimal minimumScore = new BigDecimal(cell4.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);;
+                BigDecimal minimumScore = new BigDecimal(cell4.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                 historyAdmissionData.setMinimumScore(minimumScore);
             }
 
             // 平均分
             Cell cell5 = row.getCell(5);
             if (cell5 != null) {
-                BigDecimal average = new BigDecimal(cell5.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);;
+                BigDecimal average = new BigDecimal(cell5.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                 historyAdmissionData.setAverage(average);
             }
 
@@ -186,32 +186,68 @@ public class HistoryAdmissionDataController {
 
             // 批次代码
             Cell cell7 = row.getCell(7);
-            if (cell7 != null)
-                historyAdmissionData.setBatchCode(String.valueOf(cell7.getNumericCellValue()));
+            if (cell7 != null) {
+                historyAdmissionData.setBatchCode(String.valueOf((int) cell7.getNumericCellValue()));
+            }
+
             // 科类代码
             Cell cell8 = row.getCell(8);
             if (cell8 != null)
-                historyAdmissionData.setSubjectCode(String.valueOf(cell8.getNumericCellValue()));
+                historyAdmissionData.setSubjectCode(String.valueOf((int) cell8.getNumericCellValue()));
+
             // 最高位次
             Cell cell9 = row.getCell(9);
-            if (cell9 != null)
-                historyAdmissionData.setHighestRank(String.valueOf(cell9.getNumericCellValue()));
+            if (cell9 != null) {
+                int highestRank = 0;
+                if(cell9.getCellType().equals(CellType.NUMERIC)) {
+                    highestRank = (int) cell9.getNumericCellValue();
+                } else if(cell9.getCellType().equals(CellType.STRING)) {
+                    highestRank = Integer.valueOf(cell9.getStringCellValue());
+                }
+                historyAdmissionData.setHighestRank(highestRank);
+            }
+
             // 最低位次
             Cell cell10 = row.getCell(10);
-            if (cell10 != null)
-                historyAdmissionData.setMinimumRank(String.valueOf(cell10.getNumericCellValue()));
+            if (cell10 != null) {
+                int minimumRank = 0;
+                if(cell10.getCellType().equals(CellType.NUMERIC)) {
+                    minimumRank = (int) cell10.getNumericCellValue();
+                } else if(cell10.getCellType().equals(CellType.STRING)) {
+                    minimumRank = Integer.valueOf(cell10.getStringCellValue());
+                }
+                historyAdmissionData.setMinimumRank(minimumRank);
+            }
+
             // 平均位次
             Cell cell11 = row.getCell(11);
-            if (cell11 != null)
-                historyAdmissionData.setAvgRank(String.valueOf(cell11.getNumericCellValue()));
+            if (cell11 != null) {
+                int avgRank = 0;
+                if(cell11.getCellType().equals(CellType.NUMERIC)) {
+                    avgRank = (int) cell11.getNumericCellValue();
+                } else if(cell11.getCellType().equals(CellType.STRING)) {
+                    avgRank = Integer.valueOf(cell11.getStringCellValue());
+                }
+                historyAdmissionData.setAvgRank(avgRank);
+            }
+
             // 录取人数
             Cell cell12 = row.getCell(12);
-            if (cell12 != null)
-                historyAdmissionData.setEnrolment(String.valueOf(cell12.getNumericCellValue()));
+            if (cell12 != null) {
+                int enrolment = 0;
+                if(cell12.getCellType().equals(CellType.NUMERIC)) {
+                    enrolment = (int) cell12.getNumericCellValue();
+                } else if(cell12.getCellType().equals(CellType.STRING)) {
+                    enrolment = Integer.valueOf(cell12.getStringCellValue());
+                }
+                historyAdmissionData.setEnrolment(enrolment);
+            }
+
             // 备注
             Cell cell13 = row.getCell(13);
-            if (cell13 != null)
+            if (cell13 != null) {
                 historyAdmissionData.setRemark(cell13.getStringCellValue());
+            }
 
             list.add(historyAdmissionData);
         }

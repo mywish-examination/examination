@@ -10,29 +10,29 @@ public class HistoryDataControlLineDO extends BaseEntity {
     /**
      * 年份
      */
-    private String years;
+    private Integer years;
     /**
      * 文科-重点线
      */
-    private String scienceKeyLine;
+    private Integer scienceKeyLine;
     /**
      * 文科-本科线
      */
-    private String scienceUndergraduateLine;
+    private Integer scienceUndergraduateLine;
     /**
      * 文科-专科线
      */
-    private String scienceSpecialtyLine;
+    private Integer scienceSpecialtyLine;
     /**
      * 理科-重点线
      */
-    private String liberalArtsKeyLine;
+    private Integer liberalArtsKeyLine;
     /**
      * 理科-本科线
      */
-    private String liberalArtsUndergraduateLine;
+    private Integer liberalArtsUndergraduateLine;
     /**
      * 理科-专科线
      */
-    private String liberalArtsSpecialtyLine;
+    private Integer liberalArtsSpecialtyLine;
 }

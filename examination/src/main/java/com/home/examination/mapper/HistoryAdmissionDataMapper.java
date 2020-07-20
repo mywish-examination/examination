@@ -39,12 +39,13 @@ public interface HistoryAdmissionDataMapper extends BaseMapper<HistoryAdmissionD
 
     @Select("select " +
             "CONCAT(min(t.minimum_rank), '-', max(t.highest_rank)) as rankParagraph, " +
-            "CONCAT(SUBSTR(min(t.minimum_score), 1, LOCATE('.' , min(t.minimum_score)) + 1), '-', " +
-            "SUBSTR(max(t.highest_score), 1, LOCATE('.' , max(t.highest_score)) + 1)) as scoreParagraph " +
+            "CONCAT(min(t.minimum_score), '-', max(t.highest_score)) as scoreParagraph " +
             "from history_admission_data t " +
             "${ew.customSqlSegment}")
     AdmissionEstimateReferenceDO getBySchoolOrMajor(@Param("ew") Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
     List<HistoryAdmissionDataDO> listHistoryAdmissionDataGroupYears(@Param("entity") HistoryAdmissionDataDO historyAdmissionDataDO);
+
+    List<HistoryAdmissionDataDO> listBaseDictData(@Param("educationalCode") String educationalCode, @Param("majorId") Long majorId, @Param("userSubjectType") String userSubjectType);
 
 }

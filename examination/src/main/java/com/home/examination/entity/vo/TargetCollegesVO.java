@@ -5,6 +5,7 @@ import com.home.examination.entity.domain.MajorDO;
 import com.home.examination.entity.domain.SchoolDO;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -89,21 +90,21 @@ public class TargetCollegesVO {
     /**
      * 专业列表
      */
-    private List<MajorDO> majorList;
+    private List<MajorDO> majorList = new ArrayList<>();
 
     /**
      * 历年录取分数列表
      */
-    private List<HistoryAdmissionDataDO> historyAdmissionDataList;
+    private List<HistoryAdmissionDataDO> historyAdmissionDataList = new ArrayList<>();
 
     /**
      * 学校列表
      */
-    private List<SchoolDO> schoolList;
+    private List<SchoolDO> schoolList = new ArrayList<>();
 
     /**
      * 录取预估参考
      */
-    private AdmissionEstimateReferenceDO admissionEstimateReference;
+    private AdmissionEstimateReferenceDO admissionEstimateReference = new AdmissionEstimateReferenceDO();
 
 }

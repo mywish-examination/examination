@@ -17,15 +17,15 @@ public class SubsectionDO extends BaseEntity {
     /**
      * 人数
      */
-    private String num;
+    private Integer num;
     /**
      * 位次
      */
-    private String rank;
+    private Integer rank;
     /**
      * 年份
      */
-    private String year;
+    private Integer year;
     /**
      * 学科类型
      */

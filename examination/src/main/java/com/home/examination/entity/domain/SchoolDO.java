@@ -233,6 +233,6 @@ public class SchoolDO extends BaseEntity {
      * 招生人数
      */
     @TableField(exist = false)
-    private String enrolment;
+    private Integer enrolment;
 
 }

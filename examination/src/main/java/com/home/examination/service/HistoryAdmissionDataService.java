@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.domain.RankParagraphDO;
-import com.home.examination.entity.domain.UserDO;
 import com.home.examination.entity.vo.AdmissionEstimateReferenceDO;
 
 import java.math.BigDecimal;
@@ -20,8 +19,10 @@ public interface HistoryAdmissionDataService extends IService<HistoryAdmissionDa
 
     AdmissionEstimateReferenceDO getBySchoolOrMajor(Wrapper<HistoryAdmissionDataDO> queryWrapper);
 
-    BigDecimal probabilityFilingHandler(List<HistoryAdmissionDataDO> historyAdmissionDataList, UserDO userDO);
+    BigDecimal probabilityFilingHandler(List<HistoryAdmissionDataDO> historyAdmissionDataList, Integer userRank);
 
     List<HistoryAdmissionDataDO> listHistoryAdmissionDataGroupYears(HistoryAdmissionDataDO historyAdmissionDataDO);
+
+    List<HistoryAdmissionDataDO> listBaseDictData(String educationalCode, Long majorId, String userSubjectType);
 
 }

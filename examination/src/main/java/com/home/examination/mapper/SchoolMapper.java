@@ -19,12 +19,6 @@ public interface SchoolMapper extends BaseMapper<SchoolDO> {
             "${ew.customSqlSegment}")
     List<ByNameVO> listByName(@Param("ew") Wrapper<SchoolDO> queryWrapper);
 
-    @Select("select s.*, IFNULL(mc.id, 0) as collectionStatus " +
-            "from school_major sm inner join school s on " +
-            "sm.educational_code = s.educational_code " +
-            "left join my_collection mc on sm.major_id = mc.major_id " +
-            "and sm.educational_code = mc.educational_code and mc.user_id = #{userId} " +
-            "where sm.major_id = #{majorId}")
-    List<SchoolDO> listSchool(@Param("userId") Long userId, @Param("majorId") Long majorId);
+    List<SchoolDO> listSchool(@Param("userId") Long userId, @Param("majorId") Long majorId, @Param("batchCode") String batchCode, @Param("remark") String remark);
 
 }

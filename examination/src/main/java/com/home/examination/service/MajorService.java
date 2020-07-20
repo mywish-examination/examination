@@ -13,6 +13,6 @@ public interface MajorService extends IService<MajorDO> {
 
     int countByQueryWrapper(Wrapper<MajorDO> queryWrapper);
 
-    List<MajorDO> listMajor(String educationalCode, Long userId);
+    List<MajorDO> listMajor(String educationalCode, Long userId, String batchCode, String remark);
 
 }

@@ -1,16 +1,11 @@
 package com.home.examination.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.home.examination.common.runner.MyStartupRunner;
-import com.home.examination.entity.domain.CityDO;
 import com.home.examination.entity.domain.SubsectionDO;
 import com.home.examination.entity.page.SubsectionPager;
 import com.home.examination.service.SubsectionService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,23 +118,52 @@ public class SubsectionController {
 
             // 人数
             Cell cell0 = row.getCell(1);
-            String num = cell0.getStringCellValue();
-            subsectionDO.setNum(num);
+            if (cell0 != null) {
+                int num = 0;
+                if (cell0.getCellType().equals(CellType.NUMERIC)) {
+                    num = (int) cell0.getNumericCellValue();
+                } else if (cell0.getCellType().equals(CellType.STRING)) {
+                    num = Integer.valueOf(cell0.getStringCellValue());
+                }
+                subsectionDO.setNum(num);
+            }
+
 
             // 位次
             Cell cell1 = row.getCell(2);
-            String rank = String.valueOf((int) cell1.getNumericCellValue());
-            subsectionDO.setRank(rank);
+            if (cell1 != null) {
+                int rank = 0;
+                if (cell1.getCellType().equals(CellType.NUMERIC)) {
+                    rank = (int) cell1.getNumericCellValue();
+                } else if (cell1.getCellType().equals(CellType.STRING)) {
+                    rank = Integer.valueOf(cell1.getStringCellValue());
+                }
+                subsectionDO.setRank(rank);
+            }
 
             // 年份
             Cell cell2 = row.getCell(3);
-            String year = cell2.getStringCellValue();
-            subsectionDO.setYear(year);
+            if (cell2 != null) {
+                int year = 0;
+                if (cell2.getCellType().equals(CellType.NUMERIC)) {
+                    year = (int) cell2.getNumericCellValue();
+                } else if (cell2.getCellType().equals(CellType.STRING)) {
+                    year = Integer.valueOf(cell2.getStringCellValue());
+                }
+                subsectionDO.setYear(year);
+            }
 
             // 科类
             Cell cell3 = row.getCell(4);
-            String subjectType = String.valueOf((int) cell3.getNumericCellValue());
-            subsectionDO.setSubjectType(subjectType);
+            if (cell3 != null) {
+                String subjectType = "";
+                if (cell3.getCellType().equals(CellType.NUMERIC)) {
+                    subjectType = String.valueOf((int) cell3.getNumericCellValue());
+                } else if (cell3.getCellType().equals(CellType.STRING)) {
+                    subjectType = cell3.getStringCellValue();
+                }
+                subsectionDO.setSubjectType(subjectType);
+            }
 
 //            // 省份
 //            Cell cell16 = row.getCell(5);

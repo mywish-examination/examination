@@ -27,8 +27,8 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, MajorDO> implemen
     }
 
     @Override
-    public List<MajorDO> listMajor(String educationalCode, Long userId) {
-        return majorMapper.listMajor(educationalCode, userId);
+    public List<MajorDO> listMajor(String educationalCode, Long userId, String batchCode, String remark) {
+        return majorMapper.listMajor(educationalCode, userId, batchCode, remark);
     }
 
 }

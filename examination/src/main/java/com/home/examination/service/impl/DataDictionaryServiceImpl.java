@@ -25,7 +25,7 @@ public class DataDictionaryServiceImpl extends ServiceImpl<DataDictionaryMapper,
         Map<String, List<DataDictionaryDO>> collect = list.stream().collect(Collectors.groupingBy(DataDictionaryDO::getDictCode));
         for (Map.Entry<String, List<DataDictionaryDO>> entry :
                 collect.entrySet()) {
-            redisTemplate.opsForList().leftPush(ConstantHandler.redis_key_data_dict + entry.getKey(), entry.getValue());
+            redisTemplate.opsForList().leftPush(ConstantHandler.REDIS_KEY_DATA_DICT + entry.getKey(), entry.getValue());
         }
         return collect;
     }
@@ -35,7 +35,7 @@ public class DataDictionaryServiceImpl extends ServiceImpl<DataDictionaryMapper,
         Map<String, List<DataDictionaryDO>> collect = this.list().stream().collect(Collectors.groupingBy(DataDictionaryDO::getDictCode));
         for (Map.Entry<String, List<DataDictionaryDO>> entry :
                 collect.entrySet()) {
-            redisTemplate.opsForList().leftPush(ConstantHandler.redis_key_data_dict + entry.getKey(), entry.getValue());
+            redisTemplate.opsForList().leftPush(ConstantHandler.REDIS_KEY_DATA_DICT + entry.getKey(), entry.getValue());
         }
 
         return collect.get(code);

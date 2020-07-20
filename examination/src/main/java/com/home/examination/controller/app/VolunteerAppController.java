@@ -42,6 +42,8 @@ public class VolunteerAppController {
     @Resource
     private HistoryAdmissionDataService historyAdmissionDataService;
 
+    private final static BigDecimal zero = new BigDecimal(0);
+
     /**
      * 志愿档案
      *
@@ -99,19 +101,17 @@ public class VolunteerAppController {
                     historyQueryWrapper.apply("years >= {0}", year);
                     AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
 
-                    BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataInsideList, userDO);
-                    BigDecimal zero = new BigDecimal(0);
-                    Supplier<Boolean> supplier = () -> {
-                        BigDecimal score = userDO.getCollegeScore();
-                        if (userDO.getCollegeScore() == null) {
-                            score = userDO.getPredictedScore();
+                    BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataInsideList, userDO.getRank());
+                    if (resultInside.compareTo(zero) == 0) {
+                        admissionEstimateReference.setStarRating("0");
+                    } else {
+                        String starRating = ExUtils.starRatingHandler(resultInside);
+                        if (starRating.equals("0")) {
+                            Supplier<Boolean> supplier = ExUtils.getUserHalfStarSupplier(userDO, admissionEstimateReference.getScoreParagraph());
+                            if (supplier.get()) starRating = "0.5";
                         }
-
-                        BigDecimal insideResult = score
-                                .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
-                        return insideResult.compareTo(new BigDecimal(15)) < 0;
-                    };
-                    majorDO.setStarRating(ExUtils.starRatingHandler(resultInside, supplier));
+                        majorDO.setStarRating(starRating);
+                    }
                 }
             }
 
@@ -169,19 +169,17 @@ public class VolunteerAppController {
                 AdmissionEstimateReferenceDO admissionEstimateReference = historyAdmissionDataService.getBySchoolOrMajor(historyQueryWrapper);
                 if(admissionEstimateReference == null) continue;
 
-                BigDecimal resultInside = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO);
-                BigDecimal zero = new BigDecimal(0);
-                Supplier<Boolean> supplier = () -> {
-                    BigDecimal score = userDO.getCollegeScore();
-                    if (userDO.getCollegeScore() == null) {
-                        score = userDO.getPredictedScore();
+                BigDecimal result = historyAdmissionDataService.probabilityFilingHandler(historyAdmissionDataList, userDO.getRank());
+                if (result.compareTo(zero) == 0) {
+                    admissionEstimateReference.setStarRating("0");
+                } else {
+                    String starRating = ExUtils.starRatingHandler(result);
+                    if (starRating.equals("0")) {
+                        Supplier<Boolean> supplier = ExUtils.getUserHalfStarSupplier(userDO, admissionEstimateReference.getScoreParagraph());
+                        if (supplier.get()) starRating = "0.5";
                     }
-
-                    BigDecimal insideResult = score
-                            .divide(new BigDecimal(admissionEstimateReference.getScoreParagraph().split("-")[0]), 2, RoundingMode.HALF_UP);
-                    return insideResult.compareTo(new BigDecimal(15)) < 0;
-                };
-                majorDO.setStarRating(ExUtils.starRatingHandler(resultInside, supplier));
+                    majorDO.setStarRating(starRating);
+                }
             }
             schoolDO.setMajorList(majorList);
         });

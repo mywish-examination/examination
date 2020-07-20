@@ -38,4 +38,14 @@
         group by t.years) m, history_data_control_line hdcl
         where m.years = hdcl.years
     </select>
+
+    <select id="listBaseDictData" resultType="com.home.examination.entity.domain.HistoryAdmissionDataDO">
+        select t.batch_code as batch_code, t.remark as remark
+        from history_admission_data t
+        where t.educational_code = #{educationalCode}
+        and t.subject_code = #{userSubjectType}
+        <if test="majorId != null">
+            and t.major_id = #{majorId}
+        </if>
+    </select>
 </mapper>
