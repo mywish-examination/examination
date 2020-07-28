@@ -1,5 +1,7 @@
 package com.home.examination.controller.app;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.home.examination.entity.domain.HistoryAdmissionDataDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.HollandProblemDTO;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,8 +59,16 @@ public class HollandController {
 
     @PostMapping("/app/profession/getResult")
     @ResponseBody
-    public ExecuteResult list(@RequestBody List<HollandProblemDTO> hollandProblemDTOList) {
-        return new ExecuteResult<>(hollandProblemService.getResult(hollandProblemDTOList));
+    public ExecuteResult list(@RequestBody HollandProblemDTO hollandProblemDTOList) {
+
+//        List<HollandProblemDTO> hollandProblemDTOList = null;
+//        try {
+//            hollandProblemDTOList = new ObjectMapper().readValue(jsonAsString, new TypeReference<Collection<HollandProblemDTO>>() { });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        return new ExecuteResult<>(hollandProblemService.getResult(hollandProblemDTOList.getList()));
     }
 
 }

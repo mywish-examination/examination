@@ -2,7 +2,7 @@ package com.home.examination.service;
 
 import com.home.examination.entity.domain.HollandProblemDO;
 import com.home.examination.entity.domain.HollandResultDO;
-import com.home.examination.entity.vo.HollandProblemDTO;
+import com.home.examination.entity.vo.HollandProblemWithScore;
 
 import java.util.List;
 
@@ -15,6 +15,6 @@ public interface HollandProblemService {
 
     List<HollandProblemDO> getHollandProblemPage(Integer typeNum,Integer part);
 
-    HollandResultDO getResult(List<HollandProblemDTO> hollandProblemDTOList);
+    HollandResultDO getResult(List<HollandProblemWithScore> hollandProblemDTOList);
 
 }

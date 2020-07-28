@@ -1,100 +1,21 @@
 package com.home.examination.entity.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * holland_problem
  * @author 
  */
 public class HollandProblemDTO implements Serializable {
-    /**
-     * 主键
-     */
-    private Integer id;
 
-    /**
-     * 题号
-     */
-    private Integer tiHao;
+    private List<HollandProblemWithScore> list;
 
-    /**
-     * 问题内容
-     */
-    private String content;
-
-    private Integer part;
-
-    /**
-     * 类型序号
-     */
-    private Integer typeNum;
-
-    /**
-     * 类型
-     */
-    private String type;
-
-    /**
-     * 分数
-     */
-    private Integer score;
-
-    private static final long serialVersionUID = 1L;
-
-    public Integer getTiHao() {
-        return tiHao;
+    public List<HollandProblemWithScore> getList() {
+        return list;
     }
 
-    public void setTiHao(Integer tiHao) {
-        this.tiHao = tiHao;
+    public void setList(List<HollandProblemWithScore> list) {
+        this.list = list;
     }
-
-    public Integer getTypeNum() {
-        return typeNum;
-    }
-
-    public void setTypeNum(Integer typeNum) {
-        this.typeNum = typeNum;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Integer getPart() {
-        return part;
-    }
-
-    public void setPart(Integer part) {
-        this.part = part;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
 }

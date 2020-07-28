@@ -5,6 +5,7 @@ import com.home.examination.entity.domain.HollandProblemDO;
 import com.home.examination.entity.domain.HollandResultDO;
 import com.home.examination.entity.vo.ExecuteResult;
 import com.home.examination.entity.vo.HollandProblemDTO;
+import com.home.examination.entity.vo.HollandProblemWithScore;
 import com.home.examination.entity.vo.HollandResultTemp;
 import com.home.examination.mapper.HollandProblemMapper;
 import com.home.examination.mapper.HollandResultMapper;
@@ -81,7 +82,7 @@ public class HollandProblemServiceImpl implements HollandProblemService {
     }
 
     @Override
-    public HollandResultDO getResult(List<HollandProblemDTO> hollandProblemDTOList) {
+    public HollandResultDO getResult(List<HollandProblemWithScore> hollandProblemDTOList) {
 
         //todo 第五部分的分数  也需要传过来
 
@@ -99,7 +100,7 @@ public class HollandProblemServiceImpl implements HollandProblemService {
         int scoreE = 0;
         int scoreC = 0;
 
-        for (HollandProblemDTO hollandProblemDTO : hollandProblemDTOList){
+        for (HollandProblemWithScore hollandProblemDTO : hollandProblemDTOList){
             if(HollandEnum.R.getCode().equals(hollandProblemDTO.getType())){
                 scoreR = scoreR + hollandProblemDTO.getScore();
             }
